@@ -1,2 +1,2 @@
-# workflow-modeller
+# workflow-modeler
 
