@@ -1,0 +1,14 @@
+.wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+.modeler {
+    height: 100%;
+    flex: 1;
+}
+
+.propertiesPanel {
+    height: 100%;
+}
