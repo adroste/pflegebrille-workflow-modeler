@@ -1,3 +1,4 @@
+import { Divider, Typography } from 'antd';
 import React, { useContext } from 'react';
 
 import { ElementProperties } from './ElementProperties';
@@ -17,9 +18,10 @@ export function PropertiesPanel() {
 
     return (
         <>
-            <div className={styles.heading}>
-                Element Eigenschaften
-            </div>
+            <Typography.Title level={2}>
+                Eigenschaften
+            </Typography.Title>
+            <Divider />
             <div className={styles.content}>
                 {err ?
                     (

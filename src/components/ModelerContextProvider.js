@@ -11,6 +11,7 @@ export function ModelerContextProvider({
     const value = useMemo(() => ({
         modeler,
         setModeler,
+        modeling: modeler?.get('modeling'),
         selectedElements,
     }), [
         modeler, 

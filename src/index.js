@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css';
 import './index.css';
 
 import * as serviceWorker from './serviceWorker';
@@ -14,11 +15,17 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <App />,
     document.getElementById('app')
 );
+
+// disabled due to ant.d usage of findDomNode
+// ReactDOM.render(
+//     <React.StrictMode>
+//         <App />
+//     </React.StrictMode>,
+//     document.getElementById('app')
+// );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

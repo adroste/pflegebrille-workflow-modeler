@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@welldone-software/why-did-you-render": "^4.3.2",
+    "antd": "^4.7.0",
     "bpmn-js": "^7.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -30,5 +30,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "."
+  "homepage": ".",
+  "devDependencies": {
+    "@welldone-software/why-did-you-render": "^4.3.2"
+  }
 }

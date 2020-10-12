@@ -1,7 +1,7 @@
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { modelerContext } from './ModelerContextProvider';
@@ -21,7 +21,10 @@ export function Modeler() {
                 console.error('ERR: Another modeler is already registered.');
 
             let newModeler = new BpmnModeler({
-                container: containerRef.current
+                container: containerRef.current,
+                additionalModules: [
+
+                ],
             });
 
             fetch(testXml).then(res => {
