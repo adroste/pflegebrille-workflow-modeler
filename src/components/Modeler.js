@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import { autoColorModule } from '../modelerModules/autoColor';
 import { contextPadProviderModule } from '../modelerModules/contextPadProvider';
 import { germanTranslateModule } from '../modelerModules/germanTranslate';
 import { modelerContext } from './ModelerContextProvider';
@@ -23,6 +24,7 @@ export function Modeler() {
             let newModeler = new BpmnModeler({
                 container: containerRef.current,
                 additionalModules: [
+                    autoColorModule,
                     paletteProviderModule,
                     contextPadProviderModule,
                     // customPaletteModule,

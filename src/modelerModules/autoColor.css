@@ -1,0 +1,17 @@
+.djs-palette .entry:hover,
+[class^="bpmn-icon-"]:hover:before,
+[class*=" bpmn-icon-"]:hover:before {
+    color: var(--palette-entry-hover-color);
+}
+
+.bpmn-icon-manual-task:before {
+    color: #1978ff;
+}
+
+.bpmn-icon-user-task:before {
+    color: #198c19;
+}
+
+.bpmn-icon-service-task:before {
+    color: #ae3f3f;
+}

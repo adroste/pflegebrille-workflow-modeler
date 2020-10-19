@@ -18,7 +18,7 @@ export function MenuBar() {
     return (
         <>
             <Space>
-                <Button>
+                <Button onClick={() => alert('dev mode required')}>
                     <FolderOutlined /> Laden / Speichern
                 </Button>
                 <Button onClick={handleShowXmlClick}>
