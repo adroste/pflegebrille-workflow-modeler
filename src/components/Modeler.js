@@ -1,11 +1,10 @@
-import 'bpmn-js/dist/assets/diagram-js.css';
-import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
-
 import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import { contextPadProviderModule } from '../modelerModules/contextPadProvider';
 import { germanTranslateModule } from '../modelerModules/germanTranslate';
 import { modelerContext } from './ModelerContextProvider';
+import { paletteProviderModule } from '../modelerModules/paletteProvider';
 import styles from './Modeler.module.css';
 import testXml from '../test.bpmn';
 
@@ -24,7 +23,10 @@ export function Modeler() {
             let newModeler = new BpmnModeler({
                 container: containerRef.current,
                 additionalModules: [
-                    germanTranslateModule
+                    paletteProviderModule,
+                    contextPadProviderModule,
+                    // customPaletteModule,
+                    germanTranslateModule,
                 ],
             });
 
