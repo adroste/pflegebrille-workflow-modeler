@@ -8,7 +8,8 @@ import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modelerModules/paletteProvider';
 import styles from './Modeler.module.css';
 // import testXml from '../test.bpmn';
-import testXml from '../Wundmanagement.bpmn';
+// import testXml from '../Wundmanagement.bpmn';
+import testXml from '../wm2.bpmn';
 
 export function Modeler() {
     const { setModeler } = useContext(modelerContext);
