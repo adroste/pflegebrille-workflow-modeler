@@ -1,3 +1,4 @@
+import { MenuBar } from './MenuBar';
 import { Modeler } from './Modeler';
 import { ModelerContextProvider } from './ModelerContextProvider';
 import { PropertiesPanel } from './PropertiesPanel';
@@ -12,6 +13,11 @@ function App() {
                     className={styles.modeler}
                 >
                     <Modeler />
+                </div>
+                <div
+                    className={styles.menuBar}
+                >
+                    <MenuBar />
                 </div>
                 <div
                     className={styles.propertiesPanel}
