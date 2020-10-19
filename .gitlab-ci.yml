@@ -1,0 +1,40 @@
+stages:
+  - image_build
+  - deploy
+
+image_build:
+  stage: image_build
+  image:
+    name: docker:19.03
+  only:
+    - master
+    - tags
+  variables:
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+    CA_CERTIFICATE: "$CA_CERTIFICATE"
+  services:
+    - name: docker:19.03-dind
+      command:
+        - /bin/sh
+        - -c
+        - echo "$CA_CERTIFICATE" > /usr/local/share/ca-certificates/pflegebrille-ca.crt && update-ca-certificates && dockerd-entrypoint.sh || exit
+  script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY
+    - docker build --build-arg REACT_APP_VERSION_NAME_SUFFIX="+${CI_COMMIT_SHORT_SHA}" -t "${DOCKER_REGISTRY}/workflow-modeler:${CI_COMMIT_REF_NAME}" .
+    - docker push "${DOCKER_REGISTRY}/workflow-modeler:${CI_COMMIT_REF_NAME}"
+
+deploy_k8s:
+  stage: deploy
+  image:
+    name: lachlanevenson/k8s-kubectl:latest
+  only:
+    - master
+  before_script:
+    - apk update && apk upgrade && apk add git
+  script:
+    - kubectl version
+    - kubectl rollout restart deployment workflow-modeler
+    - kubectl rollout status deployment workflow-modeler
+    - kubectl get all,ing
