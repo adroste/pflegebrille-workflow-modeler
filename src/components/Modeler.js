@@ -7,7 +7,8 @@ import { germanTranslateModule } from '../modelerModules/germanTranslate';
 import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modelerModules/paletteProvider';
 import styles from './Modeler.module.css';
-import testXml from '../test.bpmn';
+// import testXml from '../test.bpmn';
+import testXml from '../Wundmanagement.bpmn';
 
 export function Modeler() {
     const { setModeler } = useContext(modelerContext);

@@ -4,11 +4,11 @@
     color: var(--palette-entry-hover-color);
 }
 
-.bpmn-icon-manual-task:before {
+.bpmn-icon-user-task:before {
     color: #1978ff;
 }
 
-.bpmn-icon-user-task:before {
+.bpmn-icon-manual-task:before {
     color: #198c19;
 }
 

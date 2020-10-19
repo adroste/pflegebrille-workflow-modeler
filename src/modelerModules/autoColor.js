@@ -1,11 +1,11 @@
 import './autoColor.css';
 
 const shapeColors = {
-    'bpmn:ManualTask': { 
+    'bpmn:UserTask': { 
         fill: '#ebebf9',
         stroke: '#1978ff',
     },
-    'bpmn:UserTask': { 
+    'bpmn:ManualTask': { 
         fill: '#ebf2eb',
         stroke: '#198c19',
     },
