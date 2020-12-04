@@ -1,6 +1,7 @@
 import 'antd/dist/antd.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+import 'bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css';
 import 'prismjs/themes/prism.css';
 import './index.css';
 

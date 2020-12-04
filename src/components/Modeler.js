@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { autoColorModule } from '../modelerModules/autoColor';
+import bpmnlintConfig from '../lint/packed-config';
 import { contextPadProviderModule } from '../modelerModules/contextPadProvider';
 import { germanTranslateModule } from '../modelerModules/germanTranslate';
+import lintModule from 'bpmn-js-bpmnlint';
 import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modelerModules/paletteProvider';
 import styles from './Modeler.module.css';
@@ -25,13 +27,21 @@ export function Modeler() {
 
             let newModeler = new BpmnModeler({
                 container: containerRef.current,
+                linting: {
+                    bpmnlint: bpmnlintConfig,
+                    active: true,
+                },
                 additionalModules: [
                     autoColorModule,
                     paletteProviderModule,
                     contextPadProviderModule,
                     // customPaletteModule,
                     germanTranslateModule,
+                    lintModule,
                 ],
+                keyboard: {
+                    bindTo: document,
+                }
             });
 
             fetch(testXml).then(res => {

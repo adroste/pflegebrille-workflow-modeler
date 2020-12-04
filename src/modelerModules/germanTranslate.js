@@ -101,7 +101,10 @@ const translation = {
     'no process or collaboration to display': 'kein Prozess/Kollaboration',
     'element {element} referenced by {referenced}#{property} not yet drawn': 'von {referenced}#{property} referenziertes Element {element} noch nicht gezeichnet',
     'already rendered {element}': '{element} bereits gerendert',
-    'failed to import {element}': '{element} konnte nicht importiert werden'
+    'failed to import {element}': '{element} konnte nicht importiert werden',
+
+    // bpmnlint
+    'Element is missing label/name': '',
 };
 
 function translateTemplate(template, replacements) {

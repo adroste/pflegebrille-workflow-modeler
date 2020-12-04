@@ -2,3 +2,11 @@
     height: 100%;
     width: 100%;
 }
+
+:global .bjsl-button {
+    pointer-events: none;
+}
+
+:global .bjsl-icon {
+    line-height: unset;
+}
