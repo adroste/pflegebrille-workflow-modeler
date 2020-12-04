@@ -72,6 +72,8 @@ class ContextPadProvider {
         } = this;
 
         const actions = {};
+        // todo short circuit
+        return actions;
 
         if (element.type === 'label') {
             return actions;
