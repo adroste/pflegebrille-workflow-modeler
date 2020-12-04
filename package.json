@@ -6,10 +6,11 @@
     "@ant-design/icons": "^4.2.2",
     "antd": "^4.7.0",
     "bpmn-js": "^7.3.1",
+    "bpmn-js-bpmnlint": "^0.15.0",
     "prismjs": "^1.22.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1"
   },
   "scripts": {
     "start": "env REACT_APP_VERSION_NAME_SUFFIX=\" (debug)\" react-scripts start",
@@ -34,6 +35,6 @@
   },
   "homepage": ".",
   "devDependencies": {
-    "@welldone-software/why-did-you-render": "^4.3.2"
+    "@welldone-software/why-did-you-render": "^6.0.3"
   }
 }
