@@ -2,12 +2,13 @@ import 'antd/dist/antd.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 import 'bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css';
+import 'diagram-js-minimap/assets/diagram-js-minimap.css';
 import 'prismjs/themes/prism.css';
 import './index.css';
 
 import * as serviceWorker from './serviceWorker';
 
-import App from './components/App';
+import App from './base/App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

@@ -1,9 +1,9 @@
 import { Form, Input } from 'antd';
 import React, { useCallback, useContext, useEffect } from 'react';
 
-import { modelerContext } from './ModelerContextProvider';
+import { modelerContext } from '../base/ModelerContextProvider';
 
-export function ElementProperties({
+export function BaseProperties({
     element, // warn: element will be mutated by bpmnjs
 }) {
     const { modeling } = useContext(modelerContext);
@@ -12,7 +12,7 @@ export function ElementProperties({
     useEffect(() => {
         form.setFieldsValue({
             id: element.id,
-            name: element?.businessObject.name,
+            name: element.businessObject.name,
         });
     });
 

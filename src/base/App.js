@@ -1,7 +1,7 @@
 import { MenuBar } from './MenuBar';
 import { Modeler } from './Modeler';
 import { ModelerContextProvider } from './ModelerContextProvider';
-import { PropertiesPanel } from './PropertiesPanel';
+import { PropertiesPanel } from '../properties-panel/PropertiesPanel';
 import React from 'react';
 import styles from './App.module.css';
 

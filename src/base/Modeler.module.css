@@ -1,0 +1,32 @@
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+/* bpmnlint */
+:global .bjsl-button {
+    pointer-events: none;
+}
+
+:global .bjsl-icon {
+    line-height: unset;
+}
+
+/* minimap */
+:global .djs-minimap.djs-minimap .toggle:before {
+    content: attr(title);
+}
+
+:global .djs-minimap:not(.open) .toggle {
+    width: unset;
+    padding: 10px;
+    height: unset;
+    line-height: unset;
+}
+
+:global .djs-minimap {
+    left: 20px;
+    bottom: 20px;
+    top: unset;
+    right: unset;
+}

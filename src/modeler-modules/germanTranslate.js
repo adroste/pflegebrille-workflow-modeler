@@ -105,6 +105,10 @@ const translation = {
 
     // bpmnlint
     'Element is missing label/name': '',
+
+    // minimap
+    'Open minimap': 'Minimap öffnen',
+    'Close minimap': 'Minimap schließen',
 };
 
 function translateTemplate(template, replacements) {

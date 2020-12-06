@@ -7,6 +7,7 @@
     "antd": "^4.7.0",
     "bpmn-js": "^7.3.1",
     "bpmn-js-bpmnlint": "^0.15.0",
+    "diagram-js-minimap": "^2.0.3",
     "prismjs": "^1.22.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

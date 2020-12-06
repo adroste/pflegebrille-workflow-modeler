@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-import { autoColorModule } from '../modelerModules/autoColor';
+import { autoColorModule } from '../modeler-modules/autoColor';
 import bpmnlintConfig from '../lint/packed-config';
-import { contextPadProviderModule } from '../modelerModules/contextPadProvider';
-import { germanTranslateModule } from '../modelerModules/germanTranslate';
+import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
+import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
+import minimapModule from 'diagram-js-minimap';
 import { modelerContext } from './ModelerContextProvider';
-import { paletteProviderModule } from '../modelerModules/paletteProvider';
+import { paletteProviderModule } from '../modeler-modules/paletteProvider';
 import styles from './Modeler.module.css';
 // import testXml from '../test.bpmn';
 // import testXml from '../Wundmanagement.bpmn';
@@ -32,12 +33,13 @@ export function Modeler() {
                     active: true,
                 },
                 additionalModules: [
-                    autoColorModule,
-                    paletteProviderModule,
-                    contextPadProviderModule,
                     // customPaletteModule,
+                    autoColorModule,
+                    contextPadProviderModule,
                     germanTranslateModule,
                     lintModule,
+                    minimapModule,
+                    paletteProviderModule,
                 ],
                 keyboard: {
                     bindTo: document,
