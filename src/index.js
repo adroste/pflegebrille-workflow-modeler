@@ -9,8 +9,10 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 import App from './base/App';
+import { ConfigProvider } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import locale from 'antd/lib/locale/de_DE';
 
 if (process.env.NODE_ENV === 'development') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -20,7 +22,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 ReactDOM.render(
-    <App />,
+    <ConfigProvider locale={locale}>
+        <App />
+    </ConfigProvider>,
     document.getElementById('app')
 );
 
