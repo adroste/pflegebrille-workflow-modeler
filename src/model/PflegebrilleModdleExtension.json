@@ -16,21 +16,6 @@
             ]
         },
         {
-            "name": "Property",
-            "properties": [
-                {
-                    "name": "name",
-                    "isAttr": true,
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "isAttr": true,
-                    "type": "String"
-                }
-            ]
-        },
-        {
             "name": "MediaText",
             "superClass": [
                 "Function"
@@ -60,6 +45,30 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "WoundPicture",
+            "superClass": [
+                "Function"
+            ],
+            "meta": { 
+                "allowedIn": [
+                    "bpmn:UserTask"
+                ],
+                "formLabel": "Wundfoto aufnehmen"
+            }
+        },
+        {
+            "name": "WoundDetection",
+            "superClass": [
+                "Function"
+            ],
+            "meta": { 
+                "allowedIn": [
+                    "bpmn:UserTask"
+                ],
+                "formLabel": "Wunde vermessen"
+            }
         }
     ],
     "emumerations": [

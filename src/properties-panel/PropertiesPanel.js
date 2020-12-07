@@ -34,11 +34,11 @@ export function PropertiesPanel() {
 
                 {!err &&
                     <>
-                        <BaseProperties element={element} />
+                        <BaseProperties key={`${element.id}_base`} element={element} />
 
                         <Divider />
 
-                        <ElementProperties element={element} />
+                        <ElementProperties key={element.id} element={element} />
                     </>
                 }
             </div>
