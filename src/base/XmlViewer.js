@@ -17,7 +17,6 @@ export function XmlViewer({
 
         window.modeler = modeler;
         modeler.saveXML({ format: true }).then(({ xml }) => {
-            console.log(xml);
             setXml(xml);
         }).catch(() => {
             setXml(null);

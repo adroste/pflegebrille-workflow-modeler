@@ -1,0 +1,83 @@
+{
+    "name": "Pflegebrille BPMN Extension",
+    "uri": "http://pflegebrille.de/schema/bpmn/pb-extension",
+    "prefix": "pb",
+    "xml": {
+        "tagAlias": "lowerCase"
+    },
+    "types": [
+        {
+            "name": "Function",
+            "meta": {
+                "description": "A function is an element that describes the inner workings of a parent element. Only one function per parent is allowed."
+            },
+            "superClass": [
+                "Element"
+            ]
+        },
+        {
+            "name": "Property",
+            "properties": [
+                {
+                    "name": "name",
+                    "isAttr": true,
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "isAttr": true,
+                    "type": "String"
+                }
+            ]
+        },
+        {
+            "name": "MediaText",
+            "superClass": [
+                "Function"
+            ],
+            "meta": { 
+                "allowedIn": [
+                    "bpmn:ManualTask"
+                ]
+            },
+            "properties": [
+                {
+                    "name": "text",
+                    "isAttr": true,
+                    "type": "String",
+                    "meta": {
+                        "formLabel": "Text",
+                        "formType": "MultilineText"
+                    }
+                },
+                {
+                    "name": "mediaSrc",
+                    "isAttr": true,
+                    "type": "String",
+                    "meta": {
+                        "formLabel": "Bild / Video",
+                        "formType": "MediaFile"
+                    }
+                }
+            ]
+        }
+    ],
+    "emumerations": [
+        {
+            "name": "DataTypeEnum",
+            "literalValues": [
+            ]
+        },
+        {
+            "name": "FormTypeEnum",
+            "literalValues": [
+                {
+                    "name": "MultilineText"
+                },
+                {
+                    "name": "MediaFile"
+                }
+            ]
+        }
+    ]
+}

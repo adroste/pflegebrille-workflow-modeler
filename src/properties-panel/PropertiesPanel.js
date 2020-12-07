@@ -2,7 +2,7 @@ import { Divider, Typography } from 'antd';
 import React, { useContext } from 'react';
 
 import { BaseProperties } from './BaseProperties';
-import { TaskProperties } from './TaskProperties';
+import { ElementProperties } from './ElementProperties';
 import { modelerContext } from '../base/ModelerContextProvider';
 import styles from './PropertiesPanel.module.css';
 
@@ -38,7 +38,7 @@ export function PropertiesPanel() {
 
                         <Divider />
 
-                        <TaskProperties element={element} />
+                        <ElementProperties element={element} />
                     </>
                 }
             </div>

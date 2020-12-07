@@ -12,6 +12,7 @@ export function ModelerContextProvider({
         modeler,
         setModeler,
         modeling: modeler?.get('modeling'),
+        moddle: modeler?.get('moddle'),
         selectedElements,
     }), [
         modeler, 
