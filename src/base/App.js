@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
-import { IssueViewer } from '../modeler/IssueViewer';
-import { MenuBar } from '../modeler/MenuBar';
-import { Minimap } from '../modeler/Minimap';
-import { Modeler } from '../modeler/Modeler';
 import { ModelerScreen } from '../screens/ModelerScreen';
-import { PropertiesPanel } from '../properties-panel/PropertiesPanel';
 import { ScreenEnum } from '../screens/ScreenEnum';
-import styles from './App.module.css';
+import { XmlEditorScreen } from '../screens/XmlEditorScreen';
+import { appContext } from './AppContextProvider';
 
 function App() {
 
-    const [screen, setScreen] = useState(ScreenEnum.LOAD_WORKFLOW);
+    const { screen } = useContext(appContext);
 
+    if (screen === ScreenEnum.MODELER)
+        return <ModelerScreen />
 
-    return (
-        <div className={styles.wrapper}>
-            <ModelerScreen />
-        </div>
-    );
+    return <XmlEditorScreen />
 }
 
 export default App;

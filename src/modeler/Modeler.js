@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import { Modal } from 'antd';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
@@ -53,12 +54,24 @@ export function Modeler() {
             return newModeler;
         });
 
-        return () => setModeler(null);
+        return () => setModeler(modeler => {
+            if (modeler)
+                modeler.destroy();
+            return null;
+        });
     }, [containerRef, setModeler]);
 
     useEffect(() => {
-        if (modeler && xml)
-            modeler.importXML(xml);
+        if (!modeler || !xml) 
+            return;
+        modeler.importXML(xml)
+            .catch(err => {
+                console.error(err);
+                Modal.error({
+                    title: 'Import Fehler',
+                    content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
+                });
+            });
     }, [modeler, xml]);
 
     return (

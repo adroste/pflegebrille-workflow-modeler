@@ -20,7 +20,6 @@ export function PropertiesPanel({
     else
         element = selectedElements[0];
 
-    console.log(issues)
     const elementIssues = issues?.[element?.id];
 
     return (
