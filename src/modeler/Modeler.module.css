@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+:global .bjs-powered-by {
+    display: none;
+}
+
 /* palette */
 :global .djs-palette {
     width: 94px;

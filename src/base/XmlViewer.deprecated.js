@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { CodeSnippet } from './CodeSnippet';
 import { Modal } from 'antd';
-import { modelerContext } from './ModelerContextProvider';
+import { modelerContext } from './AppContextProvider';
 
+// deprecated
 export function XmlViewer({
     onClose,
     visible,

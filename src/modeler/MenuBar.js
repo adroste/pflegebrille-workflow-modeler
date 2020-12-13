@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 
 import { ZoomControls } from './ZoomControls';
 
-export function MenuBar() {
+export function MenuBar({ className }) {
     // const [showXml, setShowXml] = useState(false);
 
     const handleShowXmlClick = useCallback(() => {
@@ -16,20 +16,14 @@ export function MenuBar() {
     }, []);
 
     return (
-        <>
-            <Space>
-                <Button onClick={() => alert('dev mode required')}>
-                    <FolderOutlined /> Laden / Speichern
-                </Button>
-                <Button onClick={handleShowXmlClick}>
-                    <CodeOutlined /> Zeige XML
-                </Button>
-                <ZoomControls />
-            </Space>
-            {/* <XmlViewer 
-                onClose={handleCloseXmlClick}
-                visible={showXml}
-            /> */}
-        </>
+        <Space className={className}>
+            <Button onClick={() => alert('dev mode required')}>
+                <FolderOutlined /> Laden / Speichern
+            </Button>
+            <Button onClick={handleShowXmlClick}>
+                <CodeOutlined /> Zeige XML
+            </Button>
+            <ZoomControls />
+        </Space>
     );
 }

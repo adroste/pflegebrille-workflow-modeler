@@ -9,7 +9,9 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 import App from './base/App';
+import { AppContextProvider } from './base/AppContextProvider';
 import { ConfigProvider } from 'antd';
+import { ModelerContextProvider } from './modeler/ModelerContextProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import locale from 'antd/lib/locale/de_DE';
@@ -23,7 +25,11 @@ if (process.env.NODE_ENV === 'development') {
 
 ReactDOM.render(
     <ConfigProvider locale={locale}>
-        <App />
+        <AppContextProvider>
+            <ModelerContextProvider>
+                <App />
+            </ModelerContextProvider>
+        </AppContextProvider>
     </ConfigProvider>,
     document.getElementById('app')
 );
