@@ -7,16 +7,21 @@ export function ModelerContextProvider({
 }) {
     const [modeler, setModeler] = useState(null);
     const [selectedElements, setSelectedElements] = useState([]);
+    const [issues, setIssues] = useState();
+
+    window.modeler = modeler;
 
     const value = useMemo(() => ({
-        modeler,
-        setModeler,
-        modeling: modeler?.get('modeling'),
+        eventBus: modeler?.get('eventBus'),
+        issues,
         moddle: modeler?.get('moddle'),
+        modeler,
+        modeling: modeler?.get('modeling'),
         selectedElements,
-    }), [
-        modeler, 
         setModeler,
+    }), [
+        issues,
+        modeler, 
         selectedElements,
     ]);
 
@@ -34,6 +39,9 @@ export function ModelerContextProvider({
                 setSelectedElements([...newSelection]);
             },
 
+            'linting.completed': ({ issues }) => {
+                setIssues(issues);
+            },
         };
 
         const events = Object.keys(eventHandlers);

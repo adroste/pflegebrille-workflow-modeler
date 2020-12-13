@@ -1,104 +1,69 @@
-import { Form, Select } from 'antd';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
+import React, { useCallback, useContext } from 'react';
 
-import { ModdleFormItem } from './ModdleFormItem';
-import { getAllowedFunctionsForType } from '../model/modelUtil';
+import { Form } from 'antd';
+import { FormField } from './FormField';
+import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { getModelerBindingsForType } from '../meta-model/util';
 import { modelerContext } from '../base/ModelerContextProvider';
 
 export function ElementProperties({
+    baseElement,
     element,
 }) {
-    const { modeling, moddle } = useContext(modelerContext);
+    const { eventBus } = useContext(modelerContext);
     const [form] = Form.useForm();
 
-    const elementId = element?.id;
     const businessObject = getBusinessObject(element);
-    const allowedFunctions = getAllowedFunctionsForType(businessObject.$type);
-    const [selectedFunction, setSelectedFunction] = useState(() => {
-        if (allowedFunctions.length === 1) {
-            return allowedFunctions[0];
-        } else if (allowedFunctions.length > 1) {
-            const curFunction = businessObject.extensionElements?.values?.find(el => el.$instanceOf('pb:Function'));
-            const selectedFunction = curFunction && allowedFunctions.find(f => `pb:${f.name}` === curFunction.$type);
-            return selectedFunction;
-        }
-    });
 
-    const updateElementProperties = useCallback(updatedValues => {
-        if (!moddle || !selectedFunction)
+    // useEffect(() => {
+    //     form.resetFields();
+    // }, [businessObject, form]);
+
+    const innerElements = []
+        .concat(businessObject.extensionElements?.values)
+        .concat(businessObject.dataObjectRef);
+
+    const bindings = getModelerBindingsForType(businessObject.$type);
+
+    const updateBusinessObjectProperties = useCallback(updatedValues => {
+        if (typeof businessObject.set !== 'function') {
+            console.log('businessObject is no ModdleElement', businessObject);
             return;
-
-        const type = `pb:${selectedFunction.name}`;
-        let extensionElements = businessObject.extensionElements || moddle.create('bpmn:ExtensionElements');
-
-        let functionElements = extensionElements.get('values').filter(el => el.$instanceOf('pb:Function'));
-        let exElement = functionElements[0];
-        if (functionElements.length > 1 || !is(exElement, type)) {
-            extensionElements.values = extensionElements.get('values').filter(el => !el.$instanceOf('pb:Function'));
-            exElement = null;
         }
 
-        if (!exElement && type) {
-            exElement = moddle.create(type);
-            extensionElements.get('values').push(exElement);
-        }
-
-        Object.assign(exElement || {}, updatedValues);
-
-        modeling.updateProperties(element, {
-            extensionElements,
+        Object.keys(updatedValues).forEach(key => {
+            businessObject.set(key, updatedValues[key]);
         });
-    }, [businessObject.extensionElements, element, moddle, modeling, selectedFunction]);
 
-    useEffect(() => {
-        form.resetFields();
-        const extensionElements = businessObject.extensionElements;
-        if (extensionElements) {
-            let exElement = extensionElements.get('values').find(el => el.$instanceOf('pb:Function'));
-            form.setFieldsValue(exElement);
-        }
-    }, [businessObject, form, elementId]);
-
-    useEffect(() => {
-        updateElementProperties();
-    }, [selectedFunction, updateElementProperties])
-
-    const selectFunction = useCallback(name => {
-        setSelectedFunction(allowedFunctions.find(f => f.name === name));
-    }, [allowedFunctions]);
-    window.moddle = moddle;
+        eventBus.fire('elements.changed', { elements: [baseElement] });
+    }, [baseElement, businessObject, eventBus]);
 
     return (
-        <Form
-            form={form}
-            layout='vertical'
-            onValuesChange={updateElementProperties}
-        >
-            {allowedFunctions?.length > 1 && 
-                <Form.Item
-                    label="Funktion"
-                >
-                    <Select 
-                        value={selectedFunction?.name}
-                        onChange={selectFunction}
-                        placeholder="Bitte auswählen..."
-                    >
-                        {allowedFunctions.map(({ name, meta: { formLabel } }) => (
-                            <Select.Option key={name} value={name}>{formLabel}</Select.Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-            }
+        <>
+            <Form
+                form={form}
+                layout='vertical'
+                initialValues={businessObject}
+                onValuesChange={updateBusinessObjectProperties}
+            >
+                {/* input/output fields here */}
 
-            {selectedFunction?.properties?.map(({ name, meta: { formLabel, formType } }) => (
-                <ModdleFormItem
-                    key={name}
-                    name={name}
-                    label={formLabel}
-                    type={formType}
+                {bindings.map((binding, i) => binding.fields.map((binding, j) => (
+                    <FormField
+                        key={`${binding.property}_${i}_${j}`}
+                        binding={binding}
+                        businessObject={businessObject}
+                    />
+                )))}
+            </Form>
+
+            {innerElements.map((element, i) => (element?.$type || null) && (
+                <ElementProperties
+                    key={element.id || `${element.$type}_${i}`}
+                    baseElement={baseElement}
+                    element={element}
                 />
             ))}
-        </Form>
+        </>
     );
 }

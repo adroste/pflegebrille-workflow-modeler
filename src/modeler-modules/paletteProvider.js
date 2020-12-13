@@ -46,7 +46,7 @@ class PaletteProvider {
                 create.start(event, shape);
             }
 
-            const shortType = type.replace(/^bpmn: /, '');
+            const shortType = type.replace(/^bpmn:/, '');
 
             return {
                 group: group,
@@ -150,7 +150,6 @@ class PaletteProvider {
             ),
             'create.manual-task': createAction(
                 'bpmn:ManualTask', 'activity', 'bpmn-icon-manual-task',
-                translate('Create ManualTask')
             ),
             'create.user-task': createAction(
                 'bpmn:UserTask', 'activity', 'bpmn-icon-user-task',

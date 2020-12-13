@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-import PflegebrilleModdleExtension from '../model/PflegebrilleModdleExtension.json';
 import { autoColorModule } from '../modeler-modules/autoColor';
 import bpmnlintConfig from '../lint/packed-config';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
+import { linterConfig } from '../lint/linterConfig';
 import minimapModule from 'diagram-js-minimap';
 import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modeler-modules/paletteProvider';
+import { pbModdle } from '../meta-model/pbModdle';
 import styles from './Modeler.module.css';
 // import testXml from '../test.bpmn';
 // import testXml from '../Wundmanagement.bpmn';
@@ -30,7 +31,8 @@ export function Modeler() {
             let newModeler = new BpmnModeler({
                 container: containerRef.current,
                 linting: {
-                    bpmnlint: bpmnlintConfig,
+                    // bpmnlint: bpmnlintConfig,
+                    bpmnlint: linterConfig,
                     active: true,
                 },
                 additionalModules: [
@@ -46,7 +48,7 @@ export function Modeler() {
                     bindTo: document,
                 },
                 moddleExtensions: {
-                    pb: PflegebrilleModdleExtension,
+                    pb: pbModdle,
                 },
             });
 

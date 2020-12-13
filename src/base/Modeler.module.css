@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+/* palette */
+:global .djs-palette {
+    width: 94px;
+}
+
 /* bpmnlint */
 :global .bjsl-button {
     pointer-events: none;

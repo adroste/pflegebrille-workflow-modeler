@@ -19,12 +19,9 @@ function App() {
                 >
                     <MenuBar />
                 </div>
-                <div
+                <PropertiesPanel 
                     className={styles.propertiesPanel}
-                    style={{ width: 300 }}
-                >
-                    <PropertiesPanel />
-                </div>
+                />
             </ModelerContextProvider>
         </div>
     );

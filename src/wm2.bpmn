@@ -15,6 +15,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_1islzmk" sourceRef="Task_1vocosm" targetRef="Task_0thvjet" />
     <bpmn:manualTask id="Task_0629muh" name="Wunde freilegen">
       <bpmn:extensionElements>
+        <pb:mediaText />
         <camunda:inputOutput>
           <camunda:inputParameter name="inputFoo">foobar</camunda:inputParameter>
         </camunda:inputOutput>

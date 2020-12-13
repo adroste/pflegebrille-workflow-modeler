@@ -104,11 +104,14 @@ const translation = {
     'failed to import {element}': '{element} konnte nicht importiert werden',
 
     // bpmnlint
-    'Element is missing label/name': '',
+    '{errors} Errors, {warnings} Warnings': '{errors} Fehler, {warnings} Warnungen',
+    'Element is missing label/name': 'Element hat kein Label/Name',
+    'Element is not connected': 'Element ist nicht verbunden',
 
     // minimap
     'Open minimap': 'Minimap öffnen',
-    'Close minimap': 'Minimap schließen',
+    'Close minimap': 'schließen',
+
 };
 
 function translateTemplate(template, replacements) {

@@ -15,17 +15,18 @@
     top: 20px;
     right: 20px;
     bottom: 20px;
-    background: #fafafa;
-    border: solid 1px #ccc;
-    border-radius: 2px;
-    padding: 1em;
-    overflow-y: scroll;
+    width: 320px;
 }
 
 .menuBar {
     position: absolute;
     top: 20px;
     left: 20px;
+}
+
+.propertiesPanel,
+.menuBar {
+    z-index: 600;
 }
 
 :global(.djs-palette) {

@@ -35,7 +35,6 @@ export function BaseProperties({
             <Form.Item
                 name="id"
                 label="ID"
-                rules={[{ required: true }]}
             >
                 <Input disabled onChange={handleIdChange} />
             </Form.Item>
@@ -43,7 +42,6 @@ export function BaseProperties({
             <Form.Item
                 name="name"
                 label="Name"
-                rules={[{ required: true }]}
             >
                 <Input onChange={handleNameChange} />
             </Form.Item>

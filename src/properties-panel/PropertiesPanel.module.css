@@ -1,0 +1,7 @@
+.wrapper {
+    background: #fafafa;
+    border: solid 1px #ccc;
+    border-radius: 2px;
+    padding: 1em;
+    overflow-y: scroll;
+}
