@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { autoColorModule } from '../modeler-modules/autoColor';
-import bpmnlintConfig from '../lint/packed-config';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';

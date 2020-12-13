@@ -1,4 +1,4 @@
-import { findId, findLabel, isAny } from './util';
+import { findId, isAny } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 

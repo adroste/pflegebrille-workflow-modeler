@@ -9,19 +9,30 @@ export function ModelerContextProvider({
     const [selectedElements, setSelectedElements] = useState([]);
     const [issues, setIssues] = useState();
 
+    const modules = useMemo(() => ({
+        canvas: modeler?.get('canvas'),
+        editorActions: modeler?.get('editorActions'),
+        elementRegistry: modeler?.get('elementRegistry'),
+        eventBus: modeler?.get('eventBus'),
+        linting: modeler?.get('linting'),
+        minimap: modeler?.get('minimap'),
+        moddle: modeler?.get('moddle'),
+        modeling: modeler?.get('modeling'),
+        selection: modeler?.get('selection'),
+    }), [modeler])
+
     window.modeler = modeler;
 
     const value = useMemo(() => ({
-        eventBus: modeler?.get('eventBus'),
+        ...modules,
         issues,
-        moddle: modeler?.get('moddle'),
         modeler,
-        modeling: modeler?.get('modeling'),
         selectedElements,
         setModeler,
     }), [
         issues,
         modeler, 
+        modules,
         selectedElements,
     ]);
 
@@ -32,7 +43,7 @@ export function ModelerContextProvider({
         const eventHandlers = {
 
             'element.changed': () => {
-                setSelectedElements([...modeler.get('selection').get()]);
+                setSelectedElements([...modules.selection.get()]);
             },
 
             'selection.changed': ({ newSelection }) => {
@@ -47,8 +58,7 @@ export function ModelerContextProvider({
         const events = Object.keys(eventHandlers);
         events.forEach(event => modeler.on(event, eventHandlers[event]));
         return () => events.forEach(event => modeler.off(event, eventHandlers[event]));
-    }, [modeler]);
-
+    }, [modeler, modules]);
 
     return (
         <modelerContext.Provider value={value}>

@@ -1,6 +1,8 @@
-import { MenuBar } from './MenuBar';
-import { Modeler } from './Modeler';
-import { ModelerContextProvider } from './ModelerContextProvider';
+import { IssueViewer } from '../modeler/IssueViewer';
+import { MenuBar } from '../modeler/MenuBar';
+import { Minimap } from '../modeler/Minimap';
+import { Modeler } from '../modeler/Modeler';
+import { ModelerContextProvider } from '../modeler/ModelerContextProvider';
 import { PropertiesPanel } from '../properties-panel/PropertiesPanel';
 import React from 'react';
 import styles from './App.module.css';
@@ -22,6 +24,11 @@ function App() {
                 <PropertiesPanel 
                     className={styles.propertiesPanel}
                 />
+
+                <IssueViewer />
+
+                <Minimap />
+                
             </ModelerContextProvider>
         </div>
     );

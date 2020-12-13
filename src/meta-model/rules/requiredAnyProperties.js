@@ -20,22 +20,14 @@ export const requiredAnyProperties = (properties, requiredIf = null) => ({
                     && (!requiredIf || requiredIf(node))
                 ))
             ) {
-                const labelMap = properties.reduce((labelMap, property) => {
-                    labelMap[property] = findLabel(binding, property);
-                    return labelMap;
-                }, {});
-                properties.forEach(property => {
-                    const label = labelMap[property];
-                    const otherLabels = properties
-                        .filter(p => p !== property)
-                        .map(p => labelMap[p])
-                        .join(', ')
-                        .replace(/, ([^,]*)$/, ' oder $1');
-                    reporter.report(
-                        findId(node),
-                        `${label} ist erforderlich, wenn ${otherLabels} nicht vorhanden`
-                    );
-                });
+                const labels = properties
+                    .map(property => findLabel(binding, property))
+                    .join(', ')
+                    .replace(/, ([^,]*)$/, ' oder $1');
+                reporter.report(
+                    findId(node),
+                    `${labels} erforderlich`
+                );
             }
         }
 

@@ -1,7 +1,7 @@
 import { Form, Input } from 'antd';
 import React, { useCallback, useContext, useEffect } from 'react';
 
-import { modelerContext } from '../base/ModelerContextProvider';
+import { modelerContext } from '../modeler/ModelerContextProvider';
 
 export function BaseProperties({
     element, // warn: element will be mutated by bpmnjs

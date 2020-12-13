@@ -1,0 +1,28 @@
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+/* palette */
+:global .djs-palette {
+    width: 94px;
+}
+
+/* bpmnlint */
+:global .bjsl-button {
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+:global .bjsl-button:hover {
+    opacity: 0.75;
+}
+
+:global .bjsl-icon {
+    line-height: unset;
+}
+
+:global .bjsl-issues svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+}

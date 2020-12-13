@@ -1,10 +1,10 @@
 import { Divider, Typography } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { BaseProperties } from './BaseProperties';
 import { ElementProperties } from './ElementProperties';
-import { IssueList } from './IssueList';
-import { modelerContext } from '../base/ModelerContextProvider';
+import { IssueList } from '../modeler/IssueList';
+import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './PropertiesPanel.module.css';
 
 export function PropertiesPanel({

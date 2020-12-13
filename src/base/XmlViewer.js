@@ -28,6 +28,7 @@ export function XmlViewer({
             visible={visible}
             onCancel={onClose}
             footer={null}
+            centered
             width='80vw'
         >
             {xml ?
