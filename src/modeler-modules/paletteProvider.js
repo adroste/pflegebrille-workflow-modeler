@@ -134,7 +134,7 @@ class PaletteProvider {
             },
             'create.start-event': createAction(
                 'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none',
-                translate('Create StartEvent')
+                // translate('Create StartEvent')
             ),
             // 'create.intermediate-event': createAction(
             //     'bpmn:IntermediateThrowEvent', 'event', 'bpmn-icon-intermediate-event-none',
@@ -142,35 +142,28 @@ class PaletteProvider {
             // ),
             'create.end-event': createAction(
                 'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none',
-                translate('Create EndEvent')
+                // translate('Create EndEvent')
             ),
             'create.exclusive-gateway': createAction(
                 'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-none',
-                translate('Create Gateway')
+                // translate('Create Gateway')
             ),
             'create.manual-task': createAction(
                 'bpmn:ManualTask', 'activity', 'bpmn-icon-manual-task',
+                // translate('Create ManualTask')
             ),
             'create.user-task': createAction(
                 'bpmn:UserTask', 'activity', 'bpmn-icon-user-task',
-                translate('Create UserTask')
+                // translate('Create UserTask')
             ),
             'create.service-task': createAction(
                 'bpmn:ServiceTask', 'activity', 'bpmn-icon-service-task',
-                translate('Create ServiceTask')
+                // translate('Create ServiceTask')
             ),
             // 'create.task': createAction(
             //     'bpmn:Task', 'activity', 'bpmn-icon-task',
             //     translate('Create Task')
             // ),
-            'create.data-object': createAction(
-                'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
-                translate('Create DataObjectReference')
-            ),
-            'create.data-store': createAction(
-                'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store',
-                translate('Create DataStoreReference')
-            ),
             'create.subprocess-expanded': {
                 group: 'activity',
                 className: 'bpmn-icon-subprocess-expanded',
@@ -180,19 +173,27 @@ class PaletteProvider {
                     click: createSubprocess
                 }
             },
-            'create.participant-expanded': {
-                group: 'collaboration',
-                className: 'bpmn-icon-participant',
-                title: translate('Create Pool/Participant'),
-                action: {
-                    dragstart: createParticipant,
-                    click: createParticipant
-                }
-            },
             'create.group': createAction(
                 'bpmn:Group', 'artifact', 'bpmn-icon-group',
-                translate('Create Group')
+                // translate('Create Group')
             ),
+            'create.data-object': createAction(
+                'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
+                // translate('Create DataObjectReference')
+            ),
+            'create.data-store': createAction(
+                'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store',
+                // translate('Create DataStoreReference')
+            ),
+            // 'create.participant-expanded': {
+            //     group: 'collaboration',
+            //     className: 'bpmn-icon-participant',
+            //     title: translate('Create Pool/Participant'),
+            //     action: {
+            //         dragstart: createParticipant,
+            //         click: createParticipant
+            //     }
+            // },
         };
     }
 }
