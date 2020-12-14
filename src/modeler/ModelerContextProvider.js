@@ -1,13 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import { Modal } from 'antd';
+import { appContext } from '../base/AppContextProvider';
 
 export const modelerContext = React.createContext();
 
 export function ModelerContextProvider({
     children,
 }) {
+    const { setXml } = useContext(appContext);
     const [modeler, setModeler] = useState(null);
     const [selectedElements, setSelectedElements] = useState([]);
     const [issues, setIssues] = useState();
+
+    window.modeler = modeler;
 
     const modules = useMemo(() => ({
         canvas: modeler?.get('canvas'),
@@ -21,18 +27,36 @@ export function ModelerContextProvider({
         selection: modeler?.get('selection'),
     }), [modeler])
 
-    window.modeler = modeler;
+    const saveModelerStateToXml = useCallback(() => {
+        if (!modeler)
+            return;
+            
+        return modeler.saveXML({ format: true })
+            .then(({ xml }) => {
+                setXml(xml);
+                return xml;
+            })
+            .catch(err => {
+                console.error(err);
+                Modal.error({
+                    title: 'Export Fehler',
+                    content: 'Der Workflow konnte nicht gespeichert werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
+                });
+            });
+    }, [modeler, setXml]);
 
     const value = useMemo(() => ({
         ...modules,
         issues,
         modeler,
+        saveModelerStateToXml,
         selectedElements,
         setModeler,
     }), [
         issues,
         modeler, 
         modules,
+        saveModelerStateToXml,
         selectedElements,
     ]);
 

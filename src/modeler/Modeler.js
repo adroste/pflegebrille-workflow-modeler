@@ -55,8 +55,10 @@ export function Modeler() {
         });
 
         return () => setModeler(modeler => {
-            if (modeler)
+            if (modeler) {
                 modeler.destroy();
+                modeler._isDestroyed = true;
+            }
             return null;
         });
     }, [containerRef, setModeler]);
@@ -66,6 +68,8 @@ export function Modeler() {
             return;
         modeler.importXML(xml)
             .catch(err => {
+                if (modeler._isDestroyed)
+                    return;
                 console.error(err);
                 Modal.error({
                     title: 'Import Fehler',
