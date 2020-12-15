@@ -1,4 +1,4 @@
-import { modelerBindings } from '../meta-model/modelerBindings';
+import { modelerBindings } from './meta-model/modelerBindings';
 
 const rules = modelerBindings.reduce((rules, binding) => {
     binding.rules?.forEach(rule => {

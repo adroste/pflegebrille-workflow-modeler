@@ -7,7 +7,7 @@ import { autoColorModule } from '../modeler-modules/autoColor';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
-import { linterConfig } from '../lint/linterConfig';
+import { linterConfig } from '../linterConfig';
 import minimapModule from 'diagram-js-minimap';
 import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modeler-modules/paletteProvider';
