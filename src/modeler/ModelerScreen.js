@@ -1,10 +1,10 @@
-import { IssueViewer } from '../modeler/IssueViewer';
-import { MenuBar } from '../modeler/MenuBar';
-import { Minimap } from '../modeler/Minimap';
-import { Modeler } from '../modeler/Modeler';
+import { IssueViewer } from './IssueViewer';
+import { MenuBar } from './MenuBar';
+import { Minimap } from './Minimap';
+import { Modeler } from './Modeler';
 import { PropertiesPanel } from '../properties-panel/PropertiesPanel';
 import React from 'react';
-import { Screen } from './Screen';
+import { Screen } from '../base/Screen';
 import styles from './ModelerScreen.module.css';
 
 export function ModelerScreen() {

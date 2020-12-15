@@ -6,27 +6,27 @@ import React, { useCallback, useContext, useRef, useState } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import CodeMirror from '@uiw/react-codemirror';
-import { Screen } from './Screen';
-import { ScreenEnum } from './ScreenEnum';
+import { Screen } from '../base/Screen';
+import { ScreenEnum } from '../base/ScreenEnum';
 import { appContext } from '../base/AppContextProvider';
 import styles from './XmlEditorScreen.module.css';
 
 export function XmlEditorScreen() {
 
-    const { xml, setXml, setScreen } = useContext(appContext);
+    const { initialXml, setInitialXml, setScreen } = useContext(appContext);
     const [vimMode, setVimMode] = useState(false);
     const editorRef = useRef();
 
     const handleReset = useCallback(() => {
         if (editorRef.current)
-            editorRef.current.editor.setValue(xml);
-    }, [xml]);
+            editorRef.current.editor.setValue(initialXml);
+    }, [initialXml]);
 
     const handleExit = useCallback(() => {
         const value = editorRef.current?.editor.getValue();
-        setXml(value);
+        setInitialXml(value);
         setScreen(ScreenEnum.MODELER);
-    }, [setScreen, setXml]);
+    }, [setInitialXml, setScreen]);
 
     const handleVimModeChange = useCallback(e => {
         setVimMode(e.target.checked);
@@ -60,7 +60,7 @@ export function XmlEditorScreen() {
 
             <CodeMirror
                 ref={editorRef}
-                value={xml}
+                value={initialXml}
                 options={{
                     mode: 'xml',
                     keyMap: vimMode ? 'vim' : 'default',

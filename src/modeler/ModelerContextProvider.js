@@ -1,14 +1,12 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Modal } from 'antd';
-import { appContext } from '../base/AppContextProvider';
 
 export const modelerContext = React.createContext();
 
 export function ModelerContextProvider({
     children,
 }) {
-    const { setXml } = useContext(appContext);
     const [modeler, setModeler] = useState(null);
     const [selectedElements, setSelectedElements] = useState([]);
     const [issues, setIssues] = useState();
@@ -27,13 +25,12 @@ export function ModelerContextProvider({
         selection: modeler?.get('selection'),
     }), [modeler])
 
-    const saveModelerStateToXml = useCallback(() => {
+    const getXml = useCallback(() => {
         if (!modeler)
             return;
             
         return modeler.saveXML({ format: true })
             .then(({ xml }) => {
-                setXml(xml);
                 return xml;
             })
             .catch(err => {
@@ -43,20 +40,20 @@ export function ModelerContextProvider({
                     content: 'Der Workflow konnte nicht gespeichert werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
                 });
             });
-    }, [modeler, setXml]);
+    }, [modeler]);
 
     const value = useMemo(() => ({
         ...modules,
+        getXml,
         issues,
         modeler,
-        saveModelerStateToXml,
         selectedElements,
         setModeler,
     }), [
+        getXml,
         issues,
         modeler, 
         modules,
-        saveModelerStateToXml,
         selectedElements,
     ]);
 

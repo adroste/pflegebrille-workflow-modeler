@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 
-import { ModelerScreen } from '../screens/ModelerScreen';
-import { ScreenEnum } from '../screens/ScreenEnum';
-import { XmlEditorScreen } from '../screens/XmlEditorScreen';
+import { LoadWorkflowScreen } from '../io/LoadWorkflowScreen';
+import { ModelerScreen } from '../modeler/ModelerScreen';
+import { ScreenEnum } from './ScreenEnum';
+import { XmlEditorScreen } from '../modeler/XmlEditorScreen';
 import { appContext } from './AppContextProvider';
 
 function App() {
@@ -21,8 +22,10 @@ function App() {
 
     if (screen === ScreenEnum.MODELER)
         return <ModelerScreen />
-
-    return <XmlEditorScreen />
+    if (screen === ScreenEnum.XML_EDITOR)
+        return <XmlEditorScreen />
+    else
+        return <LoadWorkflowScreen />
 }
 
 export default App;

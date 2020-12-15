@@ -16,7 +16,7 @@ import styles from './Modeler.module.css';
 
 export function Modeler() {
     const { modeler, setModeler } = useContext(modelerContext);
-    const { xml } = useContext(appContext);
+    const { initialXml } = useContext(appContext);
     const containerRef = useRef();
 
     useEffect(() => {
@@ -64,9 +64,9 @@ export function Modeler() {
     }, [containerRef, setModeler]);
 
     useEffect(() => {
-        if (!modeler || !xml) 
+        if (!modeler || !initialXml) 
             return;
-        modeler.importXML(xml)
+        modeler.importXML(initialXml)
             .catch(err => {
                 if (modeler._isDestroyed)
                     return;
@@ -76,7 +76,7 @@ export function Modeler() {
                     content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
                 });
             });
-    }, [modeler, xml]);
+    }, [modeler, initialXml]);
 
     return (
         <div

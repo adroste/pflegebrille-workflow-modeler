@@ -3,14 +3,14 @@ import { CloudUploadOutlined, CodeOutlined, FolderOutlined } from '@ant-design/i
 import React, { useCallback, useContext, useState } from 'react';
 
 import { SaveDialog } from './SaveDialog';
-import { ScreenEnum } from '../screens/ScreenEnum';
+import { ScreenEnum } from '../base/ScreenEnum';
 import { ZoomControls } from './ZoomControls';
 import { appContext } from '../base/AppContextProvider';
 import { modelerContext } from './ModelerContextProvider';
 
 export function MenuBar({ className }) {
-    const { setScreen } = useContext(appContext);
-    const { saveModelerStateToXml } = useContext(modelerContext);
+    const { setInitialXml, setScreen } = useContext(appContext);
+    const { getXml } = useContext(modelerContext);
     const [showSaveDialoag, setShowSaveDialoag] = useState(false);
 
     const handleCloseSaveDialog = useCallback(() => {
@@ -21,15 +21,21 @@ export function MenuBar({ className }) {
         setShowSaveDialoag(true);
     }, []);
 
-    const handleShowXmlEditor = useCallback(() => {
-        saveModelerStateToXml().then(() => {
-            setScreen(ScreenEnum.XML_EDITOR);
-        });
-    }, [saveModelerStateToXml, setScreen]);
+    const handleLoadClick = useCallback(async () => {
+        const xml = await getXml();
+        setInitialXml(xml);
+        setScreen(ScreenEnum.LOAD_WORKFLOW);
+    }, [getXml, setInitialXml, setScreen]);
+
+    const handleShowXmlEditor = useCallback(async () => {
+        const xml = await getXml();
+        setInitialXml(xml);
+        setScreen(ScreenEnum.XML_EDITOR);
+    }, [getXml, setInitialXml, setScreen]);
 
     return (
         <Space className={className}>
-            <Button onClick={() => alert('dev mode required')}>
+            <Button onClick={handleLoadClick}>
                 <FolderOutlined /> Laden
             </Button>
             <Button onClick={handleSaveClick}>

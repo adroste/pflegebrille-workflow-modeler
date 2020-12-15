@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #fff;
+    background-image: radial-gradient(#bbb 1.3px, #fff 1.3px);
+    background-size: 26px 26px;
+}
+
+.inner {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px;
+    background: #fff;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.title img {
+    height: 60px;
+    margin-right: 10px;
+}
