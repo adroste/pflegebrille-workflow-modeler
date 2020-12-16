@@ -1,19 +1,18 @@
-import { Button, Input, Modal, Result, Select, Space, Typography, Upload } from 'antd';
-import { FileImageOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, Modal, Result, Typography, Upload } from 'antd';
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import Compressor from 'compressorjs';
-import { getAllowedFunctionsForType } from '../../meta-model/util';
-import { modelerContext } from '../../modeler/ModelerContextProvider';
+import { UploadOutlined } from '@ant-design/icons';
+import { appContext } from '../../base/AppContextProvider';
 import styles from './MediaFileInput.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 export function MediaFileInput({
     onChange,
     value,
 }) {
+    const { assets, setAssets } = useContext(appContext);
     const [file, setFile] = useState(null);
-    const [blob, setBlob] = useState(null);
-    const [objectUrl, setObjectUrl] = useState(null);
     const [loading, setLoading] = useState(false);
     const [convertState, setConvertState] = useState();
     const fileList = useMemo(() => file ? [file] : [], [file]);
@@ -21,12 +20,15 @@ export function MediaFileInput({
     const compressorRef = useRef();
     const workerRef = useRef();
 
+    const asset = useMemo(() => value && assets[value], [assets, value]);
+
     const okButtonProps = useMemo(() => ({
         loading,
     }), [loading]);
 
     const handleOk = useCallback(() => {
         setLoading(true);
+
         if (file.type.startsWith('image')) {
             compressorRef.current = new Compressor(file, {
                 quality: .8,
@@ -36,9 +38,19 @@ export function MediaFileInput({
                 success(result) {
                     setLoading(false);
                     compressorRef.current = null;
-                    setBlob(result);
                     const objectUrl = URL.createObjectURL(result);
-                    setObjectUrl(objectUrl);
+                    const newPath = `assets/${uuidv4()}.jpg`;
+                    setAssets(assets => ({
+                        ...assets,
+                        [newPath]: {
+                            name: file.name,
+                            path: newPath,
+                            type: result.type,
+                            blob: result,
+                            objectUrl,
+                        },
+                    }));
+                    onChange(newPath);
                 },
                 error(err) {
                     setLoading(false);
@@ -56,8 +68,8 @@ export function MediaFileInput({
             fr.onload = (e) => {
                 fileReaderRef.current = null;
                 const data = e.target.result;
-
                 const ext = file.type.split('/')[1];
+
                 const worker = new Worker('ffmpeg-worker-mp4.js');
                 workerRef.current = worker;
                 worker.onmessage = function (e) {
@@ -92,8 +104,18 @@ export function MediaFileInput({
                             const out = msg.data.MEMFS[0].data;
                             const blob = new Blob([out], { type: 'video/mp4' });
                             const objectUrl = URL.createObjectURL(blob);
-                            setBlob(blob);
-                            setObjectUrl(objectUrl);
+                            const newPath = `assets/${uuidv4()}.${ext}`;
+                            setAssets(assets => ({
+                                ...assets,
+                                [newPath]: {
+                                    name: file.name,
+                                    path: newPath,
+                                    type: blob.type,
+                                    blob,
+                                    objectUrl,
+                                },
+                            }));
+                            onChange(newPath);
                             break;
                         default:
                     }
@@ -102,7 +124,7 @@ export function MediaFileInput({
             fr.onerror = () => { setLoading(false); }
             fr.readAsArrayBuffer(file);
         }
-    }, [file]);
+    }, [file, onChange, setAssets]);
 
     const handleCancel = useCallback(() => {
         if (compressorRef.current)
@@ -112,8 +134,6 @@ export function MediaFileInput({
         if (workerRef.current)
             workerRef.current.terminate();
         setFile(null);
-        setObjectUrl(null);
-        setBlob(null);
         setLoading(false);
     }, []);
 
@@ -126,10 +146,16 @@ export function MediaFileInput({
             cancelText: 'Abbrechen',
             onOk() {
                 setFile(null);
-                setObjectUrl(null);
+                setAssets(assets => {
+                    const newAssets = { ...assets };
+                    URL.revokeObjectURL(asset.objectUrl);
+                    delete newAssets[asset.path];
+                    return newAssets;
+                });
+                onChange('');
             }
         });
-    }, []);
+    }, [asset, onChange, setAssets]);
 
     const handleFileSelect = useCallback(file => {
         if (!file.name.toLowerCase().match(/(.jpg|.jpeg|.png|.mp4|.webm)$/)) {
@@ -143,32 +169,8 @@ export function MediaFileInput({
         }
         return false; // needed to prevent auto-upload to action url
     }, []);
-    // const { moddle } = useContext(modelerContext);
 
-    // const options = useMemo(() => (
-    //     getAllowedFunctionsForType(businessObject.$type)
-    // ), [businessObject.$type]);
-
-    // const selected = options.find(option => value?.values?.some(exEl => exEl.$type === option.value));
-
-    // const handleChange = useCallback(selectedValue => {
-    //     let extensionElements = value 
-    //     if (!extensionElements) {
-    //         extensionElements = moddle.create('bpmn:ExtensionElements');
-    //         extensionElements.$parent = businessObject;
-    //     }
-
-    //     let functionElement = extensionElements.get('values').find(el => el.$instanceOf('pb:Function'));
-    //     if (!functionElement && selectedValue) {
-    //         functionElement = moddle.create(selectedValue);
-    //         functionElement.$parent = extensionElements;
-    //         extensionElements.get('values').push(functionElement);
-    //     }
-
-    //     onChange(extensionElements);
-    // }, [businessObject, moddle, onChange, value]);
-
-    if (!objectUrl)
+    if (!asset)
         return (
             <>
                 <Upload.Dragger
@@ -211,18 +213,18 @@ export function MediaFileInput({
     return (
         <>
             <div className={styles.preview}>
-                {file.type.startsWith('image') &&
+                {asset.type.startsWith('image') &&
                     <img
                         className={styles.img}
-                        src={objectUrl}
+                        src={asset.objectUrl}
                         alt=""
                     />
                 }
 
-                {file.type.startsWith('video') &&
+                {asset.type.startsWith('video') &&
                     <video
                         className={styles.media}
-                        src={objectUrl}
+                        src={asset.objectUrl}
                         controls
                     />
                 }
