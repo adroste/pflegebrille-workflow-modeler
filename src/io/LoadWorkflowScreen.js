@@ -103,7 +103,8 @@ export function LoadWorkflowScreen() {
                     </Typography.Paragraph>
 
                     <Typography.Paragraph type="secondary">
-                        Nicht unterstützte Browser: veraltete Versionen, Internet Explorer, Firefox &#x2264; 60, Chrome &#x2264; 55, Safari &#x2264; 11, mobile Browser
+                        Nicht unterstützte Browser: <br/>
+                        veraltete Versionen, Internet Explorer, Apple Silicon Mac (M1), Firefox &#x2264; 60, Chrome &#x2264; 55, Safari &#x2264; 11, mobile Browser
                     </Typography.Paragraph>
                 </div>
             </Spin>

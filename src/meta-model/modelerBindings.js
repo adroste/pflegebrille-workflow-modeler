@@ -65,6 +65,7 @@ export const modelerBindings = [
         ],
         rules: [
             requiredAnyProperties(['text', 'mediaSrc']),
+            // todo asset defined rule
         ]
     },
     {

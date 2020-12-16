@@ -2,6 +2,7 @@ import { Checkbox, Form, Input } from 'antd';
 
 import { ExtensionFunctionSelect } from './fields/ExtensionFunctionSelect';
 import { FormTypeEnum } from '../meta-model/enum/FormTypeEnum';
+import { MediaFileInput } from './fields/MediaFileInput';
 import React from 'react';
 
 export function FormField({
@@ -36,6 +37,15 @@ export function FormField({
             );
 
         case FormTypeEnum.MEDIA_FILE:
+            return (
+                <Form.Item
+                    name={property}
+                    label={label}
+                >
+                    <MediaFileInput />
+                </Form.Item>
+            );
+
         case FormTypeEnum.TEXT:
             return (
                 <Form.Item

@@ -5,6 +5,7 @@ import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { getModelerBindingsForType } from '../meta-model/util';
 import { modelerContext } from '../modeler/ModelerContextProvider';
+import styles from './ElementProperties.module.css';
 
 export function ElementProperties({
     baseElement,
@@ -41,6 +42,7 @@ export function ElementProperties({
     return (
         <>
             <Form
+                className={styles.form}
                 form={form}
                 layout='vertical'
                 initialValues={businessObject}
