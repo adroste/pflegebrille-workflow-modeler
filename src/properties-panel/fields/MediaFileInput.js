@@ -81,7 +81,16 @@ export function MediaFileInput({
                                 MEMFS: [{ name: `input.${ext}`, data }],
                                 arguments: [
                                     '-i', `input.${ext}`,
+                                    '-c:v', 'libx264',
+                                    '-preset', 'veryfast',
+                                    '-crf', '23',
+                                    '-profile:v', 'baseline',
+                                    '-level', '3.0',
+                                    '-pix_fmt', 'yuv420p',
+                                    '-filter:v', 'scale=480:trunc(ow/a/2)*2',
                                     '-an',
+                                    '-movflags', 'faststart',
+                                    '-tune', 'fastdecode',
                                     'out.mp4'
                                 ]
                             });
