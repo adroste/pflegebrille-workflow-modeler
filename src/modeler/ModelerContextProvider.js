@@ -11,8 +11,6 @@ export function ModelerContextProvider({
     const [selectedElements, setSelectedElements] = useState([]);
     const [issues, setIssues] = useState();
 
-    window.modeler = modeler;
-
     const modules = useMemo(() => ({
         canvas: modeler?.get('canvas'),
         editorActions: modeler?.get('editorActions'),

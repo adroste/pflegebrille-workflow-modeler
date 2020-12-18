@@ -19,6 +19,8 @@ export function Modeler() {
     const { initialXml } = useContext(appContext);
     const containerRef = useRef();
 
+    window.modeler = modeler;
+
     useEffect(() => {
         if (!containerRef)
             return;

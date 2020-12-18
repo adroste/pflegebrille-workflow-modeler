@@ -1,17 +1,13 @@
-import { Button, Modal, Result, Typography, Upload } from 'antd';
+import { Modal, Result, Typography, Upload } from 'antd';
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import Compressor from 'compressorjs';
 import { UploadOutlined } from '@ant-design/icons';
-import { appContext } from '../../base/AppContextProvider';
-import styles from './MediaFileInput.module.css';
-import { useAsset } from '../../base/useAsset';
+import { appContext } from '../base/AppContextProvider';
+import styles from './MediaFileUpload.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
-export function MediaFileInput({
-    onChange,
-    value,
-}) {
+export function MediaFileUpload({ onUpload }) {
     const { setAssets } = useContext(appContext);
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -21,14 +17,28 @@ export function MediaFileInput({
     const compressorRef = useRef();
     const workerRef = useRef();
 
-    const asset = useAsset(value);
-
     const okButtonProps = useMemo(() => ({
         loading,
     }), [loading]);
 
     const handleOk = useCallback(() => {
         setLoading(true);
+
+        const saveAsset = blob => {
+            const ext = blob.type.split('/')[1];
+            const newAsset = {
+                name: file.name.replace(/\.[^.]*$/, `.${ext}`),
+                path: `assets/${uuidv4()}.${ext}`,
+                type: blob.type,
+                blob,
+                objectUrl: URL.createObjectURL(blob),
+            };
+            setAssets(assets => ({
+                ...assets,
+                [newAsset.path]: newAsset,
+            }));
+            onUpload(newAsset);
+        };
 
         if (file.type.startsWith('image')) {
             compressorRef.current = new Compressor(file, {
@@ -39,19 +49,7 @@ export function MediaFileInput({
                 success(result) {
                     setLoading(false);
                     compressorRef.current = null;
-                    const objectUrl = URL.createObjectURL(result);
-                    const newPath = `assets/${uuidv4()}.jpg`;
-                    setAssets(assets => ({
-                        ...assets,
-                        [newPath]: {
-                            name: file.name,
-                            path: newPath,
-                            type: result.type,
-                            blob: result,
-                            objectUrl,
-                        },
-                    }));
-                    onChange(`asset:${newPath}`);
+                    saveAsset(result);
                 },
                 error(err) {
                     setLoading(false);
@@ -77,6 +75,7 @@ export function MediaFileInput({
                     const msg = e.data;
                     switch (msg.type) {
                         case 'ready':
+                            setConvertState(null);
                             worker.postMessage({
                                 type: 'run',
                                 MEMFS: [{ name: `input.${ext}`, data }],
@@ -113,19 +112,7 @@ export function MediaFileInput({
                             console.log('FFMPEG WORKER DONE');
                             const out = msg.data.MEMFS[0].data;
                             const blob = new Blob([out], { type: 'video/mp4' });
-                            const objectUrl = URL.createObjectURL(blob);
-                            const newPath = `assets/${uuidv4()}.${ext}`;
-                            setAssets(assets => ({
-                                ...assets,
-                                [newPath]: {
-                                    name: file.name,
-                                    path: newPath,
-                                    type: blob.type,
-                                    blob,
-                                    objectUrl,
-                                },
-                            }));
-                            onChange(`asset:${newPath}`);
+                            saveAsset(blob);
                             break;
                         default:
                     }
@@ -134,7 +121,7 @@ export function MediaFileInput({
             fr.onerror = () => { setLoading(false); }
             fr.readAsArrayBuffer(file);
         }
-    }, [file, onChange, setAssets]);
+    }, [file, onUpload, setAssets]);
 
     const handleCancel = useCallback(() => {
         if (compressorRef.current)
@@ -146,26 +133,6 @@ export function MediaFileInput({
         setFile(null);
         setLoading(false);
     }, []);
-
-    const handleDelete = useCallback(() => {
-        Modal.confirm({
-            centered: true,
-            title: 'Wirklich löschen?',
-            danger: true,
-            okText: 'Datei löschen',
-            cancelText: 'Abbrechen',
-            onOk() {
-                setFile(null);
-                setAssets(assets => {
-                    const newAssets = { ...assets };
-                    URL.revokeObjectURL(asset.objectUrl);
-                    delete newAssets[asset.path];
-                    return newAssets;
-                });
-                onChange('');
-            }
-        });
-    }, [asset, onChange, setAssets]);
 
     const handleFileSelect = useCallback(file => {
         if (!file.name.toLowerCase().match(/(.jpg|.jpeg|.png|.mp4|.webm)$/)) {
@@ -180,75 +147,42 @@ export function MediaFileInput({
         return false; // needed to prevent auto-upload to action url
     }, []);
 
-    if (!asset)
-        return (
-            <>
-                <Upload.Dragger
-                    className={styles.uploadDrag}
-                    accept="image/jpeg,image/png,video/mp4,video/webm"
-                    beforeUpload={handleFileSelect}
-                    fileList={fileList}
-                    showUploadList={false}
-                >
-                    <Result
-                        className={styles.inputResult}
-                        icon={<UploadOutlined />}
-                        title={".jpg, .png, .mp4, .webm"}
-                        subTitle="Klicken oder Datei hereinziehen."
-                    />
-                </Upload.Dragger>
-
-                <Modal
-                    centered
-                    visible={file}
-                    title="Medien konvertieren"
-                    okText="Konvertieren starten"
-                    okButtonProps={okButtonProps}
-                    onOk={handleOk}
-                    cancelText="Abbrechen"
-                    onCancel={handleCancel}
-                >
-                    <Typography.Paragraph>
-                        Damit die Pflegebrille das Bild / Video darstellen kann, muss es in ein passendes Format konvertiert werden.
-                    </Typography.Paragraph>
-                    {convertState &&
-                        <Typography.Paragraph strong>
-                            {convertState.time} / {convertState.duration}
-                        </Typography.Paragraph>
-                    }
-                </Modal>
-            </>
-        );
-
     return (
         <>
-            <div className={styles.preview}>
-                {asset.type.startsWith('image') &&
-                    <img
-                        className={styles.img}
-                        src={asset.objectUrl}
-                        alt=""
-                    />
-                }
+            <Upload.Dragger
+                className={styles.uploadDrag}
+                accept="image/jpeg,image/png,video/mp4,video/webm"
+                beforeUpload={handleFileSelect}
+                fileList={fileList}
+                showUploadList={false}
+            >
+                <Result
+                    className={styles.inputResult}
+                    icon={<UploadOutlined />}
+                    title={".jpg, .png, .mp4, .webm"}
+                    subTitle="Klicken oder Datei hereinziehen."
+                />
+            </Upload.Dragger>
 
-                {asset.type.startsWith('video') &&
-                    <video
-                        className={styles.media}
-                        src={asset.objectUrl}
-                        controls
-                    />
+            <Modal
+                centered
+                visible={file}
+                title="Medien konvertieren"
+                okText="Konvertieren starten"
+                okButtonProps={okButtonProps}
+                onOk={handleOk}
+                cancelText="Abbrechen"
+                onCancel={handleCancel}
+            >
+                <Typography.Paragraph>
+                    Damit die Pflegebrille das Bild / Video darstellen kann, muss es in ein passendes Format konvertiert werden.
+                </Typography.Paragraph>
+                {convertState &&
+                    <Typography.Paragraph strong>
+                        {convertState.time} / {convertState.duration}
+                    </Typography.Paragraph>
                 }
-            </div>
-
-            <div className={styles.buttons}>
-                <Button
-                    danger
-                    ghost
-                    onClick={handleDelete}
-                >
-                    Löschen
-                </Button>
-            </div>
+            </Modal>
         </>
     );
 }

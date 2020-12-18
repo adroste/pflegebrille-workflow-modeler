@@ -1,0 +1,7 @@
+.inputResult :global(.ant-result-title) {
+    font-size: 20px;
+}
+
+.uploadDrag :global(.ant-upload.ant-upload) {
+    padding: 0;
+}
