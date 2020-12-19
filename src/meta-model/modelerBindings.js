@@ -1,5 +1,6 @@
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
+import { noMissingAssets } from './rules/noMissingAsset';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
@@ -33,6 +34,7 @@ export const modelerBindings = [
                 'bpmn:CategoryValue',
             ]),
             noUnusedAssets(),
+            noMissingAssets(),
         ]
     },
     {

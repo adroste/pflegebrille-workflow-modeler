@@ -46,10 +46,10 @@ export function MediaFileInput({
 
     return (
         <>
-            {id ?
+            {value ?
                 (
                     <>
-                        <MediaPreview id={id} />
+                        <MediaPreview id={asset.element?.id} />
 
                         <Space className={styles.buttons}>
                             <Button
