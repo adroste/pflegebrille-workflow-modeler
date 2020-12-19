@@ -1,10 +1,16 @@
+import { is, isAny } from '../meta-model/rules/util';
 import { useContext, useEffect, useMemo, useState } from 'react';
 
-import { isAny } from '../meta-model/rules/util';
 import { modelerContext } from './ModelerContextProvider';
 
 function getAssets(bpmnjs) {
-    return [...bpmnjs.getDefinitions().get('assets')];
+    return (
+        bpmnjs
+        ?.getDefinitions()
+        ?.get('extensionElements')
+        ?.get('values')
+        ?.filter(element => is(element, 'pb:Asset'))
+    ) || [];
 }
 
 export function useAssets() {
@@ -12,6 +18,9 @@ export function useAssets() {
     const [assets, setAssets] = useState(() => getAssets(bpmnjs));
 
     useEffect(() => {
+        if (!modeler)
+            return;
+
         const handleChange = ({ elements }) => {
             if (elements.some(elem => isAny(elem, ['bpmn:Definitions', 'pb:Asset']))) {
                 setAssets(getAssets(bpmnjs));

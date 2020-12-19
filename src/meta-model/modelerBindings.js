@@ -58,13 +58,13 @@ export const modelerBindings = [
                 label: "Textbeschreibung",
             },
             {
-                property: "mediaAssetRef",
+                property: "mediaAssetId",
                 type: FormTypeEnum.MEDIA_FILE,
                 label: "Bild / Video",
             },
         ],
         rules: [
-            requiredAnyProperties(['text', 'mediaAssetRef']),
+            requiredAnyProperties(['text', 'mediaAssetId']),
             // todo asset defined rule
         ]
     },

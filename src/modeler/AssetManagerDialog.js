@@ -1,17 +1,19 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
 import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useAssetById, useAssets } from './useAssets';
 
 import { MediaFileUpload } from './MediaFileUpload';
 import { MediaPreview } from './MediaPreview';
 import { RenameAssetDialog } from './RenameAssetDialog';
+import { modelerContext } from './ModelerContextProvider';
 import styles from './AssetManagerDialog.module.css';
 
 export function AssetManagerDialog({
     onClose,
     onSelect = null,
 }) {
+    const { bpmnjs, eventBus } = useContext(modelerContext);
     const [showDialog, setShowDialog] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
 
@@ -71,13 +73,37 @@ export function AssetManagerDialog({
     }, []);
 
     const handleDeleteClick = useCallback(async () => {
-        setShowDialog('delete');
-    }, []);
+        const deleteAsset = () => {
+            const definitions = bpmnjs.getDefinitions();
+            const extElements = definitions.extensionElements;
+            extElements.values = extElements.values.filter(el => el !== asset.element);
+
+            eventBus.fire('elements.changed', { elements: [definitions, extElements] })
+        };
+
+        Modal.confirm({
+            centered: true,
+            title: 'Wirklich löschen?',
+            content: (
+                <>
+                    <p>
+                        Die Datei "{asset.element.name}" wird unwiderruflich gelöscht.
+                    </p>
+                    <p>
+                        Alle Elemente, die auf diese Datei verweisen, müssen geändert werden.
+                    </p>
+                </>
+            ),
+            okButtonProps: { danger: true },
+            okText: 'Löschen',
+            onOk: deleteAsset,
+        });
+    }, [asset, bpmnjs, eventBus]);
 
     const handleUpload = useCallback(({ element }) => {
         setSelectedKeys([element.id]);
     }, []);
-    
+
     const handleSelect = useCallback(() => {
         onSelect(asset)
     }, [asset, onSelect]);

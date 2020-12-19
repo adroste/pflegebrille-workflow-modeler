@@ -6,6 +6,7 @@ import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
 import styles from './MediaFileInput.module.css';
+import { useAssetById } from '../../modeler/useAssets';
 
 export function MediaFileInput({
     onChange,
@@ -13,8 +14,10 @@ export function MediaFileInput({
 }) {
     const [showSelect, setShowSelect] = useState(false);
 
+    const asset = useAssetById(value);
+
     const handleUpload = useCallback(({ element }) => {
-        onChange(element);
+        onChange(element.id);
     }, [onChange]);
 
     const handleRemove = useCallback(() => {
@@ -22,16 +25,16 @@ export function MediaFileInput({
         Modal.info({
             centered: true,
             title: 'Datei weiterhin verfügbar.',
-            content: `Die Datei "${value.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
+            content: `Die Datei "${asset.element.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
         });
-    }, [onChange, value]);
+    }, [asset, onChange]);
 
     const handleSelectExisting = useCallback(() => {
         setShowSelect(true);
     }, []);
 
-    const handleSelectFinish = useCallback(asset => {
-        onChange(asset.element);
+    const handleSelectFinish = useCallback(({ element }) => {
+        onChange(element.id);
         setShowSelect(false);
     }, [onChange]);
 
@@ -44,7 +47,7 @@ export function MediaFileInput({
             {value ?
                 (
                     <>
-                        <MediaPreview id={value.id} />
+                        <MediaPreview id={asset.element?.id} />
 
                         <Space className={styles.buttons}>
                             <Button
