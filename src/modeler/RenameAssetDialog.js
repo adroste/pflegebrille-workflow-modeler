@@ -19,9 +19,9 @@ export function RenameAssetDialog({
         const parts = name.split('/');
         const rootNode = { children: [] };
         let node = rootNode;
-        for (let part of parts) {
+        parts.forEach((part, i) => {
             let nextNode;
-            if (part === parts[parts.length - 1]) {
+            if (i === parts.length - 1) {
                 nextNode = {
                     title: part,
                     key: part,
@@ -37,7 +37,7 @@ export function RenameAssetDialog({
             }
             node.children.push(nextNode);
             node = nextNode;
-        }
+        })
         return rootNode.children;
     }, [name]);
 

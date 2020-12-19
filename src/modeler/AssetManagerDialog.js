@@ -32,10 +32,10 @@ export function AssetManagerDialog({
         assets.forEach(({ id, name }) => {
             const parts = name.split('/');
             let node = rootNode;
-            for (let part of parts) {
+            parts.forEach((part, i) => {
                 let nextNode = node.children.find(({ title }) => title === part);
                 if (!nextNode) {
-                    if (part === parts[parts.length - 1]) {
+                    if (i === parts.length - 1) {
                         nextNode = {
                             // wrap in span needed for multiple elements with same title
                             // because same title nodes will be filtered by antd
@@ -55,7 +55,7 @@ export function AssetManagerDialog({
                     node.children.push(nextNode);
                 }
                 node = nextNode;
-            }
+            });
         });
 
         rootNode.children.push({
