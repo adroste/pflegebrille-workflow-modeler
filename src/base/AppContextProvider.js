@@ -46,7 +46,22 @@ export function AppContextProvider({
             });
             for (let assetFile of assetFiles) {
                 const { path: id, zipFile } = assetFile;
-                assetData[id] = await zipFile.async('blob');
+                const blob = await zipFile.async('blob');
+                const ext = id.match(/\.[^.]*$/)?.[0];
+                let type;
+                switch(ext) {
+                    case '.jpg':
+                    case '.jpeg':
+                        type = 'image/jpeg';
+                        break;
+                    case '.mp4':
+                        type = 'video/mp4';
+                        break;
+                    default:
+                        throw new Error('Assets beschädigt.');
+                }
+                // hack to set blob type
+                assetData[id] = blob.slice(0, blob.size, type);
             }
         } else {
             xml = data;
