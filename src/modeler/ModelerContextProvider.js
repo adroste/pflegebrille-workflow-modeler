@@ -8,7 +8,6 @@ export function ModelerContextProvider({
     children,
 }) {
     const [modeler, setModeler] = useState(null);
-    const [selectedElements, setSelectedElements] = useState([]);
 
     const modules = useMemo(() => ({
         bpmnjs: modeler?.get('bpmnjs'),
@@ -44,35 +43,12 @@ export function ModelerContextProvider({
         ...modules,
         getXml,
         modeler,
-        selectedElements,
         setModeler,
     }), [
         getXml,
         modeler, 
         modules,
-        selectedElements,
     ]);
-
-    useEffect(() => {
-        if (!modeler)
-            return;
-
-        const eventHandlers = {
-
-            // todo hooks
-            'element.changed': () => {
-                setSelectedElements([...modules.selection.get()]);
-            },
-
-            'selection.changed': ({ newSelection }) => {
-                setSelectedElements([...newSelection]);
-            },
-        };
-
-        const events = Object.keys(eventHandlers);
-        events.forEach(event => modeler.on(event, eventHandlers[event]));
-        return () => events.forEach(event => modeler.off(event, eventHandlers[event]));
-    }, [modeler, modules]);
 
     return (
         <modelerContext.Provider value={value}>

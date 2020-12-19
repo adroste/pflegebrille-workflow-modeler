@@ -1,17 +1,17 @@
 import { Divider, Typography } from 'antd';
-import React, { useContext } from 'react';
 
 import { BaseProperties } from './BaseProperties';
 import { ElementProperties } from './ElementProperties';
 import { IssueList } from '../modeler/IssueList';
-import { modelerContext } from '../modeler/ModelerContextProvider';
+import React from 'react';
 import styles from './PropertiesPanel.module.css';
 import { useIssues } from '../modeler/useIssues';
+import { useSelectedElements } from '../modeler/useSelectedElements';
 
 export function PropertiesPanel({
     className
 }) {
-    const { selectedElements } = useContext(modelerContext);
+    const selectedElements = useSelectedElements();
     const issues = useIssues();
 
     let element, err;
