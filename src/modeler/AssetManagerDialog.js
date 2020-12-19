@@ -1,25 +1,22 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
-import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { useAssetByPath, useAssets } from './useAssets';
+import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useAssetById, useAssets } from './useAssets';
 
 import { MediaFileUpload } from './MediaFileUpload';
+import { MediaPreview } from './MediaPreview';
 import { RenameAssetDialog } from './RenameAssetDialog';
-import { UploadOutlined } from '@ant-design/icons';
-import { appContext } from '../base/AppContextProvider';
 import styles from './AssetManagerDialog.module.css';
-import { useObjectUrl } from './useObjectUrl';
 
 export function AssetManagerDialog({
     onClose,
+    onSelect = null,
 }) {
-    const { assetData } = useContext(appContext);
     const [showDialog, setShowDialog] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
 
     const assets = useAssets();
-    const asset = useAssetByPath(selectedKeys[0]);
-    const assetDatum = assetData[selectedKeys[0]];
-    const assetUrl = useObjectUrl(assetDatum);
+    const asset = useAssetById(selectedKeys[0]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const remountKey = useMemo(() => Math.random(), [assets]);
@@ -27,7 +24,7 @@ export function AssetManagerDialog({
     const treeData = useMemo(() => {
         let uid = 0;
         const rootNode = { children: [] };
-        assets.forEach(({ name, path }) => {
+        assets.forEach(({ id, name }) => {
             const parts = name.split('/');
             let node = rootNode;
             for (let part of parts) {
@@ -35,10 +32,10 @@ export function AssetManagerDialog({
                 if (!nextNode) {
                     if (part === parts[parts.length - 1]) {
                         nextNode = {
-                            // wrap in span needed for multiple elements between same title
+                            // wrap in span needed for multiple elements with same title
                             // because same title nodes will be filtered by antd
                             title: <span>{part}</span>,
-                            key: path,
+                            key: id,
                             isLeaf: true,
                         };
                     } else {
@@ -78,10 +75,14 @@ export function AssetManagerDialog({
     }, []);
 
     const handleUpload = useCallback(({ element }) => {
-        setSelectedKeys([element.path]);
+        setSelectedKeys([element.id]);
     }, []);
+    
+    const handleSelect = useCallback(() => {
+        onSelect(asset)
+    }, [asset, onSelect]);
 
-    const handleSelect = useCallback(selectedKeys => {
+    const handleTreeSelect = useCallback(selectedKeys => {
         setSelectedKeys(selectedKeys);
     }, []);
 
@@ -92,7 +93,21 @@ export function AssetManagerDialog({
             title="Assets verwalten"
             onCancel={onClose}
             width={800}
-            footer={null}
+            footer={onSelect &&
+                <>
+                    <Button onClick={onClose}>
+                        Abbrechen
+                    </Button>
+                    <Button
+                        icon={<CheckOutlined />}
+                        type="primary"
+                        disabled={!asset.element}
+                        onClick={handleSelect}
+                    >
+                        Auswählen
+                    </Button>
+                </>
+            }
         >
             <Row gutter={16}>
                 <Col span={12}>
@@ -101,39 +116,27 @@ export function AssetManagerDialog({
                         key={remountKey}
                         defaultExpandAll
                         treeData={treeData}
-                        onSelect={handleSelect}
+                        onSelect={handleTreeSelect}
                         selectedKeys={selectedKeys}
                     />
                 </Col>
                 <Col span={12}>
-                    {assetDatum ?
+                    {asset.element ?
                         (
-                            <Space direction="vertical">
-                                <div className={styles.preview}>
-                                    {assetDatum.type.startsWith('image') &&
-                                        <img
-                                            src={assetUrl}
-                                            alt=""
-                                        />
-                                    }
-
-                                    {assetDatum.type.startsWith('video') &&
-                                        <video
-                                            src={assetUrl}
-                                            controls
-                                        />
-                                    }
-                                </div>
+                            <Space direction="vertical" className={styles.preview}>
+                                <MediaPreview id={asset.element.id} />
 
                                 <Space className={styles.buttons}>
                                     <Button
                                         onClick={handleRenameClick}
+                                        icon={<EditOutlined />}
                                     >
                                         Umbenennen
                                     </Button>
                                     <Button
                                         onClick={handleDeleteClick}
                                         danger
+                                        icon={<DeleteOutlined />}
                                     >
                                         Löschen
                                     </Button>
@@ -153,8 +156,8 @@ export function AssetManagerDialog({
             </Row>
 
             {showDialog === 'rename' &&
-                <RenameAssetDialog 
-                    asset={asset} 
+                <RenameAssetDialog
+                    asset={asset}
                     onClose={handleCloseDialog}
                 />
             }

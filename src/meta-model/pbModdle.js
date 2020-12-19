@@ -3,8 +3,8 @@ import { enumToModdleEnum } from './util';
 
 /**
  * Important hints for changing/extending the model:
- * - setting isId causes extension elements to be removed on re-import
- * - don't inherit vom bpmn:BaseElement or other bpmn types
+ * - isId only works on properties with name: "id"
+ * - don't inherit from bpmn:BaseElement or other bpmn types
  * - ExtensionElements must inherit from Element
  */
 
@@ -37,9 +37,10 @@ export const pbModdle = {
             name: "Asset",
             properties: [
                 {
-                    name: "path",
+                    name: "id",
                     isAttr: true,
                     type: "String",
+                    isId: true,
                 },
                 {
                     name: "name",
@@ -80,7 +81,7 @@ export const pbModdle = {
                     type: "String",
                 },
                 {
-                    name: "mediaSrc",
+                    name: "mediaAssetRef",
                     isAttr: true,
                     isReference: true,
                     type: "Asset",

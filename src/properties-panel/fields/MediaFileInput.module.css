@@ -1,11 +1,3 @@
-.inputResult :global(.ant-result-title) {
-    font-size: 20px;
-}
-
-.uploadDrag :global(.ant-upload.ant-upload) {
-    padding: 0;
-}
-
 .preview,
 .preview * {
     width: 100%;
@@ -13,6 +5,7 @@
 }
 
 .buttons {
-    text-align: right;
+    width: 100%;
     margin-top: 5px;
+    justify-content: flex-end;
 }

@@ -18,67 +18,54 @@ export function Modeler() {
     const { modeler, setModeler } = useContext(modelerContext);
     const { initialXml } = useContext(appContext);
     const containerRef = useRef();
-
-    window.modeler = modeler;
+    const initialXmlRef = useRef();
+    initialXmlRef.current = initialXml;
 
     useEffect(() => {
         if (!containerRef)
             return;
 
-        setModeler(curModeler => {
-            if (curModeler)
-                console.error('ERR: Another modeler is already registered.');
-
-            let newModeler = new BpmnModeler({
-                container: containerRef.current,
-                linting: {
-                    // bpmnlint: bpmnlintConfig,
-                    bpmnlint: linterConfig,
-                    active: true,
-                },
-                additionalModules: [
-                    // customPaletteModule,
-                    autoColorModule,
-                    contextPadProviderModule,
-                    germanTranslateModule,
-                    lintModule,
-                    minimapModule,
-                    paletteProviderModule,
-                ],
-                keyboard: {
-                    bindTo: document,
-                },
-                moddleExtensions: {
-                    pb: pbModdle,
-                },
-            });
-
-            return newModeler;
+        const modeler = new BpmnModeler({
+            container: containerRef.current,
+            linting: {
+                // bpmnlint: bpmnlintConfig,
+                bpmnlint: linterConfig,
+                active: true,
+            },
+            additionalModules: [
+                // customPaletteModule,
+                autoColorModule,
+                contextPadProviderModule,
+                germanTranslateModule,
+                lintModule,
+                minimapModule,
+                paletteProviderModule,
+            ],
+            keyboard: {
+                bindTo: document,
+            },
+            moddleExtensions: {
+                pb: pbModdle,
+            },
         });
 
-        return () => setModeler(modeler => {
-            if (modeler) {
-                modeler.destroy();
-                modeler._isDestroyed = true;
-            }
-            return null;
-        });
-    }, [containerRef, setModeler]);
-
-    useEffect(() => {
-        if (!modeler || !initialXml) 
-            return;
-        modeler.importXML(initialXml)
+        modeler.importXML(initialXmlRef.current)
             .catch(err => {
-                if (modeler._isDestroyed)
-                    return;
                 console.error(err);
                 Modal.error({
                     title: 'Import Fehler',
                     content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
                 });
             });
-    }, [modeler, initialXml]);
+
+        setModeler(modeler);
+
+        return () => {
+            if (modeler)
+                modeler.destroy();
+            setModeler(null);
+        }
+    }, [containerRef, initialXmlRef, setModeler]);
 
     return (
         <div

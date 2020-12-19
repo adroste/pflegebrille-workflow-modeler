@@ -24,10 +24,10 @@ export function useAssets() {
     return assets;
 }
 
-export function useAssetByPath(path) {
+export function useAssetById(id) {
     const assets = useAssets();
 
     return useMemo(() => ({
-        element: assets.find(asset => path === asset.path)
-    }), [assets, path]);
+        element: assets.find(asset => asset.id === id)
+    }), [assets, id]);
 }

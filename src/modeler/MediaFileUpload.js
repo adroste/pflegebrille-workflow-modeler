@@ -29,13 +29,13 @@ export function MediaFileUpload({ onUpload }) {
         const saveAsset = blob => {
             const ext = blob.type.split('/')[1];
             const asset = moddle.create('pb:Asset', {
+                id: `${uuidv4()}.${ext}`,
                 name: file.name.replace(/\.[^.]*$/, `.${ext}`),
-                path: `assets/${uuidv4()}.${ext}`,
             });
 
             setAssetData(data => ({
                 ...data,
-                [asset.path]: blob,
+                [asset.id]: blob,
             }));
 
             const definitions = bpmnjs.getDefinitions();

@@ -16,9 +16,9 @@ export function AppContextProvider({
         const zip = new JSZip();
         zip.file('workflow.bpmn', xml);
 
-        const assetPaths = Object.keys(assetData);
-        assetPaths.forEach(path => {
-            zip.file(path, assetData[path]);
+        const assetIds = Object.keys(assetData);
+        assetIds.forEach(id => {
+            zip.file(`assets/${id}`, assetData[id]);
         });
 
         const zipBlob = zip.generateAsync({ type: 'blob' });
@@ -43,9 +43,9 @@ export function AppContextProvider({
             assetsFolder.forEach((path, zipFile) => {
                 assetFiles.push({ path, zipFile });
             });
-            for (let asset of assetFiles) {
-                const { path, zipFile } = asset;
-                assetData[path] = await zipFile.async('blob');
+            for (let assetFile of assetFiles) {
+                const { path: id, zipFile } = assetFile;
+                assetData[id] = await zipFile.async('blob');
             }
         } else {
             xml = data;

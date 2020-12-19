@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 
 import { Form } from 'antd';
 import { FormField } from './FormField';
@@ -26,6 +26,15 @@ export function ElementProperties({
 
     const bindings = getModelerBindingsForType(businessObject.$type);
 
+    const initialValues = useMemo(() => (
+        bindings.reduce((initialValues, cur) => {
+            cur.fields.forEach(binding => {
+                initialValues[binding.property] = businessObject.get(binding.property);
+            });
+            return initialValues;
+        }, {})
+    ), [bindings, businessObject]);
+
     const updateBusinessObjectProperties = useCallback(updatedValues => {
         if (typeof businessObject.set !== 'function') {
             console.log('businessObject is no ModdleElement', businessObject);
@@ -45,7 +54,7 @@ export function ElementProperties({
                 className={styles.form}
                 form={form}
                 layout='vertical'
-                initialValues={businessObject}
+                initialValues={initialValues}
                 onValuesChange={updateBusinessObjectProperties}
             >
                 {/* input/output fields here */}
