@@ -18,3 +18,8 @@
     display: block;
     text-align: center;
 }
+
+.tree {
+    overflow: hidden;
+    word-break: break-all;
+}

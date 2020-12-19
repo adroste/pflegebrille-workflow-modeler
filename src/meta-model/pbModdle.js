@@ -21,6 +21,7 @@ export const pbModdle = {
     types: [
         {
             name: "AssetDefinitions",
+            isAbstract: true,
             extends: [
                 "bpmn:Definitions",
             ],
@@ -34,9 +35,6 @@ export const pbModdle = {
         },
         {
             name: "Asset",
-            // superClass: [
-            //     "Element"
-            // ],
             properties: [
                 {
                     name: "path",

@@ -1,12 +1,12 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useAssetByPath, useAssets } from './useAssets';
 
 import { MediaFileUpload } from './MediaFileUpload';
 import { RenameAssetDialog } from './RenameAssetDialog';
 import { UploadOutlined } from '@ant-design/icons';
 import { appContext } from '../base/AppContextProvider';
 import styles from './AssetManagerDialog.module.css';
-import { useAssets } from './useAssets';
 import { useObjectUrl } from './useObjectUrl';
 
 export function AssetManagerDialog({
@@ -17,11 +17,15 @@ export function AssetManagerDialog({
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
 
     const assets = useAssets();
-    const asset = assets[selectedKeys[0]];
+    const asset = useAssetByPath(selectedKeys[0]);
     const assetDatum = assetData[selectedKeys[0]];
     const assetUrl = useObjectUrl(assetDatum);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const remountKey = useMemo(() => Math.random(), [assets]);
+
     const treeData = useMemo(() => {
+        let uid = 0;
         const rootNode = { children: [] };
         assets.forEach(({ name, path }) => {
             const parts = name.split('/');
@@ -40,7 +44,7 @@ export function AssetManagerDialog({
                     } else {
                         nextNode = {
                             title: part,
-                            key: part,
+                            key: ++uid,
                             selectable: false,
                             children: [],
                         };
@@ -73,8 +77,8 @@ export function AssetManagerDialog({
         setShowDialog('delete');
     }, []);
 
-    const handleUpload = useCallback(asset => {
-        setSelectedKeys([asset.path]);
+    const handleUpload = useCallback(({ element }) => {
+        setSelectedKeys([element.path]);
     }, []);
 
     const handleSelect = useCallback(selectedKeys => {
@@ -93,6 +97,8 @@ export function AssetManagerDialog({
             <Row gutter={16}>
                 <Col span={12}>
                     <Tree.DirectoryTree
+                        className={styles.tree}
+                        key={remountKey}
                         defaultExpandAll
                         treeData={treeData}
                         onSelect={handleSelect}

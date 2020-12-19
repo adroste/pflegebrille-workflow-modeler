@@ -39,16 +39,11 @@ export function MediaFileUpload({ onUpload }) {
             }));
 
             const definitions = bpmnjs.getDefinitions();
-            let extElements = definitions.get('extensionElements');
-            if (!extElements) {
-                extElements = moddle.create('bpmn:ExtensionElements');
-                extElements.$parent = definitions;
-                definitions.set('extensionElements', extElements);
-            }
-            extElements.get('values').push(asset);
+            const assets = definitions.get('assets');
+            assets.push(asset);
             eventBus.fire('elements.changed', { elements: [definitions] })
 
-            onUpload(asset);
+            onUpload({ element: asset });
         };
 
         if (file.type.startsWith('image')) {

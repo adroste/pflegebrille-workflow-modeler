@@ -10,11 +10,12 @@ export function RenameAssetDialog({
 }) {
     const [form] = Form.useForm();
     const { eventBus } = useContext(modelerContext);
-    const [name, setName] = useState(asset.name);
+    const [name, setName] = useState(asset.element.name);
 
-    const initialValues = useMemo(() => ({ name: asset.name }), [asset]);
+    const initialValues = useMemo(() => ({ name: asset.element.name }), [asset]);
 
     const treeData = useMemo(() => {
+        let uid = 0;
         const parts = name.split('/');
         const rootNode = { children: [] };
         let node = rootNode;
@@ -24,13 +25,12 @@ export function RenameAssetDialog({
                 nextNode = {
                     title: part,
                     key: part,
-                    
                     isLeaf: true,
                 };
             } else {
                 nextNode = {
                     title: part,
-                    key: part,
+                    key: ++uid,
                     selectable: false,
                     children: [],
                 };
@@ -42,8 +42,8 @@ export function RenameAssetDialog({
     }, [name]);
 
     const handleRename = useCallback(() => {
-        asset.name = name;
-        eventBus.fire('elements.changed', { elements: { asset } });
+        asset.element.name = name;
+        eventBus.fire('elements.changed', { elements: [ asset.element ] });
         onClose();
     }, [asset, eventBus, name, onClose]);
 
