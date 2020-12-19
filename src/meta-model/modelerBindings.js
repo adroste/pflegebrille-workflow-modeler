@@ -1,6 +1,7 @@
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { noMissingAssets } from './rules/noMissingAsset';
+import { noMissingFunctionExtension } from './rules/noMissingFunctionExtension';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
@@ -49,6 +50,9 @@ export const modelerBindings = [
                 type: FormTypeEnum.EXTENSION_FUNCTION_SELECT,
                 label: "Funktion"
             }
+        ],
+        rules: [
+            noMissingFunctionExtension(),
         ]
     },
     {
@@ -68,7 +72,7 @@ export const modelerBindings = [
             },
         ],
         rules: [
-            requiredAnyProperties(['text', 'mediaAssetRef']),
+            requiredAnyProperties(['text', 'mediaAssetRef'], true),
             // todo asset defined rule
         ]
     },

@@ -2,8 +2,8 @@ import { findId, findLabel, isAny } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
-export const requiredAnyProperties = (properties, requiredIf = null) => ({
-    category: RuleCategoryEnum.ERROR,
+export const requiredAnyProperties = (properties, isWarning = false, requiredIf = null) => ({
+    category: isWarning ? RuleCategoryEnum.WARN : RuleCategoryEnum.ERROR,
     factory(binding) {
 
         function check(node, reporter) {
