@@ -12,6 +12,7 @@ export function ModelerContextProvider({
     const [issues, setIssues] = useState();
 
     const modules = useMemo(() => ({
+        bpmnjs: modeler?.get('bpmnjs'),
         canvas: modeler?.get('canvas'),
         editorActions: modeler?.get('editorActions'),
         elementRegistry: modeler?.get('elementRegistry'),
@@ -61,6 +62,7 @@ export function ModelerContextProvider({
 
         const eventHandlers = {
 
+            // todo hooks
             'element.changed': () => {
                 setSelectedElements([...modules.selection.get()]);
             },

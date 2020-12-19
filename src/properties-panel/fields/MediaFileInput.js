@@ -5,7 +5,6 @@ import Compressor from 'compressorjs';
 import { UploadOutlined } from '@ant-design/icons';
 import { appContext } from '../../base/AppContextProvider';
 import styles from './MediaFileInput.module.css';
-import { useAsset } from '../../base/useAsset';
 import { v4 as uuidv4 } from 'uuid';
 
 export function MediaFileInput({
@@ -21,7 +20,7 @@ export function MediaFileInput({
     const compressorRef = useRef();
     const workerRef = useRef();
 
-    const asset = useAsset(value);
+    const asset = null;
 
     const okButtonProps = useMemo(() => ({
         loading,

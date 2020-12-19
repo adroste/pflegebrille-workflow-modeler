@@ -10,3 +10,4 @@ https://www.omg.org/spec/BPMN/2.0/PDF
 
 * [ ] contextpadprovider
 * [ ] unreferenzierte assets finden und löschen (z.B. wenn element gelöscht wird)
+* [ ] function not as extension element

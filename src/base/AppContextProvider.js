@@ -9,65 +9,43 @@ export function AppContextProvider({
     children,
 }) {
     const [initialXml, setInitialXml] = useState();
-    const [assets, setAssets] = useState();
+    const [assetData, setAssetData] = useState();
     const [screen, setScreen] = useState(ScreenEnum.LOAD_WORKFLOW);
 
     const exportWorkflow = useCallback(async (xml) => {
-        const assetList = Object.values(assets);
-
-        const metadata = {
-            xmlPath: 'workflow.bpmn',
-            createdAt: Date.now(),
-            assets: assetList.map(({ name, path, type }) => ({
-                name,
-                path,
-                type,
-            })),
-        };
-
         const zip = new JSZip();
         zip.file('workflow.bpmn', xml);
-        zip.file('metadata.json', JSON.stringify(metadata, null, 4));
-        assetList.forEach(({ path, blob }) => {
-            zip.file(path, blob);
+
+        const assetPaths = Object.keys(assetData);
+        assetPaths.forEach(path => {
+            zip.file(path, assetData[path]);
         });
 
         const zipBlob = zip.generateAsync({ type: 'blob' });
         return zipBlob;
-    }, [assets]);
+    }, [assetData]);
 
     const importWorkflow = useCallback(async ({ isZip, data }) => {
         let xml;
-        let assets = {};
+        let assetData = {};
 
         if (isZip) {
             const zip = new JSZip();
             await zip.loadAsync(data);
 
-            const metadataFile = zip.file('metadata.json');
-            if (!metadataFile)
-                throw new Error('metadata.json nicht gefunden');
-            let metadata = await metadataFile.async('string');
-            metadata = JSON.parse(metadata);
-
-            const xmlFile = zip.file(metadata.xmlPath);
+            const xmlFile = zip.file(/(.xml|.bpmn)$/)[0];
             if (!xmlFile)
                 throw new Error('XML/BPMN nicht gefunden');
             xml = await xmlFile.async('string');
 
-            for (let asset of metadata.assets) {
-                const assetFile = await zip.file(asset.path);
-                if (!assetFile)
-                    throw new Error('assets unvollständig oder beschädigt.');
-
-                const blob = await assetFile.async('blob');
-                const objectUrl = URL.createObjectURL(blob);
-
-                assets[asset.path] = {
-                    ...asset,
-                    blob,
-                    objectUrl,
-                }
+            const assetsFolder = zip.folder('assets');
+            const assetFiles = [];
+            assetsFolder.forEach((path, zipFile) => {
+                assetFiles.push({ path, zipFile });
+            });
+            for (let asset of assetFiles) {
+                const { path, zipFile } = asset;
+                assetData[path] = await zipFile.async('blob');
             }
         } else {
             xml = data;
@@ -76,20 +54,20 @@ export function AppContextProvider({
         if (!xml?.includes('bpmn:definitions'))
             throw new Error('BPMN-Datei ist beschädigt.');
 
-        setAssets(assets);
+        setAssetData(assetData);
         setInitialXml(xml);
-    }, [setAssets]);
+    }, []);
 
     const value = useMemo(() => ({
-        assets,
+        assetData,
         exportWorkflow,
         importWorkflow,
         initialXml,
         screen,
-        setAssets,
+        setAssetData,
         setInitialXml,
         setScreen,
-    }), [assets, exportWorkflow, importWorkflow, initialXml, screen]);
+    }), [assetData, exportWorkflow, importWorkflow, initialXml, screen]);
 
     return (
         <appContext.Provider value={value}>

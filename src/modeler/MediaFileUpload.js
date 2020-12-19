@@ -4,11 +4,13 @@ import React, { useCallback, useContext, useMemo, useRef, useState } from 'react
 import Compressor from 'compressorjs';
 import { UploadOutlined } from '@ant-design/icons';
 import { appContext } from '../base/AppContextProvider';
+import { modelerContext } from './ModelerContextProvider';
 import styles from './MediaFileUpload.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 export function MediaFileUpload({ onUpload }) {
-    const { setAssets } = useContext(appContext);
+    const { setAssetData } = useContext(appContext);
+    const { bpmnjs, moddle, eventBus } = useContext(modelerContext);
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [convertState, setConvertState] = useState();
@@ -26,18 +28,27 @@ export function MediaFileUpload({ onUpload }) {
 
         const saveAsset = blob => {
             const ext = blob.type.split('/')[1];
-            const newAsset = {
+            const asset = moddle.create('pb:Asset', {
                 name: file.name.replace(/\.[^.]*$/, `.${ext}`),
                 path: `assets/${uuidv4()}.${ext}`,
-                type: blob.type,
-                blob,
-                objectUrl: URL.createObjectURL(blob),
-            };
-            setAssets(assets => ({
-                ...assets,
-                [newAsset.path]: newAsset,
+            });
+
+            setAssetData(data => ({
+                ...data,
+                [asset.path]: blob,
             }));
-            onUpload(newAsset);
+
+            const definitions = bpmnjs.getDefinitions();
+            let extElements = definitions.get('extensionElements');
+            if (!extElements) {
+                extElements = moddle.create('bpmn:ExtensionElements');
+                extElements.$parent = definitions;
+                definitions.set('extensionElements', extElements);
+            }
+            extElements.get('values').push(asset);
+            eventBus.fire('elements.changed', { elements: [definitions] })
+
+            onUpload(asset);
         };
 
         if (file.type.startsWith('image')) {
@@ -121,7 +132,7 @@ export function MediaFileUpload({ onUpload }) {
             fr.onerror = () => { setLoading(false); }
             fr.readAsArrayBuffer(file);
         }
-    }, [file, onUpload, setAssets]);
+    }, [bpmnjs, eventBus, file, moddle, onUpload, setAssetData]);
 
     const handleCancel = useCallback(() => {
         if (compressorRef.current)

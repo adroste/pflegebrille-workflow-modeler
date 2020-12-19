@@ -1,9 +1,7 @@
-import { Button, Col, Empty, Form, Input, Modal, Result, Row, Space, Tree, Typography, Upload } from 'antd';
+import { Form, Input, Modal, Space, Tree, Typography } from 'antd';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 
-import { MediaFileUpload } from './MediaFileUpload';
-import { UploadOutlined } from '@ant-design/icons';
-import { appContext } from '../base/AppContextProvider';
+import { modelerContext } from './ModelerContextProvider';
 import styles from './RenameAssetDialog.module.css';
 
 export function RenameAssetDialog({
@@ -11,7 +9,7 @@ export function RenameAssetDialog({
     onClose,
 }) {
     const [form] = Form.useForm();
-    const { setAssets } = useContext(appContext);
+    const { eventBus } = useContext(modelerContext);
     const [name, setName] = useState(asset.name);
 
     const initialValues = useMemo(() => ({ name: asset.name }), [asset]);
@@ -44,15 +42,10 @@ export function RenameAssetDialog({
     }, [name]);
 
     const handleRename = useCallback(() => {
-        setAssets(assets => ({
-            ...assets,
-            [asset.path]: {
-                ...asset,
-                name,
-            }
-        }));
+        asset.name = name;
+        eventBus.fire('elements.changed', { elements: { asset } });
         onClose();
-    }, [asset, name, onClose, setAssets]);
+    }, [asset, eventBus, name, onClose]);
 
     const handleValuesChange = useCallback(({ name }) => {
         setName(name);

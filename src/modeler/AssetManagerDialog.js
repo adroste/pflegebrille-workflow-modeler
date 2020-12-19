@@ -1,4 +1,4 @@
-import { Button, Col, Empty, Modal, Result, Row, Space, Tree, Typography, Upload } from 'antd';
+import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 
 import { MediaFileUpload } from './MediaFileUpload';
@@ -6,23 +6,24 @@ import { RenameAssetDialog } from './RenameAssetDialog';
 import { UploadOutlined } from '@ant-design/icons';
 import { appContext } from '../base/AppContextProvider';
 import styles from './AssetManagerDialog.module.css';
+import { useAssets } from './useAssets';
+import { useObjectUrl } from './useObjectUrl';
 
 export function AssetManagerDialog({
     onClose,
 }) {
-    const { assets, setAssets } = useContext(appContext);
+    const { assetData } = useContext(appContext);
     const [showDialog, setShowDialog] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
 
-    const selectedAsset = assets[selectedKeys[0]];
+    const assets = useAssets();
+    const asset = assets[selectedKeys[0]];
+    const assetDatum = assetData[selectedKeys[0]];
+    const assetUrl = useObjectUrl(assetDatum);
 
     const treeData = useMemo(() => {
-        const paths = Object.keys(assets);
-
         const rootNode = { children: [] };
-        paths.forEach(path => {
-            const { name } = assets[path];
-
+        assets.forEach(({ name, path }) => {
             const parts = name.split('/');
             let node = rootNode;
             for (let part of parts) {
@@ -49,12 +50,14 @@ export function AssetManagerDialog({
                 node = nextNode;
             }
         });
+
         rootNode.children.push({
             isLeaf: true,
             icon: <UploadOutlined />,
             key: 'upload',
             title: <strong>Datei hochladen</strong>,
-        })
+        });
+
         return rootNode.children;
     }, [assets]);
 
@@ -97,20 +100,20 @@ export function AssetManagerDialog({
                     />
                 </Col>
                 <Col span={12}>
-                    {selectedAsset ?
+                    {assetDatum ?
                         (
                             <Space direction="vertical">
                                 <div className={styles.preview}>
-                                    {selectedAsset.type.startsWith('image') &&
+                                    {assetDatum.type.startsWith('image') &&
                                         <img
-                                            src={selectedAsset.objectUrl}
+                                            src={assetUrl}
                                             alt=""
                                         />
                                     }
 
-                                    {selectedAsset.type.startsWith('video') &&
+                                    {assetDatum.type.startsWith('video') &&
                                         <video
-                                            src={selectedAsset.objectUrl}
+                                            src={assetUrl}
                                             controls
                                         />
                                     }
@@ -145,7 +148,7 @@ export function AssetManagerDialog({
 
             {showDialog === 'rename' &&
                 <RenameAssetDialog 
-                    asset={selectedAsset} 
+                    asset={asset} 
                     onClose={handleCloseDialog}
                 />
             }

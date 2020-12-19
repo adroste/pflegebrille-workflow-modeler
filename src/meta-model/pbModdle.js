@@ -1,6 +1,13 @@
 import { DataTypeEnum } from './enum/DataTypeEnum';
 import { enumToModdleEnum } from './util';
 
+/**
+ * Important hints for changing/extending the model:
+ * - setting isId causes extension elements to be removed on re-import
+ * - don't inherit vom bpmn:BaseElement or other bpmn types
+ * - ExtensionElements must inherit from Element
+ */
+
 export const pbModdle = {
     name: "Pflegebrille BPMN Extension",
     uri: "http://pflegebrille.de/schema/bpmn/pb-extension",
@@ -12,6 +19,37 @@ export const pbModdle = {
         enumToModdleEnum('DataTypeEnum', DataTypeEnum),
     ],
     types: [
+        {
+            name: "AssetDefinitions",
+            extends: [
+                "bpmn:Definitions",
+            ],
+            properties: [
+                {
+                    name: "assets",
+                    isMany: true,
+                    type: "Asset"
+                }
+            ]
+        },
+        {
+            name: "Asset",
+            // superClass: [
+            //     "Element"
+            // ],
+            properties: [
+                {
+                    name: "path",
+                    isAttr: true,
+                    type: "String",
+                },
+                {
+                    name: "name",
+                    isAttr: true,
+                    type: "String",
+                }
+            ]
+        },
         /** 
          * A function is an extension element that describes the inner workings of a parent element. 
          * Typically, only one function per parent is allowed.
@@ -46,7 +84,8 @@ export const pbModdle = {
                 {
                     name: "mediaSrc",
                     isAttr: true,
-                    type: "String",
+                    isReference: true,
+                    type: "Asset",
                 }
             ]
         },
