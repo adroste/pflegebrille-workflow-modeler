@@ -10,15 +10,17 @@ import { RenameAssetDialog } from './RenameAssetDialog';
 import { appContext } from '../base/AppContextProvider';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './AssetManagerDialog.module.css';
+import { useIssues } from './useIssues';
 
 export function AssetManagerDialog({
     onClose,
     onSelect = null,
 }) {
     const { setAssetData } = useContext(appContext);
-    const { bpmnjs, eventBus, issues } = useContext(modelerContext);
+    const { bpmnjs, eventBus } = useContext(modelerContext);
     const [showDialog, setShowDialog] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
+    const issues = useIssues();
 
     const assets = useAssets();
     const asset = useAssetById(selectedKeys[0]);

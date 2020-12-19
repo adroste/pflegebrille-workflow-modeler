@@ -5,10 +5,12 @@ import { IssueList } from './IssueList';
 import { getBBox } from 'diagram-js/lib/util/Elements';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './IssueViewer.module.css';
+import { useIssues } from './useIssues';
 
 export function IssueViewer() {
-    const { issues, linting, canvas, elementRegistry, selection } = useContext(modelerContext);
+    const { linting, canvas, elementRegistry, selection } = useContext(modelerContext);
     const [open, setOpen] = useState(false);
+    const issues = useIssues();
 
     // override toggle behavior with open/close
     useEffect(() => {

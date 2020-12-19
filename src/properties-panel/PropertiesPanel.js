@@ -6,11 +6,13 @@ import { ElementProperties } from './ElementProperties';
 import { IssueList } from '../modeler/IssueList';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './PropertiesPanel.module.css';
+import { useIssues } from '../modeler/useIssues';
 
 export function PropertiesPanel({
     className
 }) {
-    const { selectedElements, issues } = useContext(modelerContext);
+    const { selectedElements } = useContext(modelerContext);
+    const issues = useIssues();
 
     let element, err;
     if (selectedElements.length === 0)

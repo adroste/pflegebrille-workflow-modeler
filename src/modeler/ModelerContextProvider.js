@@ -9,7 +9,6 @@ export function ModelerContextProvider({
 }) {
     const [modeler, setModeler] = useState(null);
     const [selectedElements, setSelectedElements] = useState([]);
-    const [issues, setIssues] = useState();
 
     const modules = useMemo(() => ({
         bpmnjs: modeler?.get('bpmnjs'),
@@ -44,13 +43,11 @@ export function ModelerContextProvider({
     const value = useMemo(() => ({
         ...modules,
         getXml,
-        issues,
         modeler,
         selectedElements,
         setModeler,
     }), [
         getXml,
-        issues,
         modeler, 
         modules,
         selectedElements,
@@ -69,10 +66,6 @@ export function ModelerContextProvider({
 
             'selection.changed': ({ newSelection }) => {
                 setSelectedElements([...newSelection]);
-            },
-
-            'linting.completed': ({ issues }) => {
-                setIssues(issues);
             },
         };
 
