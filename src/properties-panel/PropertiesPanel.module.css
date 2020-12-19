@@ -5,3 +5,7 @@
     padding: 1em;
     overflow-y: auto;
 }
+
+.issueList {
+    margin-bottom: 24px;
+}

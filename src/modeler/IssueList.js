@@ -8,7 +8,10 @@ const categoryMap = {
     [RuleCategoryEnum.ERROR]: 'error',
 }
 
-export function IssueList({ issues }) {
+export function IssueList({ 
+    className,
+    issues ,
+}) {
 
     if (
         (typeof issues?.map !== 'function')
@@ -16,13 +19,13 @@ export function IssueList({ issues }) {
     ) {
         return null;
     }
-    
+
     return (
-        <div className={styles.wrapper}>
-            {issues.map(({ category, message }) => (
+        <div className={`${styles.wrapper} ${className}`}>
+            {issues.map(({ category, message }, i) => (
                 <Alert
                     banner
-                    key={message}
+                    key={`${message}___${i}`}
                     message={message}
                     type={categoryMap[category]}
                     showIcon

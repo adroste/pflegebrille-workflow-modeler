@@ -38,7 +38,10 @@ export function PropertiesPanel({
 
                     <Divider />
 
-                    <IssueList issues={elementIssues} />
+                    <IssueList 
+                        className={styles.issueList}
+                        issues={elementIssues} 
+                    />
 
                     <ElementProperties 
                         key={element.id} 

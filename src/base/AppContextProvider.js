@@ -18,7 +18,8 @@ export function AppContextProvider({
 
         const assetIds = Object.keys(assetData);
         assetIds.forEach(id => {
-            zip.file(`assets/${id}`, assetData[id]);
+            if (xml.includes(`id="${id}"`))
+                zip.file(`assets/${id}`, assetData[id]);
         });
 
         const zipBlob = zip.generateAsync({ type: 'blob' });

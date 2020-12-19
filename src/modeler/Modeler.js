@@ -15,7 +15,7 @@ import { pbModdle } from '../meta-model/pbModdle';
 import styles from './Modeler.module.css';
 
 export function Modeler() {
-    const { modeler, setModeler } = useContext(modelerContext);
+    const { setModeler } = useContext(modelerContext);
     const { initialXml } = useContext(appContext);
     const containerRef = useRef();
     const initialXmlRef = useRef();

@@ -16,3 +16,7 @@
     overflow: hidden;
     word-break: break-all;
 }
+
+.issueList {
+    margin-bottom: 12px;
+}

@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { Form } from 'antd';
 import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { getModelerBindingsForType } from '../meta-model/util';
+import { getModelerBindingsForType } from '../util';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './ElementProperties.module.css';
 

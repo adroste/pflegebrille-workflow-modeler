@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 
 import { Select } from 'antd';
-import { getAllowedFunctionsForType } from '../../meta-model/util';
+import { getAllowedFunctionsForType } from '../../util';
 import { modelerContext } from '../../modeler/ModelerContextProvider';
 
 export function ExtensionFunctionSelect({

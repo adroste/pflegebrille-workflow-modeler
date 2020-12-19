@@ -1,11 +1,13 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
-import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined, WarningOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useAssetById, useAssets } from './useAssets';
 
+import { IssueList } from './IssueList';
 import { MediaFileUpload } from './MediaFileUpload';
 import { MediaPreview } from './MediaPreview';
 import { RenameAssetDialog } from './RenameAssetDialog';
+import { appContext } from '../base/AppContextProvider';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './AssetManagerDialog.module.css';
 
@@ -13,7 +15,8 @@ export function AssetManagerDialog({
     onClose,
     onSelect = null,
 }) {
-    const { bpmnjs, eventBus } = useContext(modelerContext);
+    const { setAssetData } = useContext(appContext);
+    const { bpmnjs, eventBus, issues } = useContext(modelerContext);
     const [showDialog, setShowDialog] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(['upload']);
 
@@ -39,6 +42,7 @@ export function AssetManagerDialog({
                             title: <span>{part}</span>,
                             key: id,
                             isLeaf: true,
+                            icon: issues?.[id] && <WarningOutlined style={{ color: '#faad14' }} />,
                         };
                     } else {
                         nextNode = {
@@ -62,7 +66,16 @@ export function AssetManagerDialog({
         });
 
         return rootNode.children;
-    }, [assets]);
+    }, [assets, issues]);
+
+    const issueList = useMemo(() => {
+        const list = [];
+        assets.forEach(({ id }) => {
+            if (issues?.[id])
+                list.push(...issues[id]);
+        });
+        return list;
+    }, [assets, issues]);
 
     const handleCloseDialog = useCallback(() => {
         setShowDialog(null);
@@ -79,6 +92,12 @@ export function AssetManagerDialog({
             extElements.values = extElements.values.filter(el => el !== asset.element);
 
             eventBus.fire('elements.changed', { elements: [definitions, extElements] })
+
+            setAssetData(data => {
+                const newData = { ...data };
+                delete data[asset.element.id];
+                return newData;
+            });
         };
 
         Modal.confirm({
@@ -90,7 +109,7 @@ export function AssetManagerDialog({
                         Die Datei "{asset.element.name}" wird unwiderruflich gelöscht.
                     </p>
                     <p>
-                        Alle Elemente, die auf diese Datei verweisen, müssen geändert werden.
+                        Alle Verweise auf diese Datei werden ungültig.
                     </p>
                 </>
             ),
@@ -98,7 +117,7 @@ export function AssetManagerDialog({
             okText: 'Löschen',
             onOk: deleteAsset,
         });
-    }, [asset, bpmnjs, eventBus]);
+    }, [asset, bpmnjs, eventBus, setAssetData]);
 
     const handleUpload = useCallback(({ element }) => {
         setSelectedKeys([element.id]);
@@ -137,6 +156,11 @@ export function AssetManagerDialog({
         >
             <Row gutter={16}>
                 <Col span={12}>
+                    <IssueList 
+                        className={styles.issueList}
+                        issues={issueList} 
+                    />
+
                     <Tree.DirectoryTree
                         className={styles.tree}
                         key={remountKey}

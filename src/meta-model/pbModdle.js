@@ -76,7 +76,7 @@ export const pbModdle = {
                     type: "String",
                 },
                 {
-                    name: "mediaAssetId",
+                    name: "mediaAssetRef",
                     isAttr: true,
                     type: "String",
                 }

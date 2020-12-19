@@ -5,6 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
+import { checkIfRef } from '../../meta-model/rules/util';
 import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
 
@@ -14,10 +15,11 @@ export function MediaFileInput({
 }) {
     const [showSelect, setShowSelect] = useState(false);
 
-    const asset = useAssetById(value);
+    const id = checkIfRef(value, 'assetRef');
+    const asset = useAssetById(id);
 
     const handleUpload = useCallback(({ element }) => {
-        onChange(element.id);
+        onChange(`assetRef:${element.id}`);
     }, [onChange]);
 
     const handleRemove = useCallback(() => {
@@ -34,7 +36,7 @@ export function MediaFileInput({
     }, []);
 
     const handleSelectFinish = useCallback(({ element }) => {
-        onChange(element.id);
+        onChange(`assetRef:${element.id}`);
         setShowSelect(false);
     }, [onChange]);
 
@@ -44,10 +46,10 @@ export function MediaFileInput({
 
     return (
         <>
-            {value ?
+            {id ?
                 (
                     <>
-                        <MediaPreview id={asset.element?.id} />
+                        <MediaPreview id={id} />
 
                         <Space className={styles.buttons}>
                             <Button

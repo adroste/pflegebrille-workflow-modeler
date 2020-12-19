@@ -1,5 +1,6 @@
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
+import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 
@@ -31,6 +32,7 @@ export const modelerBindings = [
                 'bpmn:Group',
                 'bpmn:CategoryValue',
             ]),
+            noUnusedAssets(),
         ]
     },
     {
@@ -58,13 +60,13 @@ export const modelerBindings = [
                 label: "Textbeschreibung",
             },
             {
-                property: "mediaAssetId",
+                property: "mediaAssetRef",
                 type: FormTypeEnum.MEDIA_FILE,
                 label: "Bild / Video",
             },
         ],
         rules: [
-            requiredAnyProperties(['text', 'mediaAssetId']),
+            requiredAnyProperties(['text', 'mediaAssetRef']),
             // todo asset defined rule
         ]
     },

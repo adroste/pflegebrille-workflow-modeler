@@ -52,7 +52,7 @@ export function IssueViewer() {
             );
 
         return ids.map(id => (
-            <div key={id}>
+            <div key={id} className={styles.entry}>
                 <div className={styles.heading}>
                     <div>ID: {id}</div>
                     <Button

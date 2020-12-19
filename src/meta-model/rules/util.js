@@ -48,3 +48,14 @@ export function findLabel(binding, property) {
     const field = binding?.fields?.find(field => field.property === property);
     return field?.label || property;
 }
+
+export function checkIfRef(value, refType) {
+    if (typeof value !== 'string')
+        return false;
+
+    const prefix = refType + ':';
+    if (!value?.startsWith(prefix))
+        return false;
+
+    return value.slice(prefix.length);
+}
