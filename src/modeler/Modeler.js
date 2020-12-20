@@ -4,6 +4,7 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
+import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
@@ -40,6 +41,7 @@ export function Modeler() {
                 lintModule,
                 minimapModule,
                 paletteProviderModule,
+                bpmnExtensionInserterModule,
             ],
             keyboard: {
                 bindTo: document,
@@ -48,6 +50,15 @@ export function Modeler() {
                 pb: pbModdle,
             },
         });
+
+        if (process.env.NODE_ENV === 'development') {
+            const eventBus = modeler.get('eventBus');
+            eventBus.__fire = eventBus.fire;
+            eventBus.fire = (type, data) => {
+                console.debug("EVENTBUS", type, data);
+                eventBus.__fire(type, data);
+            };
+        }
 
         modeler.importXML(initialXmlRef.current)
             .catch(err => {
