@@ -64,6 +64,9 @@ export function XmlEditorScreen() {
                 options={{
                     mode: 'xml',
                     keyMap: vimMode ? 'vim' : 'default',
+                    // following enables browser search ability
+                    // by rendering all text lines at once
+                    viewportMargin: Infinity,
                 }}
             />
 
