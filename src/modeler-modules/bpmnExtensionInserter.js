@@ -4,6 +4,7 @@ import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { modelBindings } from '../meta-model/modelBindings';
 
 function BpmnExtensionInserter(
+    bpmnjs,
     eventBus,
     moddle,
 ) {
@@ -39,9 +40,11 @@ function BpmnExtensionInserter(
 
     eventBus.on('shape.added', check);
     eventBus.on('bpmnElement.added', check);
+    eventBus.on('import.done', () => check({ element: bpmnjs.getDefinitions() }));
 }
 
 BpmnExtensionInserter.$inject = [
+    'bpmnjs',
     'eventBus',
     'moddle',
 ];
