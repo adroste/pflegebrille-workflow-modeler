@@ -53,10 +53,10 @@ export function Modeler() {
 
         if (process.env.NODE_ENV === 'development') {
             const eventBus = modeler.get('eventBus');
-            eventBus.__fire = eventBus.fire;
-            eventBus.fire = (type, data) => {
+            const fire = eventBus.fire;
+            eventBus.fire = (type, data, ...args) => {
                 console.debug("EVENTBUS", type, data);
-                eventBus.__fire(type, data);
+                return fire.call(eventBus, type, data, ...args);
             };
         }
 
