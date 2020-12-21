@@ -16,15 +16,17 @@ export function ElementProperties({
 
     const businessObject = getBusinessObject(element);
 
-    const descriptor = businessObject.$descriptor;
-    const innerElements = descriptor?.properties.reduce((innerElements, p) => {
-        if (!p.isAttr && p.type !== 'String') {
-            const el = businessObject[p.name];
-            if (el)
-                return innerElements.concat(el);
+    let innerElements = [];
+    for (let property in businessObject) {
+        if (businessObject.hasOwnProperty(property)) {
+            const el = businessObject[property];
+            // di property indicates that the element has a rendered shape itself
+            // we want to exclude elements that have their own shape
+            if (el !== null && (typeof el === 'object') && !el.di) 
+                // concat works for arrays and single values
+                innerElements = innerElements.concat(el);
         }
-        return innerElements;
-    }, []);
+    }
 
     const bindings = getModelBindingsForElement(businessObject);
 
