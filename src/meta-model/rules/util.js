@@ -44,8 +44,14 @@ export function findId(node) {
     return id;
 }
 
-export function findLabel(binding, property) {
-    const field = binding?.fields?.find(field => field.property === property);
+export function findLabel(node, property) {
+    const bindings = modelBindings.filter(({ appliesTo }) => isAny(node, appliesTo));
+    let field;
+    for (let binding of bindings) {
+        field = binding.fields?.find(field => field.property === property);
+        if (field)
+            break;
+    }
     return field?.label || property;
 }
 
