@@ -1,5 +1,5 @@
 import empty from './bpmn/empty.bpmn';
-import wm2 from './bpmn/wm2.bpmn';
+import wundmanagement from './bpmn/Wundmanagement.bpmn';
 
 export const templates = [
     {
@@ -16,6 +16,6 @@ export const templates = [
     },
     {
         label: 'Beispielworkflow: Wundmanagement',
-        src: wm2,
+        src: wundmanagement,
     },
 ];
