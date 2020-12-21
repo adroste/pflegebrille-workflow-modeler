@@ -10,6 +10,14 @@ function BpmnExtensionInserter(
 ) {
     function check({ element }) {
         const bo = getBusinessObject(element);
+
+        // recursive for references
+        const descriptor = bo.$descriptor;
+        descriptor.properties.forEach(({ isReference, name }) => {
+            if (isReference && bo[name])
+                check({ element: bo[name] });
+        });
+
         const extensionTypes = modelBindings.reduce((extensionTypes, { appliesTo, extensions }) => {
             if (extensions && isAny(bo, appliesTo))
                 extensionTypes.push(...extensions);
