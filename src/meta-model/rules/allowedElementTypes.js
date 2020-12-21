@@ -2,7 +2,7 @@ import { findId, isAny } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
-export const allowedElementTypes = (types, requiredIf = null) => ({
+export const allowedElementTypes = (types) => ({
     category: RuleCategoryEnum.ERROR,
     factory(binding) {
 

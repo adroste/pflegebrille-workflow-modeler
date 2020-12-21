@@ -3,12 +3,14 @@ import { enumToModdleEnum } from './util';
 
 /**
  * Important hints for changing/extending the model:
+ * - If you change something, it certainly breaks existing workflows!
  * - DO NOT use stuff like isId, isReference, etc. 
  *   it is ALL BROKEN and does not work properly for custom elements.
  *   Just use strings and do manual mapping and checking
- * - don't inherit from bpmn:BaseElement or other bpmn types
+ * - DO NOT inherit from bpmn:BaseElement or other bpmn types
  * - ExtensionElements must inherit from Element
- * - don't extend bpmn elements with custom properties, its buggy af
+ * - DO NOT extend bpmn elements with custom properties, its buggy af
+ * - DO NOT use the same DataType twice in an input/output, it will be ambigious
  * - if you use / do anything that has not already been done 
  *   in any of the types below, you can be certain that it will 
  *   not work properly without further digging into bpmn-js, moddle & co
@@ -17,7 +19,7 @@ import { enumToModdleEnum } from './util';
 
 export const pbModdle = {
     name: "Pflegebrille BPMN Extension",
-    uri: "http://pflegebrille.de/schema/bpmn/pb-extension",
+    uri: "http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0",
     prefix: "pb",
     xml: {
         tagAlias: "lowerCase"
@@ -28,9 +30,6 @@ export const pbModdle = {
     types: [
         {
             name: "Asset",
-            superClass: [
-                "Element",
-            ],
             properties: [
                 {
                     name: "id",
@@ -44,16 +43,88 @@ export const pbModdle = {
                 }
             ]
         },
-        /** 
-         * A function is an extension element that describes the inner workings of a parent element. 
-         * Typically, only one function per parent is allowed.
+        {
+            name: "AssetRef",
+            properties: [
+                {
+                    name: "refId",
+                    isAttr: true,
+                    type: "String",
+                },
+            ]
+        },
+        {
+            name: "Assets",
+            properties: [
+                {
+                    name: "assets",
+                    isMany: true,
+                    type: "Asset",
+                },
+            ]
+        },
+        /**
+         * Task functions
          */
+        {
+            name: "ActivityExtension",
+            superClass: [
+                "Element",
+            ],
+            properties: [
+                {
+                    name: "function",
+                    type: "Function",
+                },
+            ]
+        },
+        {
+            name: "ManualTaskExtension",
+            superClass: [
+                "ActivityExtension"
+            ],
+        },
+        {
+            name: "ServiceTaskExtension",
+            superClass: [
+                "ActivityExtension"
+            ]
+        },
+        {
+            name: "UserTaskExtension",
+            superClass: [
+                "ActivityExtension"
+            ]
+        },
         {
             name: "Function",
             isAbstract: true,
+        },
+        {
+            name: "ApiInputFunction",
+            isAbstract: true,
             superClass: [
-                "Element"
+                "Function"
             ],
+            properties: [
+                {
+                    name: "transactionInput",
+                    type: "DataInputRef"
+                },
+            ]
+        },
+        {
+            name: "ApiOutputFunction",
+            isAbstract: true,
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "transactionOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         /**
          * For ManualTask
@@ -63,12 +134,6 @@ export const pbModdle = {
             superClass: [
                 "Function"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ManualTask"
-                ],
-                title: "Beschreibung / Medien anzeigen",
-            },
             properties: [
                 {
                     name: "text",
@@ -76,6 +141,7 @@ export const pbModdle = {
                     type: "String",
                 },
                 {
+                    // TODO
                     name: "mediaAssetRef",
                     isAttr: true,
                     type: "String",
@@ -90,36 +156,18 @@ export const pbModdle = {
             superClass: [
                 "Function"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:UserTask"
-                ],
-                title: "Schmerzwert abfragen"
-            }
         },
         {
             name: "WoundPicture",
             superClass: [
                 "Function"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:UserTask"
-                ],
-                title: "Wundfoto aufnehmen"
-            }
         },
         {
             name: "WoundDetection",
             superClass: [
                 "Function"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:UserTask"
-                ],
-                title: "Wunde vermessen"
-            }
         },
         /**
          * For ServiceTask
@@ -129,84 +177,48 @@ export const pbModdle = {
             superClass: [
                 "Function"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "Datenobjekt bearbeiten (für mehrere Elemente)"
-            }
         },
         {
             name: "GetMedicationData",
             superClass: [
-                "Function"
+                "ApiInputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[GET] Medikationen"
-            }
         },
         {
             name: "GetPatientData",
             superClass: [
-                "Function"
+                "ApiInputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[GET] Patientendaten"
-            }
         },
         {
             name: "GetWoundHistory",
             superClass: [
-                "Function"
+                "ApiInputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[GET] Wundverlauf"
-            }
         },
         {
             name: "GetDiagnosisHistory",
             superClass: [
-                "Function"
+                "ApiInputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[GET] Diagnosen"
-            }
         },
         {
             name: "PostWoundData",
             superClass: [
-                "Function"
+                "ApiOutputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[POST] Wunddaten"
-            }
+            properties: [
+                {
+                    name: "woundInformationInput",
+                    type: "DataInputRef"
+                },
+            ]
         },
         {
             name: "PostWoundImage",
             superClass: [
-                "Function"
+                "ApiOutputFunction"
             ],
-            meta: {
-                allowedIn: [
-                    "bpmn:ServiceTask"
-                ],
-                title: "[POST] Wundbild"
-            }
         }
     ],
 }

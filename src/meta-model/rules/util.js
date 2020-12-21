@@ -1,3 +1,5 @@
+import { modelBindings } from '../modelBindings';
+
 /**
  * Checks whether node is of specific bpmn type.
  *

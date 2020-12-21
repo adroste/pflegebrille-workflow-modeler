@@ -1,4 +1,6 @@
-import { modelerBindings } from './meta-model/modelerBindings';
+import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { isAny } from './meta-model/rules/util';
+import { modelBindings } from './meta-model/modelBindings';
 import { pbModdle } from './meta-model/pbModdle';
 
 export function getAllowedFunctionsForType(type) {
@@ -12,8 +14,9 @@ export function getAllowedFunctionsForType(type) {
     }));
 }
 
-export function getModelerBindingsForType(type) {
-    return modelerBindings.filter(({ appliesTo }) => appliesTo.includes(type));
+export function getModelBindingsForElement(element) {
+    const bo = getBusinessObject(element);
+    return modelBindings.filter(({ appliesTo }) => isAny(bo, appliesTo));
 }
 
 // export function traverseModdle(element, cb) {

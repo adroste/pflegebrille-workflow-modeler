@@ -2,8 +2,8 @@ import { findId, findLabel, isAny } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
-export const requiredProperties = (properties, isWarning = false, requiredIf = null) => ({
-    category: isWarning ? RuleCategoryEnum.WARN : RuleCategoryEnum.ERROR,
+export const requiredProperties = (properties, isError = true, requiredIf = null) => ({
+    category: isError ? RuleCategoryEnum.ERROR : RuleCategoryEnum.WARN,
     factory(binding) {
 
         function check(node, reporter) {
@@ -19,7 +19,7 @@ export const requiredProperties = (properties, isWarning = false, requiredIf = n
                 ) {
                     reporter.report(
                         findId(node),
-                        `${findLabel(binding, property)} ist erforderlich`
+                        `${findLabel(node, property)} ist erforderlich`
                     );
                 }
             }

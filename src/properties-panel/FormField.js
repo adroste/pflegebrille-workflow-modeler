@@ -1,7 +1,7 @@
 import { Checkbox, Form, Input } from 'antd';
 
-import { ExtensionFunctionSelect } from './fields/ExtensionFunctionSelect';
 import { FormTypeEnum } from '../meta-model/enum/FormTypeEnum';
+import { FunctionSelect } from './fields/FunctionSelect';
 import { MediaFileInput } from './fields/MediaFileInput';
 import React from 'react';
 
@@ -11,6 +11,7 @@ export function FormField({
         property,
         type,
         label,
+        functionMap,
     },
 }) {
     switch (type) {
@@ -26,13 +27,16 @@ export function FormField({
             );
 
 
-        case FormTypeEnum.EXTENSION_FUNCTION_SELECT:
+        case FormTypeEnum.FUNCTION_SELECT:
             return (
                 <Form.Item
                     name={property}
                     label={label}
                 >
-                    <ExtensionFunctionSelect businessObject={businessObject} />
+                    <FunctionSelect 
+                        businessObject={businessObject} 
+                        functionMap={functionMap}
+                    />
                 </Form.Item>
             );
 
@@ -46,6 +50,8 @@ export function FormField({
                 </Form.Item>
             );
 
+        case FormTypeEnum.DATA_INPUT:
+        case FormTypeEnum.DATA_OUTPUT:
         case FormTypeEnum.TEXT:
             return (
                 <Form.Item

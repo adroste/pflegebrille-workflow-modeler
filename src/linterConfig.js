@@ -1,6 +1,6 @@
-import { modelerBindings } from './meta-model/modelerBindings';
+import { modelBindings } from './meta-model/modelBindings';
 
-const rules = modelerBindings.reduce((rules, binding) => {
+const rules = modelBindings.reduce((rules, binding) => {
     binding.rules?.forEach(rule => {
         rules.push({
             binding,

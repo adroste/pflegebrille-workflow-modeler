@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { Form } from 'antd';
 import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { getModelerBindingsForType } from '../util';
+import { getModelBindingsForElement } from '../util';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './ElementProperties.module.css';
 
@@ -16,19 +16,21 @@ export function ElementProperties({
 
     const businessObject = getBusinessObject(element);
 
-    // useEffect(() => {
-    //     form.resetFields();
-    // }, [businessObject, form]);
+    const descriptor = businessObject.$descriptor;
+    const innerElements = descriptor?.properties.reduce((innerElements, p) => {
+        if (!p.isAttr && p.type !== 'String') {
+            const el = businessObject[p.name];
+            if (el)
+                return innerElements.concat(el);
+        }
+        return innerElements;
+    }, []);
 
-    const innerElements = []
-        .concat(businessObject.extensionElements?.values)
-        .concat(businessObject.dataObjectRef);
-
-    const bindings = getModelerBindingsForType(businessObject.$type);
+    const bindings = getModelBindingsForElement(businessObject);
 
     const initialValues = useMemo(() => (
         bindings.reduce((initialValues, cur) => {
-            cur.fields.forEach(binding => {
+            cur.fields?.forEach(binding => {
                 initialValues[binding.property] = businessObject.get(binding.property);
             });
             return initialValues;
@@ -57,9 +59,7 @@ export function ElementProperties({
                 initialValues={initialValues}
                 onValuesChange={updateBusinessObjectProperties}
             >
-                {/* input/output fields here */}
-
-                {bindings.map((binding, i) => binding.fields.map((binding, j) => (
+                {bindings.map((binding, i) => binding.fields?.map((binding, j) => (
                     <FormField
                         key={`${binding.property}_${i}_${j}`}
                         binding={binding}
@@ -68,7 +68,7 @@ export function ElementProperties({
                 )))}
             </Form>
 
-            {innerElements.map((element, i) => (element?.$type || null) && (
+            {innerElements?.map((element, i) => (element?.$type || null) && (
                 <ElementProperties
                     key={element.id || `${element.$type}_${i}`}
                     baseElement={baseElement}
