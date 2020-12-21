@@ -10,6 +10,7 @@ import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
 
 export function MediaFileInput({
+    businessObject,
     onChange,
     value,
 }) {
@@ -20,8 +21,9 @@ export function MediaFileInput({
 
     const handleChange = useCallback(({ element }) => {
         const assetRef = moddle.create('pb:AssetRef', { refId: element.id });
+        assetRef.$parent = businessObject;
         onChange(assetRef);
-    }, [moddle, onChange]);
+    }, [businessObject, moddle, onChange]);
 
     const handleRemove = useCallback(() => {
         onChange(undefined);

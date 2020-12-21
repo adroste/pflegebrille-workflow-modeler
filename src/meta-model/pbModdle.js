@@ -8,9 +8,9 @@ import { enumToModdleEnum } from './util';
  *   it is ALL BROKEN and does not work properly for custom elements.
  *   Just use strings and do manual mapping and checking
  * - DO NOT inherit from bpmn:BaseElement or other bpmn types
- * - ExtensionElements must inherit from Element
+ * - ExtensionElements must inherit from Element, 
+ *   otherwise they magically disappear on re-import
  * - DO NOT extend bpmn elements with custom properties, its buggy af
- * - DO NOT use the same DataType twice in an input/output, it will be ambigious
  * - if you use / do anything that has not already been done 
  *   in any of the types below, you can be certain that it will 
  *   not work properly without further digging into bpmn-js, moddle & co
@@ -25,6 +25,7 @@ export const pbModdle = {
         tagAlias: "lowerCase"
     },
     enumerations: [
+        // todo remove?
         enumToModdleEnum('DataTypeEnum', DataTypeEnum),
     ],
     types: [
@@ -66,9 +67,61 @@ export const pbModdle = {
                 },
             ]
         },
+        {
+            name: "DataObjectExtension",
+            superClass: [
+                "Element"
+            ],
+            properties: [
+                {
+                    name: "dataType",
+                    isAttr: true,
+                    type: "DataTypeEnum",
+                },
+            ]
+        },
+        {
+            name: "DataInputOutputRef",
+            properties: [
+                {
+                    name: "refId",
+                    isAttr: true,
+                    type: "String",
+                },
+            ]
+        },
+        {
+            name: "DataInputRef",
+            superClass: [
+                "DataInputOutputRef"
+            ]
+        },
+        {
+            name: "DataOutputRef",
+            superClass: [
+                "DataInputOutputRef"
+            ]
+        },
         /**
          * Task functions
          */
+        {
+            name: "MediaText",
+            superClass: [
+                "Element"
+            ],
+            properties: [
+                {
+                    name: "text",
+                    isAttr: true,
+                    type: "String",
+                },
+                {
+                    name: "mediaAssetRef",
+                    type: "AssetRef",
+                }
+            ]
+        },
         {
             name: "ActivityExtension",
             superClass: [
@@ -80,12 +133,6 @@ export const pbModdle = {
                     type: "Function",
                 },
             ]
-        },
-        {
-            name: "ManualTaskExtension",
-            superClass: [
-                "ActivityExtension"
-            ],
         },
         {
             name: "ServiceTaskExtension",
@@ -127,26 +174,6 @@ export const pbModdle = {
                     name: "transactionOutput",
                     type: "DataOutputRef"
                 },
-            ]
-        },
-        /**
-         * For ManualTask
-         */
-        {
-            name: "MediaText",
-            superClass: [
-                "Function"
-            ],
-            properties: [
-                {
-                    name: "text",
-                    isAttr: true,
-                    type: "String",
-                },
-                {
-                    name: "mediaAssetRef",
-                    type: "AssetRef",
-                }
             ]
         },
         /**

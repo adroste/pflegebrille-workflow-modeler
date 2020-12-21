@@ -1,9 +1,16 @@
-import { Checkbox, Form, Input } from 'antd';
+import { Checkbox, Form, Input, Typography } from 'antd';
+import { ExportOutlined, ImportOutlined } from '@ant-design/icons';
 
+import { CardinalityLabels } from '../meta-model/enum/CardinalityEnum';
+import { DataInputSelect } from './fields/DataInputSelect';
+import { DataOutputSelect } from './fields/DataOutputSelect';
+import { DataTypeLabels } from '../meta-model/enum/DataTypeEnum';
+import { DataTypeSelect } from './fields/DataTypeSelect';
 import { FormTypeEnum } from '../meta-model/enum/FormTypeEnum';
 import { FunctionSelect } from './fields/FunctionSelect';
 import { MediaFileInput } from './fields/MediaFileInput';
 import React from 'react';
+import styles from './FormField.module.css';
 
 export function FormField({
     businessObject,
@@ -12,6 +19,8 @@ export function FormField({
         type,
         label,
         functionMap,
+        dataCardinality,
+        dataType,
     },
 }) {
     switch (type) {
@@ -46,12 +55,64 @@ export function FormField({
                     name={property}
                     label={label}
                 >
-                    <MediaFileInput />
+                    <MediaFileInput 
+                        businessObject={businessObject}
+                    />
                 </Form.Item>
             );
 
-        case FormTypeEnum.DATA_INPUT:
-        case FormTypeEnum.DATA_OUTPUT:
+        case FormTypeEnum.DATA_INPUT_SELECT:
+            return (
+                <Form.Item
+                    name={property}
+                    label={
+                        <span>
+                            {label}
+                            <Typography.Text type="secondary" className={styles.dataInputOutputSubTitle}>
+                                <span><ImportOutlined className={styles.dataInputIcon} /> Dateneingabe</span>
+                                <span>Typ: {DataTypeLabels[dataType]}</span>
+                                <span>Kardinalität: {CardinalityLabels[dataCardinality]}</span>
+                            </Typography.Text>
+                        </span>
+                    }
+                >
+                    <DataInputSelect 
+                        businessObject={businessObject}
+                    />
+                </Form.Item>
+            );
+
+        case FormTypeEnum.DATA_OUTPUT_SELECT:
+            return (
+                <Form.Item
+                    name={property}
+                    label={
+                        <span>
+                            {label}
+                            <Typography.Text type="secondary" className={styles.dataInputOutputSubTitle}>
+                                <span><ExportOutlined className={styles.dataOutputIcon} /> Datenausgabe</span>
+                                <span>Typ: {DataTypeLabels[dataType]}</span>
+                                <span>Kardinalität: {CardinalityLabels[dataCardinality]}</span>
+                            </Typography.Text>
+                        </span>
+                    }
+                >
+                    <DataOutputSelect
+                        businessObject={businessObject}
+                    />
+                </Form.Item>
+            );
+
+        case FormTypeEnum.DATA_TYPE_SELECT:
+            return (
+                <Form.Item
+                    name={property}
+                    label={label}
+                >
+                    <DataTypeSelect />
+                </Form.Item>
+            );
+
         case FormTypeEnum.TEXT:
             return (
                 <Form.Item

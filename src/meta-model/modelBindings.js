@@ -7,6 +7,7 @@ import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 
+//  order of fields dictate visual order in properties panel
 export const modelBindings = [
     {
         // global rules
@@ -50,10 +51,37 @@ export const modelBindings = [
     },
     {
         appliesTo: [
+            "bpmn:DataObject",
+        ],
+        fields: [
+            {
+                property: "isCollection",
+                type: FormTypeEnum.CHECKBOX,
+                label: "Kann mehrere Elemente speichern"
+            },
+        ],
+        extensions: [
+            "pb:DataObjectExtension"
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:DataObjectExtension",
+        ],
+        fields: [
+            {
+                property: "dataType",
+                type: FormTypeEnum.DATA_TYPE_SELECT,
+                label: "Datentyp"
+            },
+        ],
+    },
+    {
+        appliesTo: [
             "bpmn:ManualTask",
         ],
         extensions: [
-            "pb:ManualTaskExtension"
+            "pb:MediaText"
         ]
     },
     {
@@ -79,21 +107,6 @@ export const modelBindings = [
         rules: [
             requiredProperties(['function']),
         ]
-    },
-    {
-        appliesTo: [
-            "pb:ManualTaskExtension",
-        ],
-        fields: [
-            {
-                property: "function",
-                type: FormTypeEnum.FUNCTION_SELECT,
-                label: "Funktion",
-                functionMap: {
-                    "pb:MediaText": "Beschreibung / Medien anzeigen",
-                }
-            }
-        ],
     },
     {
         appliesTo: [
@@ -155,24 +168,12 @@ export const modelBindings = [
     },
     {
         appliesTo: [
-            "bpmn:DataObject",
-        ],
-        fields: [
-            {
-                property: "isCollection",
-                type: FormTypeEnum.CHECKBOX,
-                label: "Kann mehrere Elemente speichern"
-            },
-        ]
-    },
-    {
-        appliesTo: [
             "pb:ApiInputFunction",
         ],
         fields: [
             {
                 property: "transactionInput",
-                type: FormTypeEnum.DATA_INPUT,
+                type: FormTypeEnum.DATA_INPUT_SELECT,
                 label: "Datenbanktransaktion",
                 dataType: DataTypeEnum.DATABASE_TRANSACTION,
                 dataCardinality: CardinalityEnum.ONE,
@@ -186,7 +187,7 @@ export const modelBindings = [
         fields: [
             {
                 property: "transactionOutput",
-                type: FormTypeEnum.DATA_OUTPUT,
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
                 label: "Datenbanktransaktion",
                 dataType: DataTypeEnum.DATABASE_TRANSACTION,
                 dataCardinality: CardinalityEnum.ONE,
@@ -200,9 +201,9 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundInformationInput",
-                type: FormTypeEnum.DATA_INPUT,
+                type: FormTypeEnum.DATA_INPUT_SELECT,
                 label: "Wundinformationen",
-                dataType: DataTypeEnum.WOUND_INFORMATION,
+                dataType: DataTypeEnum.WOUND_DATA,
                 dataCardinality: CardinalityEnum.ONE,
             },
         ]

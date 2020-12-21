@@ -1,0 +1,10 @@
+.dataInputIcon {
+    transform: scale(-1, 1);
+}
+
+.radioGroup > label {
+    display: block;
+    margin: 0;
+    width: 100%;
+    white-space: normal;
+}

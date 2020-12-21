@@ -28,6 +28,7 @@ export function FunctionSelect({
 
     return (
         <Select
+            placeholder="Funktion wählen..."
             options={options}
             value={selected?.value}
             onChange={handleChange}
