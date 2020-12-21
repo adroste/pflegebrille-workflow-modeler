@@ -9,7 +9,8 @@ function getAssets(bpmnjs) {
         ?.getDefinitions()
         ?.get('extensionElements')
         ?.get('values')
-        ?.filter(element => is(element, 'pb:Asset'))
+        ?.find(element => is(element, 'pb:Assets'))
+        ?.assets
     ) || [];
 }
 
@@ -22,7 +23,7 @@ export function useAssets() {
             return;
 
         const handleChange = ({ elements }) => {
-            if (elements.some(elem => isAny(elem, ['bpmn:Definitions', 'pb:Asset']))) {
+            if (elements.some(elem => isAny(elem, ['bpmn:Definitions', 'pb:Assets', 'pb:Asset']))) {
                 setAssets(getAssets(bpmnjs));
             }
         };
@@ -37,6 +38,6 @@ export function useAssetById(id) {
     const assets = useAssets();
 
     return useMemo(() => ({
-        element: assets.find(asset => asset.id === id)
+        element: id && assets.find(asset => asset.id === id)
     }), [assets, id]);
 }

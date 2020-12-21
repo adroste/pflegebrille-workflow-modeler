@@ -1,6 +1,5 @@
-import { checkIfRef, is, isAny } from './util';
-
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
+import { is } from './util';
 
 export const noUnusedAssets = () => ({
     category: RuleCategoryEnum.WARN,
@@ -10,7 +9,7 @@ export const noUnusedAssets = () => ({
         const refs = [];
 
         function updateReport(reporter) {
-            const unused = assets.filter(({ id }) => !refs.some(rId => rId === id));
+            const unused = assets.filter(({ id }) => refs.every(({ refId }) => refId !== id));
             reporter.messages = [];
             if (unused.length) {
                 unused.forEach(asset => {
@@ -24,21 +23,16 @@ export const noUnusedAssets = () => ({
 
         function check(node, reporter) {
 
-            if (is(node, 'pb:Asset')) {
-                assets.push(node);
+            if (is(node, 'pb:Assets')) {
+                assets.push(...node.get('assets'));
                 updateReport(reporter);
                 return;
             }
 
-            if (!isAny(node, binding.appliesTo))
+            if (is(node, 'pb:AssetRef')) {
+                refs.push(node);
+                updateReport(reporter);
                 return;
-
-            for (let prop in node) {
-                const ref = checkIfRef(node[prop], 'assetRef');
-                if (ref) {
-                    refs.push(ref);
-                    updateReport(reporter);
-                }
             }
         }
 

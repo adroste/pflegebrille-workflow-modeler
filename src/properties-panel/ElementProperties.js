@@ -44,6 +44,7 @@ export function ElementProperties({
         }
 
         Object.keys(updatedValues).forEach(key => {
+            // value = undefined removes the key
             businessObject.set(key, updatedValues[key]);
         });
 

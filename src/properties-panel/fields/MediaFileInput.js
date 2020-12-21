@@ -1,11 +1,11 @@
 import { Button, Modal, Space } from 'antd';
 import { CloseOutlined, FolderOpenOutlined } from '@ant-design/icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
-import { checkIfRef } from '../../meta-model/rules/util';
+import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
 
@@ -13,17 +13,18 @@ export function MediaFileInput({
     onChange,
     value,
 }) {
+    const { moddle } = useContext(modelerContext);
     const [showSelect, setShowSelect] = useState(false);
 
-    const id = checkIfRef(value, 'assetRef');
-    const asset = useAssetById(id);
+    const asset = useAssetById(value?.refId);
 
-    const handleUpload = useCallback(({ element }) => {
-        onChange(`assetRef:${element.id}`);
-    }, [onChange]);
+    const handleChange = useCallback(({ element }) => {
+        const assetRef = moddle.create('pb:AssetRef', { refId: element.id });
+        onChange(assetRef);
+    }, [moddle, onChange]);
 
     const handleRemove = useCallback(() => {
-        onChange(null);
+        onChange(undefined);
         Modal.info({
             centered: true,
             title: 'Datei weiterhin verfügbar.',
@@ -35,10 +36,10 @@ export function MediaFileInput({
         setShowSelect(true);
     }, []);
 
-    const handleSelectFinish = useCallback(({ element }) => {
-        onChange(`assetRef:${element.id}`);
+    const handleSelectFinish = useCallback(asset => {
+        handleChange(asset);
         setShowSelect(false);
-    }, [onChange]);
+    }, [handleChange]);
 
     const handleSelectClose = useCallback(() => {
         setShowSelect(false);
@@ -72,7 +73,7 @@ export function MediaFileInput({
                 ) : (
                     <>
                         <MediaFileUpload
-                            onUpload={handleUpload}
+                            onUpload={handleChange}
                         />
 
                         <Space className={styles.buttons}>

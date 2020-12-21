@@ -1,4 +1,4 @@
-import { checkIfRef, findId, is, isAny } from './util';
+import { findId, is } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
@@ -11,31 +11,26 @@ export const noMissingAssets = () => ({
         };
 
         function getAssets({ moddleRoot }) {
-            console.log(moddleRoot);
             context.assets = (
                 moddleRoot
                 ?.extensionElements
                 ?.values
-                ?.filter(element => is(element, 'pb:Asset'))
+                ?.find(element => is(element, 'pb:Assets'))
+                ?.assets
             ) || [];
         }
 
         function check(node, reporter) {
-            if (!isAny(node, binding.appliesTo))
+            if (!is(node, 'pb:AssetRef'))
                 return;
 
-            for (let prop in node) {
-                const ref = checkIfRef(node[prop], 'assetRef');
-                if (ref) {
-                    if (!context.assets)
-                        getAssets(reporter);
-                    if (!context.assets.some(({ id }) => id === ref))
-                        reporter.report(
-                            findId(node),
-                            `Referenziertes Asset ist nicht mehr verfügbar.`
-                        );
-                }
-            }
+            if (!context.assets)
+                getAssets(reporter);
+            if (context.assets.every(({ id }) => id !== node.refId))
+                reporter.report(
+                    findId(node),
+                    `Referenziertes Asset ist nicht mehr verfügbar.`
+                );
         }
 
         return { check };

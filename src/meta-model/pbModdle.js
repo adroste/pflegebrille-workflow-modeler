@@ -55,6 +55,9 @@ export const pbModdle = {
         },
         {
             name: "Assets",
+            superClass: [
+                "Element"
+            ],
             properties: [
                 {
                     name: "assets",
@@ -141,10 +144,8 @@ export const pbModdle = {
                     type: "String",
                 },
                 {
-                    // TODO
                     name: "mediaAssetRef",
-                    isAttr: true,
-                    type: "String",
+                    type: "AssetRef",
                 }
             ]
         },

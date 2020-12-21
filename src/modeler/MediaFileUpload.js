@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useMemo, useRef, useState } from 'react
 import Compressor from 'compressorjs';
 import { UploadOutlined } from '@ant-design/icons';
 import { appContext } from '../base/AppContextProvider';
+import { is } from '../meta-model/rules/util';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './MediaFileUpload.module.css';
 import { v4 as uuidv4 } from 'uuid';
@@ -39,16 +40,12 @@ export function MediaFileUpload({ onUpload }) {
             }));
 
             const definitions = bpmnjs.getDefinitions();
-            let extElements = definitions.get('extensionElements');
-            if (!extElements) {
-                extElements = moddle.create('bpmn:ExtensionElements');
-                extElements.$parent = definitions;
-                definitions.set('extensionElements', extElements);
-            }
-            extElements.get('values').push(asset);
-            asset.$parent = extElements;
+            const extElements = definitions.extensionElements;
+            const assets = extElements.get('values').find(element => is(element, 'pb:Assets'));
+            assets.get('assets').push(asset);
+            asset.$parent = assets;
             
-            eventBus.fire('elements.changed', { elements: [definitions, extElements, asset] })
+            eventBus.fire('elements.changed', { elements: [definitions, extElements, assets, asset] });
 
             onUpload({ element: asset });
         };

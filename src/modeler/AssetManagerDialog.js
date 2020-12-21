@@ -8,6 +8,7 @@ import { MediaFileUpload } from './MediaFileUpload';
 import { MediaPreview } from './MediaPreview';
 import { RenameAssetDialog } from './RenameAssetDialog';
 import { appContext } from '../base/AppContextProvider';
+import { is } from '../meta-model/rules/util';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './AssetManagerDialog.module.css';
 import { useIssues } from './useIssues';
@@ -91,9 +92,10 @@ export function AssetManagerDialog({
         const deleteAsset = () => {
             const definitions = bpmnjs.getDefinitions();
             const extElements = definitions.extensionElements;
-            extElements.values = extElements.values.filter(el => el !== asset.element);
+            const assets = extElements.get('values').find(element => is(element, 'pb:Assets'));
+            assets.assets = assets.assets?.filter(el => el !== asset.element);
 
-            eventBus.fire('elements.changed', { elements: [definitions, extElements] })
+            eventBus.fire('elements.changed', { elements: [definitions, extElements, assets] });
 
             setAssetData(data => {
                 const newData = { ...data };
