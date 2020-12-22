@@ -34,10 +34,20 @@ export function isAny(node, types) {
     });
 }
 
-export function findId(node) {
+export function findId(node, withDi = false) {
 
     function search(node) {
-        return node ? (node.id || search(node.$parent)) : null;
+        if (!node)
+            return null;
+
+        if (
+            !node.id
+            || (withDi && !node.di)
+        ) {
+            return search(node.$parent);
+        }
+
+        return node.id;
     }
 
     const id = search(node);

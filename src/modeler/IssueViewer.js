@@ -2,13 +2,15 @@ import { Button, Modal, Result } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { IssueList } from './IssueList';
+import { findId } from '../meta-model/rules/util';
+import { findModdleElementById } from '../util';
 import { getBBox } from 'diagram-js/lib/util/Elements';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './IssueViewer.module.css';
 import { useIssues } from './useIssues';
 
 export function IssueViewer() {
-    const { linting, canvas, elementRegistry, selection } = useContext(modelerContext);
+    const { bpmnjs, linting, canvas, elementRegistry, selection } = useContext(modelerContext);
     const [open, setOpen] = useState(false);
     const issues = useIssues();
 
@@ -23,12 +25,16 @@ export function IssueViewer() {
     const handleJumpTo = useCallback(id => {
         setOpen(false);
 
-        const element = elementRegistry.get(id);
-        if (!element)
+        const element = findModdleElementById(bpmnjs.getDefinitions(), id);
+        const visualId = findId(element, true);
+        if (!visualId)
+            return;
+        const visualElement = elementRegistry.get(visualId);
+        if (!visualElement || canvas.getRootElement() === visualElement)
             return;
 
         const viewbox = canvas.viewbox();
-        const box = getBBox(element);
+        const box = getBBox(visualElement);
 
         const newViewbox = {
             x: (box.x + box.width / 2) - viewbox.outer.width / 2,
@@ -39,8 +45,8 @@ export function IssueViewer() {
         canvas.viewbox(newViewbox);
         // canvas.zoom(viewbox.scale); 
 
-        selection.select(element);
-    }, [canvas, elementRegistry, selection]);
+        selection.select(visualElement);
+    }, [bpmnjs, canvas, elementRegistry, selection]);
 
     const renderIssues = () => {
         const ids = Object.keys(issues);
