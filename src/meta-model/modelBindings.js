@@ -2,6 +2,8 @@ import { CardinalityEnum } from './enum/CardinalityEnum';
 import { DataTypeEnum } from './enum/DataTypeEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
+import { labelRequired } from './rules/labelRequired';
+import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
@@ -36,9 +38,23 @@ export const modelBindings = [
                 'bpmn:Category',
                 'bpmn:Group',
                 'bpmn:CategoryValue',
+                'bpmn:ExclusiveGateway',
             ]),
             noUnusedAssets(),
             noMissingAssets(),
+            labelRequiredOnForking(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:ManualTask',
+            'bpmn:UserTask',
+            'bpmn:ServiceTask',
+            'bpmn:DataObjectReference',
+            'bpmn:DataStoreReference',
+        ],
+        rules: [
+            labelRequired(),
         ]
     },
     {
