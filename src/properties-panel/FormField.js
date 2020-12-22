@@ -17,7 +17,7 @@ export function FormField({
         property,
         type,
         label,
-        functionMap,
+        functionOptions,
         dataCardinality,
         dataType,
     },
@@ -43,7 +43,7 @@ export function FormField({
                 >
                     <FunctionSelect
                         businessObject={businessObject}
-                        functionMap={functionMap}
+                        functionOptions={functionOptions}
                     />
                 </Form.Item>
             );

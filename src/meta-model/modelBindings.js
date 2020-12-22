@@ -133,15 +133,30 @@ export const modelBindings = [
                 property: "function",
                 type: FormTypeEnum.FUNCTION_SELECT,
                 label: "Funktion",
-                functionMap: {
-                    "pb:ModifyDataCollection": "Datenobjekt bearbeiten (für mehrere Elemente)",
-                    "pb:GetMedicationData": "[GET] Medikationen",
-                    "pb:GetPatientData": "[GET] Patientendaten",
-                    "pb:GetWoundHistory": "[GET] Wundverlauf",
-                    "pb:GetDiagnosisHistory": "[GET] Diagnosen",
-                    "pb:PostWoundData": "[POST] Wundinformationen",
-                    "pb:PostWoundImage": "[POST] Wundbild",
-                }
+                functionOptions: [
+                    {
+                        group: "Lokale Datenobjekte bearbeiten",
+                        options: [
+                            { type: "pb:ModifyDataCollection", label: "Datenobjekt bearbeiten (für mehrere Elemente)" }
+                        ]
+                    },
+                    {
+                        group: "Daten abfragen",
+                        options: [
+                            { type: "pb:GetMedicationData", label: "[GET] Medikationen" },
+                            { type: "pb:GetPatientData", label: "[GET] Patientendaten" },
+                            { type: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
+                            { type: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
+                        ]
+                    },
+                    {
+                        group: "Daten senden",
+                        options: [
+                            { type: "pb:PostWoundData", label: "[POST] Wundinformationen" },
+                            { type: "pb:PostWoundImage", label: "[POST] Wundbild" },
+                        ]
+                    }
+                ]
             }
         ],
     },
@@ -154,11 +169,11 @@ export const modelBindings = [
                 property: "function",
                 type: FormTypeEnum.FUNCTION_SELECT,
                 label: "Funktion",
-                functionMap: {
-                    "pb:PainScale": "Schmerzwert abfragen",
-                    "pb:WoundPicture": "Wundfoto aufnehmen",
-                    "pb:WoundDetection": "Wunde vermessen",
-                }
+                functionOptions: [
+                    { type: "pb:PainScale", label: "Schmerzwert abfragen" },
+                    { type: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
+                    { type: "pb:WoundDetection", label: "Wunde vermessen" },
+                ]
             }
         ],
     },
