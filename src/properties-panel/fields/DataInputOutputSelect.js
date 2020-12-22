@@ -8,7 +8,8 @@ import styles from './DataInputOutputSelect.module.css';
 
 const NO_DATA_VALUE = '__noData__';
 
-export function DataOutputSelect({
+export function DataInputOutputSelect({
+    isInput,
     businessObject,
     onChange,
     value,
@@ -19,12 +20,18 @@ export function DataOutputSelect({
 
     const options = [
         {
-            label: 'Keine Ausgabe',
+            label: isInput ? 'Keine Eingabe' : 'Keine Ausgabe',
             value: NO_DATA_VALUE,
         }
     ];
-    activity?.dataOutputAssociations?.forEach(cur => {
-        const { name, id } = cur.targetRef;
+
+    let dataAssociations;
+    if (isInput)
+        dataAssociations = activity?.dataInputAssociations?.map(da => da.sourceRef[0]);
+    else
+        dataAssociations = activity?.dataOutputAssociations?.map(da => da.targetRef);
+
+    dataAssociations?.forEach(({ name, id }) => {
         options.push({
             label: name || id,
             value: id,
@@ -39,11 +46,15 @@ export function DataOutputSelect({
         if (selectedValue === NO_DATA_VALUE) {
             onChange(undefined);
         } else {
-            const dataOutputRef = moddle.create('pb:DataOutputRef', { refId: selectedValue });
-            dataOutputRef.$parent = businessObject;
-            onChange(dataOutputRef);
+            let dataRef = value;
+            if (!dataRef) {
+                dataRef = moddle.create(isInput ? 'pb:DataInputRef' : 'pb:DataOutputRef');
+                dataRef.$parent = businessObject;
+            }
+            dataRef.refId = selectedValue;
+            onChange(dataRef);
         }
-    }, [businessObject, moddle, onChange]);
+    }, [businessObject, isInput, moddle, onChange, value]);
 
     return (
         <>
