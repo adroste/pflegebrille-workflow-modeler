@@ -145,7 +145,7 @@ class PaletteProvider {
                 // translate('Create EndEvent')
             ),
             'create.exclusive-gateway': createAction(
-                'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-none',
+                'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-xor',
                 // translate('Create Gateway')
             ),
             'create.manual-task': createAction(
