@@ -1,4 +1,4 @@
-import { Modal, Radio } from 'antd';
+import { Divider, Modal, Radio } from 'antd';
 import React, { useCallback, useState } from 'react';
 
 import { CheckOutlined } from '@ant-design/icons';
@@ -46,19 +46,23 @@ export function CreateNewDialog({
             onOk={handleOk}
             cancelText="Abbrechen"
         >
-            <span>Vorlage wählen</span>
             <Radio.Group
                 className={styles.radioGroup}
                 onChange={handleChange}
                 value={template}
                 size="large"
             >
-                {templates.map(({ label }, i) => (
-                    <Radio.Button key={label} className={styles.radio} value={i}>
-                        {template === i && <CheckOutlined />} {label}
-                    </Radio.Button>
+                {templates.map(({ label, separator }, i) => (
+                    separator ?
+                        (
+                            <Divider key={label} orientation="left">{label}</Divider>
+                        ) : (
+                            <Radio.Button key={label} className={styles.radio} value={i} >
+                                { template === i && <CheckOutlined />} {label}
+                            </Radio.Button>
+                        )
                 ))}
             </Radio.Group>
-        </Modal>
+        </Modal >
     );
 }

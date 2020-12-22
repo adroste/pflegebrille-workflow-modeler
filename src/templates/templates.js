@@ -6,6 +6,10 @@ export const templates = [
         label: "Leerer Workflow",
         src: empty,
     },
+    { 
+        label: 'Vorlagen',
+        separator: true,
+    },
     {
         label: 'Mit Patientendaten',
         src: null,
@@ -13,6 +17,10 @@ export const templates = [
     {
         label: 'Mit Patienten- und Wunddaten',
         src: null,
+    },
+    { 
+        label: 'Beispiele',
+        separator: true,
     },
     {
         label: 'Beispielworkflow: Wundmanagement',
