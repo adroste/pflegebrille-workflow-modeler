@@ -5,6 +5,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
+import { is } from '../../meta-model/rules/util';
 import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
@@ -20,10 +21,14 @@ export function MediaFileInput({
     const asset = useAssetById(value?.refId);
 
     const handleChange = useCallback(({ element }) => {
-        const assetRef = moddle.create('pb:AssetRef', { refId: element.id });
-        assetRef.$parent = businessObject;
+        let assetRef = value;
+        if (!assetRef) {
+            assetRef = moddle.create('pb:AssetRef');
+            assetRef.$parent = businessObject;
+        }
+        assetRef.refId = element.id;
         onChange(assetRef);
-    }, [businessObject, moddle, onChange]);
+    }, [businessObject, moddle, onChange, value]);
 
     const handleRemove = useCallback(() => {
         onChange(undefined);
