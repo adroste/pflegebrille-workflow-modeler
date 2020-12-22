@@ -20,6 +20,21 @@ export function findParent(businessObject, type) {
     return search(businessObject);
 }
 
+export function getInnerElements(businessObject) {
+    let innerElements = [];
+    for (let property in businessObject) {
+        if (businessObject.hasOwnProperty(property)) {
+            const el = businessObject[property];
+            // di property indicates that the element has a rendered shape itself
+            // we want to exclude elements that have their own shape
+            if (el !== null && (typeof el === 'object') && !el.di) 
+                // concat works for arrays and single values
+                innerElements = innerElements.concat(el);
+        }
+    }
+    return innerElements;
+}
+
 // export function traverseModdle(element, cb) {
 //     cb(element);
 

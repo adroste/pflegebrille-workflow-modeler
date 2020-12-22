@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useMemo } from 'react';
+import { getInnerElements, getModelBindingsForElement } from '../util';
 
 import { Form } from 'antd';
 import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { getModelBindingsForElement } from '../util';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './ElementProperties.module.css';
 
@@ -15,19 +15,7 @@ export function ElementProperties({
     const [form] = Form.useForm();
 
     const businessObject = getBusinessObject(element);
-
-    let innerElements = [];
-    for (let property in businessObject) {
-        if (businessObject.hasOwnProperty(property)) {
-            const el = businessObject[property];
-            // di property indicates that the element has a rendered shape itself
-            // we want to exclude elements that have their own shape
-            if (el !== null && (typeof el === 'object') && !el.di) 
-                // concat works for arrays and single values
-                innerElements = innerElements.concat(el);
-        }
-    }
-
+    const innerElements = getInnerElements(businessObject);
     const bindings = getModelBindingsForElement(businessObject);
 
     const initialValues = useMemo(() => (

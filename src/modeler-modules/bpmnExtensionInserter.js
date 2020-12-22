@@ -1,6 +1,7 @@
 import { is, isAny } from '../meta-model/rules/util';
 
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { getInnerElements } from '../util';
 import { modelBindings } from '../meta-model/modelBindings';
 
 function BpmnExtensionInserter(
@@ -12,10 +13,12 @@ function BpmnExtensionInserter(
         const bo = getBusinessObject(element);
 
         // recursive for references
-        const descriptor = bo.$descriptor;
-        descriptor.properties.forEach(({ isReference, name }) => {
-            if (isReference && bo[name])
-                check({ element: bo[name] });
+        const innerElements = getInnerElements(bo);
+        innerElements.forEach(element => {
+            if (Array.isArray(element))
+                element.forEach(element => check({ element }));
+            else
+                check({ element });
         });
 
         const extensionTypes = modelBindings.reduce((extensionTypes, { appliesTo, extensions }) => {
