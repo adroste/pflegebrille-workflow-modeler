@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useMemo } from 'react';
+import { getInnerElements, getModelBindingsForElement } from '../util';
 
 import { Form } from 'antd';
 import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { getModelBindingsForElement } from '../util';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './ElementProperties.module.css';
 
@@ -15,16 +15,8 @@ export function ElementProperties({
     const [form] = Form.useForm();
 
     const businessObject = getBusinessObject(element);
+    const innerElements = getInnerElements(businessObject);
     const bindings = getModelBindingsForElement(businessObject);
-    const descriptor = businessObject.$descriptor;
-    const containedElements = descriptor?.properties.reduce((containedElements, p) => {
-        if (!p.isAttr && !p.isReference && p.type !== 'String') {
-            const el = businessObject[p.name];
-            if (el)
-                return containedElements.concat(el);
-        }
-        return containedElements;
-    }, []);
 
     const initialValues = useMemo(() => (
         bindings.reduce((initialValues, cur) => {
@@ -67,7 +59,7 @@ export function ElementProperties({
                 )))}
             </Form>
 
-            {containedElements?.map((element, i) => (element?.$type || null) && (
+            {innerElements?.map((element, i) => (element?.$type || null) && (
                 <ElementProperties
                     key={element.id || `${element.$type}_${i}`}
                     baseElement={baseElement}
