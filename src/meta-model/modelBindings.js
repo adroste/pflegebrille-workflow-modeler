@@ -5,6 +5,7 @@ import { allowedElementTypes } from './rules/allowedElementTypes';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noMissingAssets } from './rules/noMissingAsset';
+import { noMissingDataType } from './rules/noMissingDataType';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
@@ -40,9 +41,10 @@ export const modelBindings = [
                 'bpmn:CategoryValue',
                 'bpmn:ExclusiveGateway',
             ]),
+            labelRequiredOnForking(),
             noUnusedAssets(),
             noMissingAssets(),
-            labelRequiredOnForking(),
+            noMissingDataType(),
         ]
     },
     {
