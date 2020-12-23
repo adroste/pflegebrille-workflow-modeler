@@ -29,13 +29,13 @@ export function FunctionSelect({
             {functionOptions.map(({ type, label, group, options }) => (
                 options ?
                     (
-                        <Select.OptGroup label={group}>
+                        <Select.OptGroup key={group} label={group}>
                             {options.map(({ type, label }) => (
-                                <Select.Option value={type}>{label}</Select.Option>
+                                <Select.Option key={label} value={type}>{label}</Select.Option>
                             ))}
                         </Select.OptGroup>
                     ) : (
-                        <Select.Option value={type}>{label}</Select.Option>
+                        <Select.Option key={label} value={type}>{label}</Select.Option>
                     )
             ))}
         </Select>
