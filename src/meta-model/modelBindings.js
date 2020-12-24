@@ -43,6 +43,8 @@ export const modelBindings = [
                 'bpmn:Group',
                 'bpmn:CategoryValue',
                 'bpmn:ExclusiveGateway',
+                'bpmn:Association',
+                'bpmn:TextAnnotation',
             ]),
             labelRequiredOnForking(),
             noUnusedAssets(),
@@ -70,6 +72,23 @@ export const modelBindings = [
         ],
         extensions: [
             "pb:Assets"
+        ]
+    },
+    {
+        appliesTo: [
+            "bpmn:TextAnnotation"
+        ],
+        fields: [
+            // do not show this property in properties panel
+            // as auto size feature do not work this way without furhter handling
+            {
+                property: "text",
+                type: null, // null = do not show in properties panel
+                label: "Text",
+            },
+        ],
+        rules: [
+            requiredAnyProperties(['text'], false),
         ]
     },
     {

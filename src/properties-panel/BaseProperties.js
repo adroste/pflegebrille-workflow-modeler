@@ -1,6 +1,7 @@
 import { Form, Input } from 'antd';
 import React, { useCallback, useContext, useEffect } from 'react';
 
+import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 
 export function BaseProperties({
@@ -9,19 +10,14 @@ export function BaseProperties({
     const { modeling } = useContext(modelerContext);
     const [form] = Form.useForm();
 
+    const businessObject = getBusinessObject(element);
+    const hasName = businessObject.$descriptor?.properties.find(p => p.name === 'name');
+
     useEffect(() => {
         form.setFieldsValue({
-            id: element.id,
-            name: element.businessObject.name,
+            name: businessObject.name,
         });
     });
-
-    const handleIdChange = useCallback(e => {
-        // todo check id is unique and not empty or disable
-        modeling.updateProperties(element, {
-            'id': e.target.value
-        });
-    }, [element, modeling]);
 
     const handleNameChange = useCallback((e) => {
         modeling.updateLabel(element, e.target.value);
@@ -32,19 +28,18 @@ export function BaseProperties({
             form={form}
             layout='vertical'
         >
-            <Form.Item
-                name="id"
-                label="ID"
-            >
-                <Input disabled onChange={handleIdChange} />
+            <Form.Item>
+                ID: {element.id}
             </Form.Item>
 
-            <Form.Item
-                name="name"
-                label="Name"
-            >
-                <Input onChange={handleNameChange} />
-            </Form.Item>
+            {hasName &&
+                <Form.Item
+                    name="name"
+                    label="Name"
+                >
+                    <Input onChange={handleNameChange} />
+                </Form.Item>
+            }
         </Form>
     );
 }
