@@ -2,7 +2,7 @@ import { Radio, Typography } from 'antd';
 import React, { useCallback, useContext } from 'react';
 
 import { WarningOutlined } from '@ant-design/icons';
-import { findParent } from '../../util';
+import { findParent } from '../../meta-model/rules/util';
 import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './DataInputOutputSelect.module.css';
 
