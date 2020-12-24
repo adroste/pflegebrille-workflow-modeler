@@ -8,6 +8,7 @@ import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
 import { noUnusedAssets } from './rules/noUnusedAssets';
+import { noUnusedDataInputOutput } from './rules/noUnusedDataInputOutput';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 
@@ -48,6 +49,7 @@ export const modelBindings = [
             noMissingAssets(),
             noMissingDataType(),
             correctDataInputOutput(),
+            noUnusedDataInputOutput(),
         ]
     },
     {

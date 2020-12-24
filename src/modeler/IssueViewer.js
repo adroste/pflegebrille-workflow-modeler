@@ -1,9 +1,8 @@
 import { Button, Modal, Result } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { findId, findModdleElementById } from '../meta-model/rules/util';
 
 import { IssueList } from './IssueList';
-import { findId } from '../meta-model/rules/util';
-import { findModdleElementById } from '../util';
 import { getBBox } from 'diagram-js/lib/util/Elements';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './IssueViewer.module.css';

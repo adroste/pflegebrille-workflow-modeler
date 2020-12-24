@@ -80,3 +80,42 @@ export function findFieldBinding(node, predicate) {
 export function findLabel(node, property) {
     return findFieldBinding(node, field => field.property === property)?.label || property;
 }
+
+export function traverseModdle(node, cb) {
+    if (cb(node))
+        return;
+
+    let descriptor = node.$descriptor;
+
+    if (descriptor.isGeneric)
+        return;
+
+    let containedProperties = descriptor.properties.filter(p => {
+        return !p.isAttr && !p.isReference && p.type !== 'String';
+    });
+
+    containedProperties.forEach(p => {
+        if (p.name in node) {
+            const propertyValue = node[p.name];
+
+            if (p.isMany) {
+                propertyValue.forEach(child => {
+                    traverseModdle(child, cb);
+                });
+            } else {
+                traverseModdle(propertyValue, cb);
+            }
+        }
+    });
+}
+
+export function findModdleElementById(moddleRoot, id) {
+    let found = null;
+    traverseModdle(moddleRoot, (node) => {
+        if (node.id === id) {
+            found = node;
+            return true;
+        }
+    });
+    return found;
+}
