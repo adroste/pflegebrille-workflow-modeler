@@ -82,6 +82,7 @@ export const pbModdle = {
         },
         {
             name: "DataInputOutputRef",
+            isAbstract: true,
             properties: [
                 {
                     name: "refId",
