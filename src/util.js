@@ -8,20 +8,19 @@ export function getModelBindingsForElement(element) {
     return modelBindings.filter(({ appliesTo }) => isAny(bo, appliesTo));
 }
 
-
 export function getInnerElements(businessObject) {
-    let innerElements = [];
-    for (let property in businessObject) {
-        if (businessObject.hasOwnProperty(property)) {
-            const el = businessObject[property];
-            // di property indicates that the element has a rendered shape itself
-            // we want to exclude elements that have their own shape
-            if (el !== null && (typeof el === 'object') && !el.di) 
-                // concat works for arrays and single values
-                innerElements = innerElements.concat(el);
-        }
-    }
-    return innerElements;
+    const descriptor = businessObject.$descriptor;
+    const innerElements = descriptor?.properties.reduce((innerElements, p) => {
+        const el = businessObject[p.name];
+        if (el !== null && (typeof el === 'object'))
+            // concat works for arrays and single values
+            return innerElements.concat(el);
+        return innerElements;
+    }, []);
+
+    // di property indicates that the element has a rendered shape itself
+    // we want to exclude elements that have their own shape
+    return innerElements.filter(el => !el.di);
 }
 
 export function traverseModdle(element, cb) {
