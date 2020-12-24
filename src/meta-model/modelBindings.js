@@ -2,6 +2,7 @@ import { CardinalityEnum } from './enum/CardinalityEnum';
 import { DataTypeEnum } from './enum/DataTypeEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
+import { correctDataInputOutput } from './rules/correctDataInputOutput';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noMissingAssets } from './rules/noMissingAsset';
@@ -10,7 +11,8 @@ import { noUnusedAssets } from './rules/noUnusedAssets';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 
-//  order of fields dictate visual order in properties panel
+// order of fields dictate visual order in properties panel
+// DO NOT overwrite properties, rules do not respect inheritance order
 export const modelBindings = [
     {
         // global rules
@@ -45,6 +47,7 @@ export const modelBindings = [
             noUnusedAssets(),
             noMissingAssets(),
             noMissingDataType(),
+            correctDataInputOutput(),
         ]
     },
     {
