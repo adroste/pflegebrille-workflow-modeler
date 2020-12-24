@@ -8,17 +8,6 @@ export function getModelBindingsForElement(element) {
     return modelBindings.filter(({ appliesTo }) => isAny(bo, appliesTo));
 }
 
-export function findParent(businessObject, type) {
-    function search(bo) {
-        if (!bo)
-            return null;
-        if (is(bo, type))
-            return bo;
-        return search(bo.$parent);
-    }
-
-    return search(businessObject);
-}
 
 export function getInnerElements(businessObject) {
     let innerElements = [];

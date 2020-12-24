@@ -34,6 +34,18 @@ export function isAny(node, types) {
     });
 }
 
+export function findParent(node, type) {
+    function search(node) {
+        if (!node)
+            return null;
+        if (is(node, type))
+            return node;
+        return search(node.$parent);
+    }
+
+    return search(node);
+}
+
 export function findId(node, withDi = false) {
 
     function search(node) {
@@ -56,13 +68,15 @@ export function findId(node, withDi = false) {
     return id;
 }
 
-export function findLabel(node, property) {
+export function findFieldBinding(node, predicate) {
     const bindings = modelBindings.filter(({ appliesTo }) => isAny(node, appliesTo));
-    let field;
     for (let binding of bindings) {
-        field = binding.fields?.find(field => field.property === property);
+        let field = binding.fields?.find(predicate);
         if (field)
-            break;
+            return field;
     }
-    return field?.label || property;
+}
+
+export function findLabel(node, property) {
+    return findFieldBinding(node, field => field.property === property)?.label || property;
 }
