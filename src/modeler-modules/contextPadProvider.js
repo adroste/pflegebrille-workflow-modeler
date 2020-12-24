@@ -13,13 +13,11 @@ class ContextPadProvider {
     constructor(
         config,
         injector,
-        eventBus,
         contextPad,
         modeling,
         elementFactory,
         connect,
         create,
-        popupMenu,
         canvas,
         rules,
         translate
@@ -31,7 +29,6 @@ class ContextPadProvider {
         this.elementFactory = elementFactory;
         this.connect = connect;
         this.create = create;
-        this.popupMenu = popupMenu;
         this.canvas = canvas;
         this.rules = rules;
         this.translate = translate;
@@ -42,38 +39,20 @@ class ContextPadProvider {
             this.autoPlace = injector.get('autoPlace', false);
         }
 
-        eventBus.on('create.end', 250, function (event) {
-            const shape = event.context.shape;
-
-            if (!hasPrimaryModifier(event) || !contextPad.isOpen(shape)) {
-                return;
-            }
-
-            const entries = contextPad.getEntries(shape);
-
-            if (entries.replace) {
-                entries.replace.action.click(event, shape);
-            }
-        });
     }
 
     getContextPadEntries(element) {
         const {
-            contextPad,
             modeling,
             elementFactory,
             connect,
             create,
-            popupMenu,
-            canvas,
             rules,
             autoPlace,
             translate
         } = this;
 
         const actions = {};
-        // todo short circuit
-        return actions;
 
         if (element.type === 'label') {
             return actions;
@@ -88,28 +67,6 @@ class ContextPadProvider {
         function removeElement(e) {
             modeling.removeElements([element]);
         }
-
-        function getReplaceMenuPosition(element) {
-
-            const Y_OFFSET = 5;
-
-            const diagramContainer = canvas.getContainer(),
-                pad = contextPad.getPad(element).html;
-
-            const diagramRect = diagramContainer.getBoundingClientRect(),
-                padRect = pad.getBoundingClientRect();
-
-            const top = padRect.top - diagramRect.top;
-            const left = padRect.left - diagramRect.left;
-
-            const pos = {
-                x: left,
-                y: top + padRect.height + Y_OFFSET
-            };
-
-            return pos;
-        }
-
 
         /**
          * Create an append action
@@ -155,183 +112,41 @@ class ContextPadProvider {
             };
         }
 
-        function splitLaneHandler(count) {
-
-            return function (event, element) {
-
-                // actual split
-                modeling.splitLane(element, count);
-
-                // refresh context pad after split to
-                // get rid of split icons
-                contextPad.open(element, true);
-            };
-        }
-
-
-        if (isAny(businessObject, ['bpmn:Lane', 'bpmn:Participant']) && isExpanded(businessObject)) {
-
-            const childLanes = getChildLanes(element);
-
-            assign(actions, {
-                'lane-insert-above': {
-                    group: 'lane-insert-above',
-                    className: 'bpmn-icon-lane-insert-above',
-                    title: translate('Add Lane above'),
-                    action: {
-                        click: function (event, element) {
-                            modeling.addLane(element, 'top');
-                        }
-                    }
-                }
-            });
-
-            if (childLanes.length < 2) {
-
-                if (element.height >= 120) {
-                    assign(actions, {
-                        'lane-divide-two': {
-                            group: 'lane-divide',
-                            className: 'bpmn-icon-lane-divide-two',
-                            title: translate('Divide into two Lanes'),
-                            action: {
-                                click: splitLaneHandler(2)
-                            }
-                        }
-                    });
-                }
-
-                if (element.height >= 180) {
-                    assign(actions, {
-                        'lane-divide-three': {
-                            group: 'lane-divide',
-                            className: 'bpmn-icon-lane-divide-three',
-                            title: translate('Divide into three Lanes'),
-                            action: {
-                                click: splitLaneHandler(3)
-                            }
-                        }
-                    });
-                }
-            }
-
-            assign(actions, {
-                'lane-insert-below': {
-                    group: 'lane-insert-below',
-                    className: 'bpmn-icon-lane-insert-below',
-                    title: translate('Add Lane below'),
-                    action: {
-                        click: function (event, element) {
-                            modeling.addLane(element, 'bottom');
-                        }
-                    }
-                }
-            });
-
-        }
 
         if (is(businessObject, 'bpmn:FlowNode')) {
-
-            if (is(businessObject, 'bpmn:EventBasedGateway')) {
+            if (!is(businessObject, 'bpmn:EndEvent') &&
+                !businessObject.isForCompensation &&
+                !isEventType(businessObject, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition') &&
+                !isEventSubProcess(businessObject)) {
 
                 assign(actions, {
-                    'append.receive-task': appendAction(
-                        'bpmn:ReceiveTask',
-                        'bpmn-icon-receive-task',
-                        translate('Append ReceiveTask')
+                    'append.append-manual-task': appendAction(
+                        'bpmn:ManualTask',
+                        'bpmn-icon-manual-task',
+                        // translate('Append Task')
                     ),
-                    'append.message-intermediate-event': appendAction(
-                        'bpmn:IntermediateCatchEvent',
-                        'bpmn-icon-intermediate-event-catch-message',
-                        translate('Append MessageIntermediateCatchEvent'),
-                        { eventDefinitionType: 'bpmn:MessageEventDefinition' }
+                    'append.append-user-task': appendAction(
+                        'bpmn:UserTask',
+                        'bpmn-icon-user-task',
+                        // translate('Append Task')
                     ),
-                    'append.timer-intermediate-event': appendAction(
-                        'bpmn:IntermediateCatchEvent',
-                        'bpmn-icon-intermediate-event-catch-timer',
-                        translate('Append TimerIntermediateCatchEvent'),
-                        { eventDefinitionType: 'bpmn:TimerEventDefinition' }
+                    'append.append-service-task': appendAction(
+                        'bpmn:ServiceTask',
+                        'bpmn-icon-service-task',
+                        // translate('Append Task')
                     ),
-                    'append.condition-intermediate-event': appendAction(
-                        'bpmn:IntermediateCatchEvent',
-                        'bpmn-icon-intermediate-event-catch-condition',
-                        translate('Append ConditionIntermediateCatchEvent'),
-                        { eventDefinitionType: 'bpmn:ConditionalEventDefinition' }
+                    'append.end-event': appendAction(
+                        'bpmn:EndEvent',
+                        'bpmn-icon-end-event-none',
+                        // translate('Append EndEvent')
                     ),
-                    'append.signal-intermediate-event': appendAction(
-                        'bpmn:IntermediateCatchEvent',
-                        'bpmn-icon-intermediate-event-catch-signal',
-                        translate('Append SignalIntermediateCatchEvent'),
-                        { eventDefinitionType: 'bpmn:SignalEventDefinition' }
-                    )
+                    'append.gateway': appendAction(
+                        'bpmn:ExclusiveGateway',
+                        'bpmn-icon-gateway-xor',
+                        // translate('Append Gateway')
+                    ),
                 });
-            } else
-
-                if (isEventType(businessObject, 'bpmn:BoundaryEvent', 'bpmn:CompensateEventDefinition')) {
-
-                    assign(actions, {
-                        'append.compensation-activity':
-                            appendAction(
-                                'bpmn:Task',
-                                'bpmn-icon-task',
-                                translate('Append compensation activity'),
-                                {
-                                    isForCompensation: true
-                                }
-                            )
-                    });
-                } else
-
-                    if (!is(businessObject, 'bpmn:EndEvent') &&
-                        !businessObject.isForCompensation &&
-                        !isEventType(businessObject, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition') &&
-                        !isEventSubProcess(businessObject)) {
-
-                        assign(actions, {
-                            'append.end-event': appendAction(
-                                'bpmn:EndEvent',
-                                'bpmn-icon-end-event-none',
-                                translate('Append EndEvent')
-                            ),
-                            'append.gateway': appendAction(
-                                'bpmn:ExclusiveGateway',
-                                'bpmn-icon-gateway-none',
-                                translate('Append Gateway')
-                            ),
-                            'append.append-task': appendAction(
-                                'bpmn:Task',
-                                'bpmn-icon-task',
-                                translate('Append Task')
-                            ),
-                            'append.intermediate-event': appendAction(
-                                'bpmn:IntermediateThrowEvent',
-                                'bpmn-icon-intermediate-event-none',
-                                translate('Append Intermediate/Boundary Event')
-                            )
-                        });
-                    }
-        }
-
-        if (!popupMenu.isEmpty(element, 'bpmn-replace')) {
-
-            // Replace menu entry
-            assign(actions, {
-                'replace': {
-                    group: 'edit',
-                    className: 'bpmn-icon-screw-wrench',
-                    title: translate('Change type'),
-                    action: {
-                        click: function (event, element) {
-
-                            const position = assign(getReplaceMenuPosition(element), {
-                                cursor: { x: event.x, y: event.y }
-                            });
-
-                            popupMenu.open(element, 'bpmn-replace', position);
-                        }
-                    }
-                }
-            });
+            }
         }
 
         if (isAny(businessObject, [
@@ -407,13 +222,11 @@ class ContextPadProvider {
 ContextPadProvider.$inject = [
     'config.contextPad',
     'injector',
-    'eventBus',
     'contextPad',
     'modeling',
     'elementFactory',
     'connect',
     'create',
-    'popupMenu',
     'canvas',
     'rules',
     'translate'
