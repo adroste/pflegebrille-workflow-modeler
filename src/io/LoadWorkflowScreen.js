@@ -99,6 +99,10 @@ export function LoadWorkflowScreen() {
                     <Divider />
 
                     <Typography.Paragraph type="secondary">
+                        Version: {process.env.REACT_APP_VERSION}
+                    </Typography.Paragraph>
+
+                    <Typography.Paragraph type="secondary">
                         powered by BPMN.JS
                     </Typography.Paragraph>
 
