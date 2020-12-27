@@ -1,6 +1,5 @@
-import { is, isAny } from './util';
-
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
+import { is } from './util';
 
 export const singleBlankStartEventRequired = () => ({
     category: RuleCategoryEnum.ERROR,
