@@ -22,6 +22,7 @@ import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 import { singleBlankStartEventRequired } from './rules/singleBlankStartEventRequired';
+import { startEventRequired } from './rules/startEventRequired';
 
 // order of fields dictate visual order in properties panel
 // DO NOT overwrite properties, rules do not respect inheritance order
@@ -57,15 +58,16 @@ export const modelBindings = [
                 'bpmn:Association',
                 'bpmn:TextAnnotation',
             ]),
+            correctDataInputOutput(),
+            endEventRequired(),
             labelRequiredOnForking(),
-            noUnusedAssets(),
+            noDuplicateSequenceFlows(),
             noMissingAssets(),
             noMissingDataType(),
-            correctDataInputOutput(),
+            noUnusedAssets(),
             noUnusedDataInputOutput(),
-            endEventRequired(),
             singleBlankStartEventRequired(),
-            noDuplicateSequenceFlows(),
+            startEventRequired(),
         ]
     },
     {
