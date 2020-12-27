@@ -10,6 +10,7 @@ import { incomingFlowRequired } from './rules/incomingFlowRequired';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noDisconnected } from './rules/noDisconnected';
+import { noDuplicateSequenceFlows } from './rules/noDuplicateSequenceFlows';
 import { noFakeJoin } from './rules/noFakeJoin';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
@@ -60,6 +61,7 @@ export const modelBindings = [
             correctDataInputOutput(),
             noUnusedDataInputOutput(),
             endEventRequired(),
+            noDuplicateSequenceFlows(),
         ]
     },
     {
