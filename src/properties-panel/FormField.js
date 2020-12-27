@@ -90,8 +90,8 @@ export function FormField({
                                         <span><ExportOutlined className={styles.dataOutputIcon} /> Datenausgabe</span>
                                     )
                                 }
-                                <span>Typ: {DataTypeLabels[dataType]}</span>
-                                <span>Kardinalität: {CardinalityLabels[dataCardinality]}</span>
+                                <span>Typ: {DataTypeLabels[dataType] || dataType}</span>
+                                <span>Kardinalität: {CardinalityLabels[dataCardinality] || dataCardinality}</span>
                             </Typography.Text>
                         </span>
                     }
