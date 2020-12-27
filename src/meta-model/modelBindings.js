@@ -12,6 +12,7 @@ import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noDisconnected } from './rules/noDisconnected';
 import { noDuplicateSequenceFlows } from './rules/noDuplicateSequenceFlows';
 import { noFakeJoin } from './rules/noFakeJoin';
+import { noJoinAndFork } from './rules/noJoinAndFork';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
 import { noUnusedAssets } from './rules/noUnusedAssets';
@@ -71,6 +72,14 @@ export const modelBindings = [
         ],
         rules: [
             noFakeJoin(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:Gateway',
+        ],
+        rules: [
+            noJoinAndFork(),
         ]
     },
     {
