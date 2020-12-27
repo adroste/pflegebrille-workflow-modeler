@@ -83,10 +83,6 @@ class PaletteProvider {
             });
         }
 
-        function createParticipant(event) {
-            create.start(event, elementFactory.createParticipantShape());
-        }
-
         return {
             'hand-tool': {
                 group: 'tools',

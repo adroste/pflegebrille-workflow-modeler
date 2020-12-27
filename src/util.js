@@ -1,6 +1,5 @@
-import { is, isAny } from './meta-model/rules/util';
-
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { isAny } from './meta-model/rules/util';
 import { modelBindings } from './meta-model/modelBindings';
 
 export function getModelBindingsForElement(element) {

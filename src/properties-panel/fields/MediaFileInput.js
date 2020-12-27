@@ -5,7 +5,6 @@ import React, { useCallback, useContext, useState } from 'react';
 import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
-import { is } from '../../meta-model/rules/util';
 import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
