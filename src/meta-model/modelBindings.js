@@ -6,6 +6,7 @@ import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';
 import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
+import { incomingFlowRequired } from './rules/incomingFlowRequired';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noDisconnected } from './rules/noDisconnected';
@@ -14,6 +15,7 @@ import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { noUnusedDataInputOutput } from './rules/noUnusedDataInputOutput';
+import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 
@@ -78,6 +80,28 @@ export const modelBindings = [
         ],
         rules: [
             noDisconnected(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:StartEvent',
+            'bpmn:Gateway',
+            'bpmn:SubProcess',
+            'bpmn:Task',
+        ],
+        rules: [
+            outgoingFlowRequired(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:EndEvent',
+            'bpmn:Gateway',
+            'bpmn:SubProcess',
+            'bpmn:Task',
+        ],
+        rules: [
+            incomingFlowRequired(),
         ]
     },
     {
