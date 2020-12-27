@@ -11,6 +11,7 @@ import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noDisconnected } from './rules/noDisconnected';
 import { noDuplicateSequenceFlows } from './rules/noDuplicateSequenceFlows';
+import { noFakeFork } from './rules/noFakeFork';
 import { noFakeJoin } from './rules/noFakeJoin';
 import { noJoinAndFork } from './rules/noJoinAndFork';
 import { noMissingAssets } from './rules/noMissingAsset';
@@ -72,6 +73,7 @@ export const modelBindings = [
         ],
         rules: [
             noFakeJoin(),
+            noFakeFork(),
         ]
     },
     {
