@@ -23,6 +23,7 @@ import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
 import { singleBlankStartEventRequired } from './rules/singleBlankStartEventRequired';
 import { startEventRequired } from './rules/startEventRequired';
+import { superfluousGateway } from './rules/superfluousGateway';
 
 // order of fields dictate visual order in properties panel
 // DO NOT overwrite properties, rules do not respect inheritance order
@@ -68,6 +69,7 @@ export const modelBindings = [
             noUnusedDataInputOutput(),
             singleBlankStartEventRequired(),
             startEventRequired(),
+            superfluousGateway(),
         ]
     },
     {
