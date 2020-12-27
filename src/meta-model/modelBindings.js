@@ -8,6 +8,7 @@ import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
+import { noFakeJoin } from './rules/noFakeJoin';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
 import { noUnusedAssets } from './rules/noUnusedAssets';
@@ -56,6 +57,7 @@ export const modelBindings = [
             correctDataInputOutput(),
             noUnusedDataInputOutput(),
             endEventRequired(),
+            noFakeJoin(),
         ]
     },
     {
