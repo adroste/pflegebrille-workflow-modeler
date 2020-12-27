@@ -8,6 +8,7 @@ import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
+import { noDisconnected } from './rules/noDisconnected';
 import { noFakeJoin } from './rules/noFakeJoin';
 import { noMissingAssets } from './rules/noMissingAsset';
 import { noMissingDataType } from './rules/noMissingDataType';
@@ -61,11 +62,22 @@ export const modelBindings = [
     },
     {
         appliesTo: [
-            'bpmn:Task',
             'bpmn:Event',
+            'bpmn:Task',
         ],
         rules: [
             noFakeJoin(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:Event',
+            'bpmn:Gateway',
+            'bpmn:SubProcess',
+            'bpmn:Task',
+        ],
+        rules: [
+            noDisconnected(),
         ]
     },
     {
