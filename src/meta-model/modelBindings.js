@@ -4,6 +4,7 @@ import { CardinalityEnum } from './enum/CardinalityEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';
+import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
@@ -54,6 +55,7 @@ export const modelBindings = [
             noMissingDataType(),
             correctDataInputOutput(),
             noUnusedDataInputOutput(),
+            endEventRequired(),
         ]
     },
     {
