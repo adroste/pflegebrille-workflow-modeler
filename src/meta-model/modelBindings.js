@@ -57,6 +57,14 @@ export const modelBindings = [
             correctDataInputOutput(),
             noUnusedDataInputOutput(),
             endEventRequired(),
+        ]
+    },
+    {
+        appliesTo: [
+            'bpmn:Task',
+            'bpmn:Event',
+        ],
+        rules: [
             noFakeJoin(),
         ]
     },

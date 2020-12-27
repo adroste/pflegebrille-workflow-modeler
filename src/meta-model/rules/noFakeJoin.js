@@ -7,12 +7,8 @@ export const noFakeJoin = () => ({
 
         function check(node, reporter) {
 
-            if (!isAny(node, [
-                'bpmn:Task',
-                'bpmn:Event'
-            ])) {
+            if (!isAny(node, binding.appliesTo))
                 return;
-            }
 
             const incoming = node.incoming || [];
 
