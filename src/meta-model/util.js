@@ -12,3 +12,10 @@ export function enumToModdleEnum(name, enumType) {
     }
     return moddleEnum;
 }
+
+export function enumToSelectOptions(enumType, enumLabels) {
+    return Object.values(enumType).map(value => ({
+        label: enumLabels[value] || value,
+        value,
+    }));
+}

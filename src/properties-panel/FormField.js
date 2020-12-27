@@ -4,23 +4,24 @@ import { ExportOutlined, ImportOutlined } from '@ant-design/icons';
 import { CardinalityLabels } from '../meta-model/enum/CardinalityEnum';
 import { DataInputOutputSelect } from './fields/DataInputOutputSelect';
 import { DataTypeLabels } from '../meta-model/enum/DataTypeEnum';
-import { DataTypeSelect } from './fields/DataTypeSelect';
+import { ExtensionSelect } from './fields/ExtensionSelect';
 import { FormTypeEnum } from '../meta-model/enum/FormTypeEnum';
-import { FunctionSelect } from './fields/FunctionSelect';
 import { MediaFileInput } from './fields/MediaFileInput';
 import React from 'react';
+import { Select } from './fields/Select';
 import styles from './FormField.module.css';
 
 export function FormField({
-    businessObject,
     binding: {
-        property,
-        type,
-        label,
-        functionOptions,
         dataCardinality,
         dataType,
+        label,
+        property,
+        selectOptions,
+        selectPlaceholder,
+        type,
     },
+    businessObject,
 }) {
     switch (type) {
 
@@ -34,16 +35,29 @@ export function FormField({
                 </Form.Item>
             );
 
-
-        case FormTypeEnum.FUNCTION_SELECT:
+        case FormTypeEnum.SELECT:
             return (
                 <Form.Item
                     name={property}
                     label={label}
                 >
-                    <FunctionSelect
+                    <Select
+                        selectOptions={selectOptions}
+                        selectPlaceholder={selectPlaceholder}
+                    />
+                </Form.Item>
+            );
+
+        case FormTypeEnum.EXTENSION_SELECT:
+            return (
+                <Form.Item
+                    name={property}
+                    label={label}
+                >
+                    <ExtensionSelect
                         businessObject={businessObject}
-                        functionOptions={functionOptions}
+                        selectOptions={selectOptions}
+                        selectPlaceholder={selectPlaceholder}
                     />
                 </Form.Item>
             );
@@ -86,16 +100,6 @@ export function FormField({
                         isInput={type === FormTypeEnum.DATA_INPUT_SELECT}
                         businessObject={businessObject}
                     />
-                </Form.Item>
-            );
-
-        case FormTypeEnum.DATA_TYPE_SELECT:
-            return (
-                <Form.Item
-                    name={property}
-                    label={label}
-                >
-                    <DataTypeSelect />
                 </Form.Item>
             );
 

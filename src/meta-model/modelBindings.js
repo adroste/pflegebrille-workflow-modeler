@@ -1,8 +1,10 @@
+import { DataTypeEnum, DataTypeLabels } from './enum/DataTypeEnum';
+
 import { CardinalityEnum } from './enum/CardinalityEnum';
-import { DataTypeEnum } from './enum/DataTypeEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';
+import { enumToSelectOptions } from './util';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
 import { noMissingAssets } from './rules/noMissingAsset';
@@ -113,8 +115,10 @@ export const modelBindings = [
         fields: [
             {
                 property: "dataType",
-                type: FormTypeEnum.DATA_TYPE_SELECT,
-                label: "Datentyp"
+                type: FormTypeEnum.SELECT,
+                label: "Datentyp",
+                selectPlaceholder: "Datentyp wählen...",
+                selectOptions: enumToSelectOptions(DataTypeEnum, DataTypeLabels),
             },
         ],
     },
@@ -157,29 +161,30 @@ export const modelBindings = [
         fields: [
             {
                 property: "function",
-                type: FormTypeEnum.FUNCTION_SELECT,
+                type: FormTypeEnum.EXTENSION_SELECT,
                 label: "Funktion",
-                functionOptions: [
+                selectPlaceholder: "Funktion wählen...",
+                selectOptions: [
                     {
                         group: "Lokale Datenobjekte bearbeiten",
                         options: [
-                            { type: "pb:ModifyDataCollection", label: "Datenobjekt bearbeiten (für mehrere Elemente)" }
+                            { value: "pb:ModifyDataCollection", label: "Datenobjekt bearbeiten (für mehrere Elemente)" }
                         ]
                     },
                     {
                         group: "Daten abfragen",
                         options: [
-                            { type: "pb:GetMedicationData", label: "[GET] Medikationen" },
-                            { type: "pb:GetPatientData", label: "[GET] Patientendaten" },
-                            { type: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
-                            { type: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
+                            { value: "pb:GetMedicationData", label: "[GET] Medikationen" },
+                            { value: "pb:GetPatientData", label: "[GET] Patientendaten" },
+                            { value: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
+                            { value: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
                         ]
                     },
                     {
                         group: "Daten senden",
                         options: [
-                            { type: "pb:PostWoundData", label: "[POST] Wundinformationen" },
-                            { type: "pb:PostWoundImage", label: "[POST] Wundbild" },
+                            { value: "pb:PostWoundData", label: "[POST] Wundinformationen" },
+                            { value: "pb:PostWoundImage", label: "[POST] Wundbild" },
                         ]
                     }
                 ]
@@ -193,12 +198,13 @@ export const modelBindings = [
         fields: [
             {
                 property: "function",
-                type: FormTypeEnum.FUNCTION_SELECT,
+                type: FormTypeEnum.EXTENSION_SELECT,
                 label: "Funktion",
-                functionOptions: [
-                    { type: "pb:PainScale", label: "Schmerzwert abfragen" },
-                    { type: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
-                    { type: "pb:WoundDetection", label: "Wunde vermessen" },
+                selectPlaceholder: "Funktion wählen...",
+                selectOptions: [
+                    { value: "pb:PainScale", label: "Schmerzwert abfragen" },
+                    { value: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
+                    { value: "pb:WoundDetection", label: "Wunde vermessen" },
                 ]
             }
         ],
