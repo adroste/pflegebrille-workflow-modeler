@@ -21,6 +21,7 @@ import { noUnusedDataInputOutput } from './rules/noUnusedDataInputOutput';
 import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
+import { singleBlankStartEventRequired } from './rules/singleBlankStartEventRequired';
 
 // order of fields dictate visual order in properties panel
 // DO NOT overwrite properties, rules do not respect inheritance order
@@ -63,6 +64,7 @@ export const modelBindings = [
             correctDataInputOutput(),
             noUnusedDataInputOutput(),
             endEventRequired(),
+            singleBlankStartEventRequired(),
             noDuplicateSequenceFlows(),
         ]
     },
