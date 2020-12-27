@@ -17,5 +17,5 @@ export function enumToSelectOptions(enumType, enumLabels) {
     return Object.values(enumType).map(value => ({
         label: enumLabels[value] || value,
         value,
-    }));
+    })).sort((a, b) => a.label.localeCompare(b.label));
 }
