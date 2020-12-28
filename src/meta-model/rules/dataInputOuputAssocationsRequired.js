@@ -20,13 +20,13 @@ export const dataInputOuputAssocationsRequired = () => ({
                 if (!receivesInput)
                     reporter.report(
                         id,
-                        'Ausgehende Dateneingabeassoziation fehlt'
+                        'Ausgehende Datenassoziation fehlt'
                     );
 
                 if (!receivesOutput)
                     reporter.report(
                         id,
-                        'Eingehende Datenausgabeassoziation fehlt'
+                        'Eingehende Datenassoziation fehlt'
                     );
             });
         }
