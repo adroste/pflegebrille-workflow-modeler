@@ -13,24 +13,34 @@ export const noMissingAssets = () => ({
         function getAssets({ moddleRoot }) {
             context.assets = (
                 moddleRoot
-                ?.extensionElements
-                ?.values
-                ?.find(element => is(element, 'pb:Assets'))
-                ?.assets
+                    ?.extensionElements
+                    ?.values
+                    ?.find(element => is(element, 'pb:Assets'))
+                    ?.assets
             ) || [];
         }
 
         function check(node, reporter) {
-            if (!is(node, 'pb:AssetRef'))
+            const assetRefProps = node.$descriptor.properties.filter(
+                ({ name, isReference }) =>
+                    isReference && node[name] && is(node[name], 'pb:Asset')
+            );
+
+            if (!assetRefProps.length)
                 return;
 
             if (!context.assets)
                 getAssets(reporter);
-            if (context.assets.every(({ id }) => id !== node.refId))
-                reporter.report(
-                    findId(node),
-                    `Referenziertes Asset ist nicht mehr verfügbar.`
-                );
+
+            for (let prop of assetRefProps) {
+                const refId = node[prop.name].id;
+                if (context.assets.every(({ id }) => id !== refId)) {
+                    reporter.report(
+                        findId(node),
+                        `Referenziertes Asset ist nicht mehr verfügbar.`
+                    );
+                }
+            }
         }
 
         return { check };

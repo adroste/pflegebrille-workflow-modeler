@@ -68,9 +68,7 @@ export function FormField({
                     name={property}
                     label={label}
                 >
-                    <MediaFileInput
-                        businessObject={businessObject}
-                    />
+                    <MediaFileInput />
                 </Form.Item>
             );
 

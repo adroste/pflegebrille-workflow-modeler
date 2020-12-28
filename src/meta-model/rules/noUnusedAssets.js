@@ -6,11 +6,11 @@ export const noUnusedAssets = () => ({
     factory(binding) {
 
         const assets = [];
-        const refs = [];
+        const refIds = [];
 
         function afterCheck(node, reporter) {
-            const unused = assets.filter(({ id }) => 
-                refs.every(({ refId }) => refId !== id));
+            const unused = assets.filter(({ id }) =>
+                refIds.every(refId => refId !== id));
             unused.forEach(asset => {
                 reporter.report(
                     asset.id,
@@ -22,8 +22,15 @@ export const noUnusedAssets = () => ({
         function check(node, reporter) {
             if (is(node, 'pb:Assets')) {
                 assets.push(...node.get('assets'));
-            } else if (is(node, 'pb:AssetRef')) {
-                refs.push(node);
+            } else {
+                const assetRefProps = node.$descriptor.properties.filter(
+                    ({ name, isReference }) =>
+                        isReference && node[name] && is(node[name], 'pb:Asset')
+                );
+
+                for (let prop of assetRefProps) {
+                    refIds.push(node[prop.name].id);
+                }
             }
         }
 

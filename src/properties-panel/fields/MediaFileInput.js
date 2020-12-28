@@ -1,33 +1,24 @@
 import { Button, Modal, Space } from 'antd';
 import { CloseOutlined, FolderOpenOutlined } from '@ant-design/icons';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { AssetManagerDialog } from '../../modeler/AssetManagerDialog';
 import { MediaFileUpload } from '../../modeler/MediaFileUpload';
 import { MediaPreview } from '../../modeler/MediaPreview';
-import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './MediaFileInput.module.css';
 import { useAssetById } from '../../modeler/useAssets';
 
 export function MediaFileInput({
-    businessObject,
     onChange,
     value,
 }) {
-    const { moddle } = useContext(modelerContext);
     const [showSelect, setShowSelect] = useState(false);
 
-    const asset = useAssetById(value?.refId);
+    const asset = useAssetById(value?.id);
 
     const handleChange = useCallback(({ element }) => {
-        let assetRef = value;
-        if (!assetRef) {
-            assetRef = moddle.create('pb:AssetRef');
-            assetRef.$parent = businessObject;
-        }
-        assetRef.refId = element.id;
-        onChange(assetRef);
-    }, [businessObject, moddle, onChange, value]);
+        onChange(element);
+    }, [onChange]);
 
     const handleRemove = useCallback(() => {
         onChange(undefined);

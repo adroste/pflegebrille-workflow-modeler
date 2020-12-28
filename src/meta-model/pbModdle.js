@@ -4,13 +4,12 @@ import { enumToModdleEnum } from './util';
 /**
  * Important hints for changing/extending the model:
  * - If you change something, it certainly breaks existing workflows!
- * - DO NOT use stuff like isId, isReference, etc. 
- *   it is ALL BROKEN and does not work properly for custom elements.
- *   Just use strings and do manual mapping and checking
+ * - IDs must not begin with a number, spec: https://www.w3.org/TR/REC-xml/#NT-NameChar
+ * - use `moddle.ids.nextPrefixed` for id generation
  * - DO NOT inherit from bpmn:BaseElement or other bpmn types
  * - ExtensionElements must inherit from Element, 
  *   otherwise they magically disappear on re-import
- * - DO NOT extend bpmn elements with custom properties, its buggy af
+ * - TRY NOT to extend bpmn elements with custom properties, its buggy sometimes
  * - if you use / do anything that has not already been done 
  *   in any of the types below, you can be certain that it will 
  *   not work properly without further digging into bpmn-js, moddle & co
@@ -35,22 +34,13 @@ export const pbModdle = {
                     name: "id",
                     isAttr: true,
                     type: "String",
+                    isId: true,
                 },
                 {
                     name: "name",
                     isAttr: true,
                     type: "String",
                 }
-            ]
-        },
-        {
-            name: "AssetRef",
-            properties: [
-                {
-                    name: "refId",
-                    isAttr: true,
-                    type: "String",
-                },
             ]
         },
         {
@@ -118,7 +108,9 @@ export const pbModdle = {
                 },
                 {
                     name: "mediaAssetRef",
-                    type: "AssetRef",
+                    isAttr: true,
+                    isReference: true,
+                    type: "Asset",
                 }
             ]
         },

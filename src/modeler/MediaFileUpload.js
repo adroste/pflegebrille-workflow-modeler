@@ -7,7 +7,6 @@ import { appContext } from '../base/AppContextProvider';
 import { is } from '../meta-model/rules/util';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './MediaFileUpload.module.css';
-import { v4 as uuidv4 } from 'uuid';
 
 export function MediaFileUpload({ onUpload }) {
     const { setAssetData } = useContext(appContext);
@@ -29,10 +28,9 @@ export function MediaFileUpload({ onUpload }) {
 
         const saveAsset = blob => {
             const ext = blob.type.split('/')[1];
-            const asset = moddle.create('pb:Asset', {
-                id: `${uuidv4()}.${ext}`,
-                name: file.name.replace(/\.[^.]*$/, `.${ext}`),
-            });
+            const asset = moddle.create('pb:Asset');
+            asset.id = `${moddle.ids.nextPrefixed('Asset_', asset)}.${ext}`;
+            asset.name = file.name.replace(/\.[^.]*$/, `.${ext}`);
 
             setAssetData(data => ({
                 ...data,
