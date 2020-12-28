@@ -4,6 +4,7 @@ import { CardinalityEnum } from './enum/CardinalityEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';
+import { dataInputOuputAssocationsRequired } from './rules/dataInputOuputAssocationsRequired';
 import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
 import { incomingFlowRequired } from './rules/incomingFlowRequired';
@@ -60,6 +61,7 @@ export const modelBindings = [
                 'bpmn:TextAnnotation',
             ]),
             correctDataInputOutput(),
+            dataInputOuputAssocationsRequired(),
             endEventRequired(),
             labelRequiredOnForking(),
             noDuplicateSequenceFlows(),
