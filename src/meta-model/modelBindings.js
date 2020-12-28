@@ -191,6 +191,9 @@ export const modelBindings = [
             },
         ],
     },
+    /**
+     * Tasks: General
+     */
     {
         appliesTo: [
             "bpmn:ManualTask",
@@ -243,7 +246,7 @@ export const modelBindings = [
                     {
                         group: "Daten abfragen",
                         options: [
-                            { value: "pb:GetMedicationData", label: "[GET] Medikationen" },
+                            { value: "pb:GetMedicationHistory", label: "[GET] Medikationsverlauf" },
                             { value: "pb:GetPatientData", label: "[GET] Patientendaten" },
                             { value: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
                             { value: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
@@ -271,6 +274,7 @@ export const modelBindings = [
                 label: "Funktion",
                 selectPlaceholder: "Funktion wählen...",
                 selectOptions: [
+                    { value: "pb:PatientSelect", label: "Patient einlesen/auswählen" },
                     { value: "pb:PainScale", label: "Schmerzwert abfragen" },
                     { value: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
                     { value: "pb:WoundDetection", label: "Wunde vermessen" },
@@ -308,7 +312,21 @@ export const modelBindings = [
                 type: FormTypeEnum.DATA_INPUT_SELECT,
                 label: "Datenbanktransaktion",
                 dataType: DataTypeEnum.DATABASE_TRANSACTION,
-                dataCardinality: CardinalityEnum.ONE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:PatientContextFunction",
+        ],
+        fields: [
+            {
+                property: "patientRefInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Patient (Referenz/ID)",
+                dataType: DataTypeEnum.PATIENT_REF,
+                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -322,7 +340,83 @@ export const modelBindings = [
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
                 label: "Datenbanktransaktion",
                 dataType: DataTypeEnum.DATABASE_TRANSACTION,
-                dataCardinality: CardinalityEnum.ONE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    /**
+     * For UserTask
+     */
+    {
+        appliesTo: [
+            "pb:PatientSelect",
+        ],
+        fields: [
+            {
+                property: "patientRefOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Patient (Referenz/ID)",
+                dataType: DataTypeEnum.PATIENT_REF,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    /**
+     * For ServiceTask
+     */
+    {
+        appliesTo: [
+            "pb:GetDiagnosisHistory",
+        ],
+        fields: [
+            {
+                property: "diagnosisHistoryOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Diagnosenverlauf",
+                dataType: DataTypeEnum.DIAGNOSIS_DATA,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:GetMedicationHistory",
+        ],
+        fields: [
+            {
+                property: "medicationHistoryOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Medikationsverlauf",
+                dataType: DataTypeEnum.MEDICATION_DATA,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:GetPatientData",
+        ],
+        fields: [
+            {
+                property: "patientDataOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Patientendaten",
+                dataType: DataTypeEnum.PATIENT_DATA,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:GetWoundHistory",
+        ],
+        fields: [
+            {
+                property: "woundHistoryOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Wundverlauf",
+                dataType: DataTypeEnum.WOUND_DATA,
+                dataCardinality: CardinalityEnum.MULTIPLE,
             },
         ]
     },
@@ -332,11 +426,25 @@ export const modelBindings = [
         ],
         fields: [
             {
-                property: "woundInformationInput",
+                property: "woundDataInput",
                 type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Wundinformationen",
+                label: "Wunddaten",
                 dataType: DataTypeEnum.WOUND_DATA,
-                dataCardinality: CardinalityEnum.ONE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:PostWoundImage",
+        ],
+        fields: [
+            {
+                property: "woundImageInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wundfoto",
+                dataType: DataTypeEnum.IMAGE,
+                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     }

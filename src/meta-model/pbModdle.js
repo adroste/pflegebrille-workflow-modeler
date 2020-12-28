@@ -25,7 +25,6 @@ export const pbModdle = {
         tagAlias: "lowerCase"
     },
     enumerations: [
-        // todo remove?
         enumToModdleEnum('DataTypeEnum', DataTypeEnum),
     ],
     types: [
@@ -165,6 +164,19 @@ export const pbModdle = {
             ]
         },
         {
+            name: "PatientContextFunction",
+            isAbstract: true,
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "patientRefInput",
+                    type: "DataInputRef"
+                },
+            ]
+        },
+        {
             name: "ApiOutputFunction",
             isAbstract: true,
             superClass: [
@@ -180,6 +192,18 @@ export const pbModdle = {
         /**
          * For UserTask
          */
+        {
+            name: "PatientSelect",
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "patientRefOutput",
+                    type: "DataOutputRef"
+                },
+            ]
+        },
         {
             name: "PainScale",
             superClass: [
@@ -208,37 +232,66 @@ export const pbModdle = {
             ],
         },
         {
-            name: "GetMedicationData",
+            name: "GetDiagnosisHistory",
             superClass: [
-                "ApiInputFunction"
+                "ApiInputFunction",
+                "PatientContextFunction",
             ],
+            properties: [
+                {
+                    name: "diagnosisHistoryOutput",
+                    type: "DataOutputRef"
+                },
+            ]
+        },
+        {
+            name: "GetMedicationHistory",
+            superClass: [
+                "ApiInputFunction",
+                "PatientContextFunction",
+            ],
+            properties: [
+                {
+                    name: "medicationHistoryOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         {
             name: "GetPatientData",
             superClass: [
-                "ApiInputFunction"
+                "ApiInputFunction",
+                "PatientContextFunction",
             ],
+            properties: [
+                {
+                    name: "patientDataOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         {
             name: "GetWoundHistory",
             superClass: [
-                "ApiInputFunction"
+                "ApiInputFunction",
+                "PatientContextFunction",
             ],
-        },
-        {
-            name: "GetDiagnosisHistory",
-            superClass: [
-                "ApiInputFunction"
-            ],
+            properties: [
+                {
+                    name: "woundHistoryOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         {
             name: "PostWoundData",
             superClass: [
-                "ApiOutputFunction"
+                "ApiOutputFunction",
+                "PatientContextFunction",
             ],
             properties: [
                 {
-                    name: "woundInformationInput",
+                    name: "woundDataInput",
                     type: "DataInputRef"
                 },
             ]
@@ -246,8 +299,15 @@ export const pbModdle = {
         {
             name: "PostWoundImage",
             superClass: [
-                "ApiOutputFunction"
+                "ApiOutputFunction",
+                "PatientContextFunction",
             ],
+            properties: [
+                {
+                    name: "woundImageInput",
+                    type: "DataInputRef"
+                },
+            ]
         }
     ],
 }
