@@ -349,6 +349,20 @@ export const modelBindings = [
      */
     {
         appliesTo: [
+            "pb:PainScale",
+        ],
+        fields: [
+            {
+                property: "painValueOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Schmerzwert",
+                dataType: DataTypeEnum.NUMERIC_VALUE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
             "pb:PatientSelect",
         ],
         fields: [
@@ -357,6 +371,34 @@ export const modelBindings = [
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
                 label: "Patient (Referenz/ID)",
                 dataType: DataTypeEnum.PATIENT_REF,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:WoundDetection",
+        ],
+        fields: [
+            {
+                property: "woundDataOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Erkannte Wunddaten",
+                dataType: DataTypeEnum.WOUND_DATA,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:WoundPicture",
+        ],
+        fields: [
+            {
+                property: "woundPictureOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Wundfoto",
+                dataType: DataTypeEnum.IMAGE,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]

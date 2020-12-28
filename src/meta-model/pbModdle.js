@@ -193,6 +193,18 @@ export const pbModdle = {
          * For UserTask
          */
         {
+            name: "PainScale",
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "painValueOutput",
+                    type: "DataOutputRef"
+                },
+            ]
+        },
+        {
             name: "PatientSelect",
             superClass: [
                 "Function"
@@ -205,22 +217,28 @@ export const pbModdle = {
             ]
         },
         {
-            name: "PainScale",
+            name: "WoundDetection",
             superClass: [
                 "Function"
             ],
+            properties: [
+                {
+                    name: "woundDataOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         {
             name: "WoundPicture",
             superClass: [
                 "Function"
             ],
-        },
-        {
-            name: "WoundDetection",
-            superClass: [
-                "Function"
-            ],
+            properties: [
+                {
+                    name: "woundPictureOutput",
+                    type: "DataOutputRef"
+                },
+            ]
         },
         /**
          * For ServiceTask
