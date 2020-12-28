@@ -1,7 +1,7 @@
+import { CardinalityEnum, CardinalityLabels } from '../enum/CardinalityEnum';
 import { DataTypeEnum, DataTypeLabels } from '../enum/DataTypeEnum';
 import { findFieldBinding, findId, findLabel, findParent, is, isAny } from './util';
 
-import { CardinalityEnum } from '../enum/CardinalityEnum';
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const correctDataInputOutput = () => ({
@@ -36,16 +36,11 @@ export const correctDataInputOutput = () => ({
                 const { dataType, dataCardinality } = fieldBinding;
                 const refId = node[p.name]?.refId;
 
-                if (!refId) {
-                    if (
-                        dataCardinality !== CardinalityEnum.ZERO_TO_ONE
-                        && dataCardinality !== CardinalityEnum.ZERO_TO_INFINITY
-                    ) {
-                        reporter.report(
-                            findId(node),
-                            `${getMsgStart(isInput, node, p.name)} hat unzulässige Kardinalität von 0`
-                        );
-                    }
+                if (!refId) { // cardinality = 0
+                    reporter.report(
+                        findId(node),
+                        `${getMsgStart(isInput, node, p.name)} fehlt`
+                    );
                     continue;
                 }
 
@@ -94,17 +89,23 @@ export const correctDataInputOutput = () => ({
 
                     if (
                         ref.dataObjectRef.isCollection
-                        && dataCardinality !== CardinalityEnum.ZERO_TO_INFINITY
-                        && dataCardinality !== CardinalityEnum.ONE_TO_INFINITY
+                        && dataCardinality === CardinalityEnum.SINGLE
                     ) {
                         reporter.report(
                             findId(node),
-                            `${getMsgStart(isInput, node, p.name)} hat unzulässige Kardinalität von unendlich`
+                            `${getMsgStart(isInput, node, p.name)} hat unzulässige Kardinalität von "${CardinalityLabels[CardinalityEnum.MULTIPLE]}", benötigt "${CardinalityLabels[CardinalityEnum.SINGLE]}"`
                         );
                     }
-                    // else: isCollection == false, indicates cardinality equals 1
-                    // cardinality of 1 is allowed in all defined cardinalities
-                    // and therefore must not be handled here
+
+                    if (
+                        !ref.dataObjectRef.isCollection
+                        && dataCardinality === CardinalityEnum.MULTIPLE
+                    ) {
+                        reporter.report(
+                            findId(node),
+                            `${getMsgStart(isInput, node, p.name)} hat unzulässige Kardinalität von "${CardinalityLabels[CardinalityEnum.SINGLE]}", benötigt "${CardinalityLabels[CardinalityEnum.MULTIPLE]}"`
+                        );
+                    }
 
                 } else if (is(ref, 'bpmn:DataStoreReference')) {
 
