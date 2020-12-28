@@ -61,6 +61,7 @@ export function Modeler() {
         }
 
         modeler.importXML(initialXmlRef.current)
+            .then(() => setModeler(modeler))
             .catch(err => {
                 console.error(err);
                 Modal.error({
@@ -68,8 +69,6 @@ export function Modeler() {
                     content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
                 });
             });
-
-        setModeler(modeler);
 
         return () => {
             if (modeler)
