@@ -26,7 +26,7 @@ export function PropertiesPanel({
 
     return (
         <div className={`${styles.wrapper} ${className}`}>
-            <Typography.Title level={2}>
+            <Typography.Title level={3}>
                 Eigenschaften
             </Typography.Title>
 
