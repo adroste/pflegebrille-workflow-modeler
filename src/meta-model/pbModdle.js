@@ -6,6 +6,11 @@ import { enumToModdleEnum } from './util';
  * - If you change something, it certainly breaks existing workflows!
  * - IDs must not begin with a number, spec: https://www.w3.org/TR/REC-xml/#NT-NameChar
  * - use `moddle.ids.nextPrefixed` for id generation
+ * - DO NOT use two or more body properties with the same type,
+ *   by default matching on import is done by type, 
+ *   so it will only work for the first property,
+ *   UNLESS you change serialization mode for given properties 
+ *   via: `xml: { serialize: "xsi:type" }`
  * - DO NOT inherit from bpmn:BaseElement or other bpmn types
  * - ExtensionElements must inherit from Element, 
  *   otherwise they magically disappear on re-import
@@ -74,9 +79,10 @@ export const pbModdle = {
             isAbstract: true,
             properties: [
                 {
-                    name: "refId",
+                    name: "dataRef",
                     isAttr: true,
-                    type: "String",
+                    isReference: true,
+                    type: "bpmn:ItemAwareElement",
                 },
             ]
         },
@@ -151,7 +157,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "transactionInput",
-                    type: "DataInputRef"
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -164,7 +171,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "patientRefInput",
-                    type: "DataInputRef"
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -177,7 +185,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "transactionOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -192,7 +201,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "painValueOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -204,7 +214,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "patientRefOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -216,7 +227,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "woundDataOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -228,7 +240,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "woundPictureOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -250,7 +263,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "diagnosisHistoryOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -263,7 +277,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "medicationHistoryOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -276,7 +291,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "patientDataOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -289,7 +305,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "woundHistoryOutput",
-                    type: "DataOutputRef"
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -302,7 +319,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "woundDataInput",
-                    type: "DataInputRef"
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         },
@@ -315,7 +333,8 @@ export const pbModdle = {
             properties: [
                 {
                     name: "woundImageInput",
-                    type: "DataInputRef"
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
                 },
             ]
         }

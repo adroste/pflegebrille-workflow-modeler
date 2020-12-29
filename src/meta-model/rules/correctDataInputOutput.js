@@ -34,9 +34,9 @@ export const correctDataInputOutput = () => ({
 
                 const isInput = (p.type === 'pb:DataInputRef');
                 const { dataType, dataCardinality } = fieldBinding;
-                const refId = node[p.name]?.refId;
+                const dataRef = node[p.name]?.dataRef;
 
-                if (!refId) { // cardinality = 0
+                if (!dataRef) { // cardinality = 0
                     reporter.report(
                         findId(node),
                         `${getMsgStart(isInput, node, p.name)} fehlt`
@@ -48,12 +48,12 @@ export const correctDataInputOutput = () => ({
                 if (isInput) {
                     ref = activity
                         ?.dataInputAssociations
-                        ?.find(da => da.sourceRef[0]?.id === refId)
+                        ?.find(da => da.sourceRef[0] === dataRef)
                         ?.sourceRef[0];
                 } else {
                     ref = activity
                         ?.dataOutputAssociations
-                        ?.find(da => da.targetRef?.id === refId)
+                        ?.find(da => da.targetRef === dataRef)
                         ?.targetRef;
                 }
 

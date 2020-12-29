@@ -9,7 +9,11 @@ export const noUnusedDataInputOutput = () => ({
         function hasDataInputOutputRefWithId(node, refId) {
             let found = false;
             traverseModdle(node, node => {
-                if (is(node, 'pb:DataInputOutputRef') && node.refId === refId) {
+                if (
+                    is(node, 'pb:DataInputOutputRef')
+                    && node.dataRef 
+                    && node.dataRef.id === refId
+                ) {
                     found = true;
                     return true;
                 }
