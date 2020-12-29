@@ -276,7 +276,7 @@ export const modelBindings = [
                 selectOptions: [
                     { value: "pb:PainScale", label: "Schmerzwert abfragen" },
                     { value: "pb:PatientSelect", label: "Patient einlesen/auswählen" },
-                    { value: "pb:WoundDetection", label: "Wunde vermessen" },
+                    { value: "pb:WoundDetection", label: "Wunde erkennen/vermessen" },
                     { value: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
                     { value: "pb:WoundSelect", label: "Wunde auswählen" },
                 ]
