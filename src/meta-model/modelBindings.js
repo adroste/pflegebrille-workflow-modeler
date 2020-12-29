@@ -255,7 +255,7 @@ export const modelBindings = [
                     {
                         group: "Daten senden",
                         options: [
-                            { value: "pb:PostWoundData", label: "[POST] Wundinformationen" },
+                            { value: "pb:PostWoundData", label: "[POST] Wunddaten" },
                             { value: "pb:PostWoundImage", label: "[POST] Wundbild" },
                         ]
                     }
@@ -274,10 +274,11 @@ export const modelBindings = [
                 label: "Funktion",
                 selectPlaceholder: "Funktion wählen...",
                 selectOptions: [
-                    { value: "pb:PatientSelect", label: "Patient einlesen/auswählen" },
                     { value: "pb:PainScale", label: "Schmerzwert abfragen" },
-                    { value: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
+                    { value: "pb:PatientSelect", label: "Patient einlesen/auswählen" },
                     { value: "pb:WoundDetection", label: "Wunde vermessen" },
+                    { value: "pb:WoundPicture", label: "Wundfoto aufnehmen" },
+                    { value: "pb:WoundSelect", label: "Wunde auswählen" },
                 ]
             }
         ],
@@ -399,6 +400,27 @@ export const modelBindings = [
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
                 label: "Wundfoto",
                 dataType: DataTypeEnum.IMAGE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:WoundSelect",
+        ],
+        fields: [
+            {
+                property: "woundHistoryInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wundverlauf",
+                dataType: DataTypeEnum.WOUND_DATA,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+            {
+                property: "woundDataOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Wunddaten",
+                dataType: DataTypeEnum.WOUND_DATA,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]

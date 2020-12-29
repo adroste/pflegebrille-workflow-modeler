@@ -245,6 +245,24 @@ export const pbModdle = {
                 },
             ]
         },
+        {
+            name: "WoundSelect",
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "woundHistoryInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "woundDataOutput",
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+            ]
+        },
         /**
          * For ServiceTask
          */

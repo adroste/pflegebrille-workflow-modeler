@@ -1,5 +1,6 @@
 import empty from './bpmn/empty.bpmn';
 import patientData from './bpmn/patientData.bpmn';
+import woundData from './bpmn/woundData.bpmn';
 import wundmanagement from './bpmn/Wundmanagement.bpmn';
 
 export const templates = [
@@ -17,7 +18,7 @@ export const templates = [
     },
     {
         label: 'Mit Patienten- und Wunddaten',
-        src: null,
+        src: woundData,
     },
     { 
         label: 'Beispiele',
