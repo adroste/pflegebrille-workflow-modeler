@@ -1,4 +1,4 @@
-import { findId, is, isAny, traverseModdle } from './util';
+import { findId, isAny, traverseModdle } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
@@ -6,15 +6,21 @@ export const noUnusedDataInputOutput = () => ({
     category: RuleCategoryEnum.WARN,
     factory(binding) {
 
-        function hasDataInputOutputRefWithId(node, refId) {
-            let found = false;
-            traverseModdle(node, node => {
-                if (is(node, 'pb:DataInputOutputRef') && node.refId === refId) {
-                    found = true;
-                    return true;
-                }
-            });
-            return found;
+        function hasInnerReferenceToId(node, refId) {
+            let hasRef = false;
+            if (node) {
+                traverseModdle(node, node => {
+                    const found = node.$descriptor.properties.find(
+                        ({ name, isReference }) =>
+                            isReference && node[name] && node[name].id === refId
+                    );
+                    if (found) {
+                        hasRef = true;
+                        return true; // stops traversal
+                    }
+                });
+            }
+            return hasRef;
         }
 
         function check(node, reporter) {
@@ -23,7 +29,7 @@ export const noUnusedDataInputOutput = () => ({
 
             node.dataInputAssociations?.forEach(da => {
                 const ref = da.sourceRef[0];
-                if (ref && !hasDataInputOutputRefWithId(node, ref.id)) {
+                if (ref && !hasInnerReferenceToId(node.extensionElements, ref.id)) {
                     reporter.report(
                         findId(node),
                         `Unbenutzte Eingabedaten: "${ref.name || ref.id}"`
@@ -33,7 +39,7 @@ export const noUnusedDataInputOutput = () => ({
 
             node.dataOutputAssociations?.forEach(da => {
                 const ref = da.targetRef;
-                if (ref && !hasDataInputOutputRefWithId(node, ref.id)) {
+                if (ref && !hasInnerReferenceToId(node.extensionElements, ref.id)) {
                     reporter.report(
                         findId(node),
                         `Unbenutzte Ausgabedaten: "${ref.name || ref.id}"`

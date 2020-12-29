@@ -1,9 +1,8 @@
 import { Radio, Typography } from 'antd';
-import React, { useCallback, useContext } from 'react';
 
+import React from 'react';
 import { WarningOutlined } from '@ant-design/icons';
 import { findParent } from '../../meta-model/rules/util';
-import { modelerContext } from '../../modeler/ModelerContextProvider';
 import styles from './DataInputOutputSelect.module.css';
 
 const NO_DATA_VALUE = '__noData__';
@@ -14,8 +13,6 @@ export function DataInputOutputSelect({
     onChange,
     value,
 }) {
-    const { moddle } = useContext(modelerContext);
-
     const activity = findParent(businessObject, 'bpmn:Activity');
 
     const options = [
@@ -38,23 +35,18 @@ export function DataInputOutputSelect({
         });
     });
 
-    const selected = value ? value.refId : NO_DATA_VALUE;
+    const selected = value ? value.id : NO_DATA_VALUE;
     const isInvalid = options.every(({ value }) => value !== selected);
 
-    const handleChange = useCallback(e => {
+    const handleChange = e => {
         const selectedValue = e.target.value;
         if (selectedValue === NO_DATA_VALUE) {
             onChange(undefined);
         } else {
-            let dataRef = value;
-            if (!dataRef) {
-                dataRef = moddle.create(isInput ? 'pb:DataInputRef' : 'pb:DataOutputRef');
-                dataRef.$parent = businessObject;
-            }
-            dataRef.refId = selectedValue;
-            onChange(dataRef);
+            const element = dataAssociations.find(({ id }) => id === selectedValue);
+            onChange(element);
         }
-    }, [businessObject, isInput, moddle, onChange, value]);
+    };
 
     return (
         <>
