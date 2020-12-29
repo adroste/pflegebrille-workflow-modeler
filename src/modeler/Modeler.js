@@ -52,6 +52,8 @@ export function Modeler() {
         });
 
         if (process.env.NODE_ENV === 'development') {
+            window.modeler = modeler;
+
             const eventBus = modeler.get('eventBus');
             const fire = eventBus.fire;
             eventBus.fire = (type, data, ...args) => {
