@@ -19,6 +19,8 @@ export function PropertiesPanel({
         err = 'Kein Element ausgewählt.';
     else if (selectedElements.length > 1)
         err = 'Mehrere Elemente ausgewählt.';
+    else if (selectedElements[0].type === 'label')
+        err = 'Label ausgewählt.';
     else
         element = selectedElements[0];
 
