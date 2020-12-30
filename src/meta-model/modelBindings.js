@@ -238,23 +238,28 @@ export const modelBindings = [
                     {
                         group: "Lokale Datenobjekte bearbeiten",
                         options: [
-                            { value: "pb:ModifyDataCollection", label: "Datenobjekt bearbeiten (für mehrere Elemente)" }
+                            { value: "pb:ConcatData", label: "Daten konkatenieren" }
                         ]
                     },
+                    // {
+                    //     group: "Daten abfragen",
+                    //     options: [
+                    //         { value: "pb:GetMedicationHistory", label: "[GET] Medikationsverlauf" },
+                    //         { value: "pb:GetPatientData", label: "[GET] Patientendaten" },
+                    //         { value: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
+                    //         { value: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
+                    //     ]
+                    // },
                     {
-                        group: "Daten abfragen",
+                        group: "Daten anlegen",
                         options: [
-                            { value: "pb:GetMedicationHistory", label: "[GET] Medikationsverlauf" },
-                            { value: "pb:GetPatientData", label: "[GET] Patientendaten" },
-                            { value: "pb:GetWoundHistory", label: "[GET] Wundverlauf" },
-                            { value: "pb:GetDiagnosisHistory", label: "[GET] Diagnosen" },
+                            { value: "pb:CreateWoundHistoryEntry", label: "Wundverlaufseintrag anlegen" },
                         ]
                     },
                     {
                         group: "Daten senden",
                         options: [
-                            { value: "pb:PostWoundData", label: "[POST] Wunddaten" },
-                            { value: "pb:PostWoundImage", label: "[POST] Wundbild" },
+                            { value: "pb:PostWoundHistoryEntry", label: "Wundverlaufseintrag senden" },
                         ]
                     }
                 ]
@@ -307,10 +312,24 @@ export const modelBindings = [
         ],
         fields: [
             {
-                property: "patientRefInput",
+                property: "patientInput",
                 type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Patient (Referenz/ID)",
-                dataType: DataTypeEnum.PATIENT_REF,
+                label: "Patient",
+                dataType: DataTypeEnum.PATIENT,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:WoundContextFunction",
+        ],
+        fields: [
+            {
+                property: "woundInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wunde",
+                dataType: DataTypeEnum.WOUND,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
@@ -338,10 +357,10 @@ export const modelBindings = [
         ],
         fields: [
             {
-                property: "patientRefOutput",
+                property: "patientOutput",
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Patient (Referenz/ID)",
-                dataType: DataTypeEnum.PATIENT_REF,
+                label: "Patient",
+                dataType: DataTypeEnum.PATIENT,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
@@ -352,10 +371,17 @@ export const modelBindings = [
         ],
         fields: [
             {
-                property: "woundDataOutput",
+                property: "woundPictureInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wundfoto (zur Erkennung)",
+                dataType: DataTypeEnum.IMAGE,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+            {
+                property: "woundMeasurementOutput",
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Erkannte Wunddaten",
-                dataType: DataTypeEnum.WOUND_DATA,
+                label: "Wundmaße",
+                dataType: DataTypeEnum.WOUND_MEASUREMENT,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
@@ -380,17 +406,10 @@ export const modelBindings = [
         ],
         fields: [
             {
-                property: "woundHistoryInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Wundverlauf",
-                dataType: DataTypeEnum.WOUND_DATA,
-                dataCardinality: CardinalityEnum.MULTIPLE,
-            },
-            {
-                property: "woundDataOutput",
+                property: "woundOutput",
                 type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Wunddaten",
-                dataType: DataTypeEnum.WOUND_DATA,
+                label: "Ausgewählte Wunde",
+                dataType: DataTypeEnum.WOUND,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
@@ -400,84 +419,102 @@ export const modelBindings = [
      */
     {
         appliesTo: [
-            "pb:GetDiagnosisHistory",
+            "pb:ConcatData",
         ],
         fields: [
             {
-                property: "diagnosisHistoryOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Diagnosenverlauf",
-                dataType: DataTypeEnum.DIAGNOSIS_DATA,
-                dataCardinality: CardinalityEnum.MULTIPLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
-            "pb:GetMedicationHistory",
-        ],
-        fields: [
-            {
-                property: "medicationHistoryOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Medikationsverlauf",
-                dataType: DataTypeEnum.MEDICATION_DATA,
-                dataCardinality: CardinalityEnum.MULTIPLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
-            "pb:GetPatientData",
-        ],
-        fields: [
-            {
-                property: "patientDataOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Patientendaten",
-                dataType: DataTypeEnum.PATIENT_DATA,
-                dataCardinality: CardinalityEnum.SINGLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
-            "pb:GetWoundHistory",
-        ],
-        fields: [
-            {
-                property: "woundHistoryOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Wundverlauf",
-                dataType: DataTypeEnum.WOUND_DATA,
-                dataCardinality: CardinalityEnum.MULTIPLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
-            "pb:PostWoundData",
-        ],
-        fields: [
-            {
-                property: "woundDataInput",
+                property: "firstInput",
                 type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Wunddaten",
-                dataType: DataTypeEnum.WOUND_DATA,
+                label: "1. Eingabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.ANY,
+            },
+            {
+                property: "secondInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "2. Eingabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.ANY,
+            },
+            {
+                property: "collectionOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Konkatenierte Daten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+        ],
+        rules: [
+            sameDataTypeProperties(['firstInput', 'secondInput', 'collectionOutput']),
+        ]
+    },
+    // {
+    //     appliesTo: [
+    //         "pb:GetDiagnosisHistory",
+    //     ],
+    //     fields: [
+    //         {
+    //             property: "diagnosisHistoryOutput",
+    //             type: FormTypeEnum.DATA_OUTPUT_SELECT,
+    //             label: "Diagnosenverlauf",
+    //             dataType: DataTypeEnum.DIAGNOSIS_DATA,
+    //             dataCardinality: CardinalityEnum.MULTIPLE,
+    //         },
+    //     ]
+    // },
+    // {
+    //     appliesTo: [
+    //         "pb:GetMedicationHistory",
+    //     ],
+    //     fields: [
+    //         {
+    //             property: "medicationHistoryOutput",
+    //             type: FormTypeEnum.DATA_OUTPUT_SELECT,
+    //             label: "Medikationsverlauf",
+    //             dataType: DataTypeEnum.MEDICATION_DATA,
+    //             dataCardinality: CardinalityEnum.MULTIPLE,
+    //         },
+    //     ]
+    // },
+    {
+        appliesTo: [
+            "pb:PostWoundHistoryEntry",
+        ],
+        fields: [
+            {
+                property: "woundHistoryEntryInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wundverlaufseintrag",
+                dataType: DataTypeEnum.WOUND_HISTORY_ENTRY,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
     {
         appliesTo: [
-            "pb:PostWoundImage",
+            "pb:CreateWoundHistoryEntry",
         ],
         fields: [
             {
+                property: "woundHistoryEntryOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Wundverlaufseintrag",
+                dataType: DataTypeEnum.WOUND_HISTORY_ENTRY,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+            {
+                // todo optional
                 property: "woundImageInput",
                 type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Wundfoto",
+                label: "Wundfoto(s)",
                 dataType: DataTypeEnum.IMAGE,
+                dataCardinality: CardinalityEnum.ANY,
+            },
+            {
+                property: "woundMeasurementInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Wundmaße",
+                dataType: DataTypeEnum.WOUND_MEASUREMENT,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]

@@ -156,7 +156,21 @@ export const pbModdle = {
             ],
             properties: [
                 {
-                    name: "patientRefInput",
+                    name: "patientInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+            ]
+        },
+        {
+            name: "WoundContextFunction",
+            isAbstract: true,
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "woundInput",
                     type: "DataInputRef",
                     xml: { serialize: "xsi:type" },
                 },
@@ -185,7 +199,7 @@ export const pbModdle = {
             ],
             properties: [
                 {
-                    name: "patientRefOutput",
+                    name: "patientOutput",
                     type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
@@ -198,7 +212,12 @@ export const pbModdle = {
             ],
             properties: [
                 {
-                    name: "woundDataOutput",
+                    name: "woundPictureInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "woundMeasurementOutput",
                     type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
@@ -220,16 +239,11 @@ export const pbModdle = {
         {
             name: "WoundSelect",
             superClass: [
-                "Function"
+                "PatientContextFunction"
             ],
             properties: [
                 {
-                    name: "woundHistoryInput",
-                    type: "DataInputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-                {
-                    name: "woundDataOutput",
+                    name: "woundOutput",
                     type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
@@ -239,84 +253,86 @@ export const pbModdle = {
          * For ServiceTask
          */
         {
-            name: "ModifyDataCollection",
+            name: "ConcatData",
             superClass: [
                 "Function"
             ],
-        },
-        {
-            name: "GetDiagnosisHistory",
-            superClass: [
-                "PatientContextFunction",
-            ],
             properties: [
                 {
-                    name: "diagnosisHistoryOutput",
+                    name: "firstInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "secondInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "collectionOutput",
                     type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
             ]
         },
+        // {
+        //     name: "GetDiagnosisHistory",
+        //     superClass: [
+        //         "PatientContextFunction",
+        //     ],
+        //     properties: [
+        //         {
+        //             name: "diagnosisHistoryOutput",
+        //             type: "DataOutputRef",
+        //             xml: { serialize: "xsi:type" },
+        //         },
+        //     ]
+        // },
+        // {
+        //     name: "GetMedicationHistory",
+        //     superClass: [
+        //         "PatientContextFunction",
+        //     ],
+        //     properties: [
+        //         {
+        //             name: "medicationHistoryOutput",
+        //             type: "DataOutputRef",
+        //             xml: { serialize: "xsi:type" },
+        //         },
+        //     ]
+        // },
         {
-            name: "GetMedicationHistory",
+            name: "PostWoundHistoryEntry",
             superClass: [
                 "PatientContextFunction",
+                "WoundContextFunction",
             ],
             properties: [
                 {
-                    name: "medicationHistoryOutput",
-                    type: "DataOutputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-            ]
-        },
-        {
-            name: "GetPatientData",
-            superClass: [
-                "PatientContextFunction",
-            ],
-            properties: [
-                {
-                    name: "patientDataOutput",
-                    type: "DataOutputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-            ]
-        },
-        {
-            name: "GetWoundHistory",
-            superClass: [
-                "PatientContextFunction",
-            ],
-            properties: [
-                {
-                    name: "woundHistoryOutput",
-                    type: "DataOutputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-            ]
-        },
-        {
-            name: "PostWoundData",
-            superClass: [
-                "PatientContextFunction",
-            ],
-            properties: [
-                {
-                    name: "woundDataInput",
+                    name: "woundHistoryEntryInput",
                     type: "DataInputRef",
                     xml: { serialize: "xsi:type" },
                 },
             ]
         },
         {
-            name: "PostWoundImage",
+            name: "CreateWoundHistoryEntry",
             superClass: [
-                "PatientContextFunction",
+                "Function",
             ],
             properties: [
                 {
+                    name: "woundHistoryEntryOutput",
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
                     name: "woundImageInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "woundMeasurementInput",
                     type: "DataInputRef",
                     xml: { serialize: "xsi:type" },
                 },
