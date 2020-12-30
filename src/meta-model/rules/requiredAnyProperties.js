@@ -21,7 +21,7 @@ export const requiredAnyProperties = (properties, isError = true, requiredIf = n
                 ))
             ) {
                 const labels = properties
-                    .map(property => findLabel(node, property))
+                    .map(property => `"${findLabel(node, property)}"`)
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' oder $1');
                 reporter.report(

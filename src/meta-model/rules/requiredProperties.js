@@ -19,7 +19,7 @@ export const requiredProperties = (properties, isError = true, requiredIf = null
                 ) {
                     reporter.report(
                         findId(node),
-                        `${findLabel(node, property)} ist erforderlich`
+                        `"${findLabel(node, property)}" ist erforderlich`
                     );
                 }
             }
