@@ -149,20 +149,6 @@ export const pbModdle = {
             isAbstract: true,
         },
         {
-            name: "ApiInputFunction",
-            isAbstract: true,
-            superClass: [
-                "Function"
-            ],
-            properties: [
-                {
-                    name: "transactionInput",
-                    type: "DataInputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-            ]
-        },
-        {
             name: "PatientContextFunction",
             isAbstract: true,
             superClass: [
@@ -172,20 +158,6 @@ export const pbModdle = {
                 {
                     name: "patientRefInput",
                     type: "DataInputRef",
-                    xml: { serialize: "xsi:type" },
-                },
-            ]
-        },
-        {
-            name: "ApiOutputFunction",
-            isAbstract: true,
-            superClass: [
-                "Function"
-            ],
-            properties: [
-                {
-                    name: "transactionOutput",
-                    type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
             ]
@@ -275,7 +247,6 @@ export const pbModdle = {
         {
             name: "GetDiagnosisHistory",
             superClass: [
-                "ApiInputFunction",
                 "PatientContextFunction",
             ],
             properties: [
@@ -289,7 +260,6 @@ export const pbModdle = {
         {
             name: "GetMedicationHistory",
             superClass: [
-                "ApiInputFunction",
                 "PatientContextFunction",
             ],
             properties: [
@@ -303,7 +273,6 @@ export const pbModdle = {
         {
             name: "GetPatientData",
             superClass: [
-                "ApiInputFunction",
                 "PatientContextFunction",
             ],
             properties: [
@@ -317,7 +286,6 @@ export const pbModdle = {
         {
             name: "GetWoundHistory",
             superClass: [
-                "ApiInputFunction",
                 "PatientContextFunction",
             ],
             properties: [
@@ -331,7 +299,6 @@ export const pbModdle = {
         {
             name: "PostWoundData",
             superClass: [
-                "ApiOutputFunction",
                 "PatientContextFunction",
             ],
             properties: [
@@ -345,7 +312,6 @@ export const pbModdle = {
         {
             name: "PostWoundImage",
             superClass: [
-                "ApiOutputFunction",
                 "PatientContextFunction",
             ],
             properties: [

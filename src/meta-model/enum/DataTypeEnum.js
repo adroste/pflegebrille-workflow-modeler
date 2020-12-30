@@ -1,7 +1,6 @@
 // NEVER change the enum values
 export const DataTypeEnum = Object.freeze({
     ALPHANUMERIC_VALUE: 'AlphanumericValue',
-    DATABASE_TRANSACTION: 'DatabaseTransaction',
     DIAGNOSIS_DATA: 'DiagnosisData',
     IMAGE: 'Image',
     MEDICATION_DATA: 'MedicationData',
@@ -13,7 +12,6 @@ export const DataTypeEnum = Object.freeze({
 
 export const DataTypeLabels = {
     [DataTypeEnum.ALPHANUMERIC_VALUE]: 'Alphanumerischer Wert',
-    [DataTypeEnum.DATABASE_TRANSACTION]: 'Datenbanktransaktion',
     [DataTypeEnum.DIAGNOSIS_DATA]: 'Diagnose',
     [DataTypeEnum.IMAGE]: 'Bild',
     [DataTypeEnum.MEDICATION_DATA]: 'Medikation',

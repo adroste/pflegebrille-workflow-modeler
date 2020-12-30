@@ -49,7 +49,6 @@ export const modelBindings = [
                 'bpmn:ExtensionElements',
                 'bpmn:DataAssociation',
                 'bpmn:DataObjectReference',
-                'bpmn:DataStoreReference',
                 'bpmn:DataObject',
                 'bpmn:Property',
                 'bpmn:Process',
@@ -131,7 +130,6 @@ export const modelBindings = [
             'bpmn:UserTask',
             'bpmn:ServiceTask',
             'bpmn:DataObjectReference',
-            'bpmn:DataStoreReference',
         ],
         rules: [
             labelRequired(),
@@ -305,20 +303,6 @@ export const modelBindings = [
     },
     {
         appliesTo: [
-            "pb:ApiInputFunction",
-        ],
-        fields: [
-            {
-                property: "transactionInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
-                label: "Datenbanktransaktion",
-                dataType: DataTypeEnum.DATABASE_TRANSACTION,
-                dataCardinality: CardinalityEnum.SINGLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
             "pb:PatientContextFunction",
         ],
         fields: [
@@ -327,20 +311,6 @@ export const modelBindings = [
                 type: FormTypeEnum.DATA_INPUT_SELECT,
                 label: "Patient (Referenz/ID)",
                 dataType: DataTypeEnum.PATIENT_REF,
-                dataCardinality: CardinalityEnum.SINGLE,
-            },
-        ]
-    },
-    {
-        appliesTo: [
-            "pb:ApiOutputFunction",
-        ],
-        fields: [
-            {
-                property: "transactionOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
-                label: "Datenbanktransaktion",
-                dataType: DataTypeEnum.DATABASE_TRANSACTION,
                 dataCardinality: CardinalityEnum.SINGLE,
             },
         ]

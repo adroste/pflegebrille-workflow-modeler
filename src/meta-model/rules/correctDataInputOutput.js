@@ -1,7 +1,7 @@
 import { CardinalityEnum, CardinalityLabels } from '../enum/CardinalityEnum';
-import { DataTypeEnum, DataTypeLabels } from '../enum/DataTypeEnum';
 import { findFieldBinding, findId, findLabel, findParent, is, isAny } from './util';
 
+import { DataTypeLabels } from '../enum/DataTypeEnum';
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const correctDataInputOutput = () => ({
@@ -104,15 +104,6 @@ export const correctDataInputOutput = () => ({
                         reporter.report(
                             findId(node),
                             `${getMsgStart(isInput, node, p.name)} hat unzulässige Kardinalität von "${CardinalityLabels[CardinalityEnum.SINGLE]}", benötigt "${CardinalityLabels[CardinalityEnum.MULTIPLE]}"`
-                        );
-                    }
-
-                } else if (is(ref, 'bpmn:DataStoreReference')) {
-
-                    if (dataType !== DataTypeEnum.DATABASE_TRANSACTION) {
-                        reporter.report(
-                            findId(node),
-                            `${getMsgStart(isInput, node, p.name)} hat ungültigen Datentyp, erforderlich: "${DataTypeLabels[dataType]}"`
                         );
                     }
 

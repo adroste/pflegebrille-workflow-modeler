@@ -177,10 +177,10 @@ class PaletteProvider {
                 'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
                 // translate('Create DataObjectReference')
             ),
-            'create.data-store': createAction(
-                'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store',
-                // translate('Create DataStoreReference')
-            ),
+            // 'create.data-store': createAction(
+            //     'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store',
+            //     // translate('Create DataStoreReference')
+            // ),
             // 'create.participant-expanded': {
             //     group: 'collaboration',
             //     className: 'bpmn-icon-participant',
