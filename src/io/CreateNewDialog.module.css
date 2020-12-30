@@ -1,6 +1,7 @@
 .radio {
     display: block;
     margin: 10px 0;
+    user-select: none;
 }
 
 .radioGroup {
