@@ -1,4 +1,4 @@
-import { Divider, Modal, Radio } from 'antd';
+import { Divider, Modal, Radio, Typography } from 'antd';
 import React, { useCallback, useState } from 'react';
 
 import { CheckOutlined } from '@ant-design/icons';
@@ -63,6 +63,10 @@ export function CreateNewDialog({
                         )
                 ))}
             </Radio.Group>
+            
+            <Typography.Paragraph type="secondary">
+                <i>* Beispiele müssen nicht medizinisch korrekt oder vollständig sein</i>
+            </Typography.Paragraph>
         </Modal >
     );
 }

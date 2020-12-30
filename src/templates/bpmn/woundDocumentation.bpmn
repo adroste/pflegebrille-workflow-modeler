@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn:extensionElements>
+    <pb:assets />
+  </bpmn:extensionElements>
+  <bpmn:process id="Process_1" name="Wundmanagement" isExecutable="true">
+    <bpmn:sequenceFlow id="SequenceFlow_06wy6zg" sourceRef="StartEvent_1" targetRef="Task_1vocosm" />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_06wy6zg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:manualTask id="Task_1vocosm" name="Material prüfen">
+      <bpmn:extensionElements>
+        <pb:mediaText />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_06wy6zg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h795go</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="Task_0629muh" name="Wunde freilegen">
+      <bpmn:extensionElements>
+        <pb:mediaText />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1fl83xt</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0v7tus9</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:subProcess id="Task_0thvjet" name="Arbeitbereich vorbereiten">
+      <bpmn:incoming>Flow_0ebw3k6</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1fl83xt</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_13ikwpn" sourceRef="StartEvent_0qfvo3o" targetRef="Task_110c91l" />
+      <bpmn:sequenceFlow id="SequenceFlow_07gazpn" sourceRef="Task_110c91l" targetRef="Task_0f08ows" />
+      <bpmn:sequenceFlow id="SequenceFlow_0x5lrsw" sourceRef="Task_0f08ows" targetRef="Task_0793ejc" />
+      <bpmn:sequenceFlow id="SequenceFlow_1rp5bpo" sourceRef="Task_0793ejc" targetRef="EndEvent_098wkrs" />
+      <bpmn:endEvent id="EndEvent_098wkrs">
+        <bpmn:incoming>SequenceFlow_1rp5bpo</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="StartEvent_0qfvo3o">
+        <bpmn:outgoing>SequenceFlow_13ikwpn</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:manualTask id="Task_110c91l" name="Hände desinfizieren">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_13ikwpn</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_07gazpn</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:manualTask id="Task_0f08ows" name="Arbeitsflächen desinfizieren">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_07gazpn</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0x5lrsw</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:manualTask id="Task_0793ejc" name="3-Flächen-System herstellen">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0x5lrsw</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1rp5bpo</bpmn:outgoing>
+      </bpmn:manualTask>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="SequenceFlow_03i5jzr" sourceRef="Task_1k6l613" targetRef="Task_1wa174y" />
+    <bpmn:sequenceFlow id="SequenceFlow_1fl83xt" sourceRef="Task_0thvjet" targetRef="Task_0629muh" />
+    <bpmn:sequenceFlow id="SequenceFlow_0v7tus9" sourceRef="Task_0629muh" targetRef="Task_1k6l613" />
+    <bpmn:manualTask id="Task_1wa174y" name="Wunde verschließen/Wunde verbinden">
+      <bpmn:extensionElements>
+        <pb:mediaText />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_03i5jzr</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0j2kko3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:endEvent id="EndEvent_01h0soe">
+      <bpmn:incoming>SequenceFlow_0xo8x4w</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:subProcess id="Task_0sq9wcp" name="Aufräumen">
+      <bpmn:incoming>SequenceFlow_0j2kko3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0xo8x4w</bpmn:outgoing>
+      <bpmn:startEvent id="StartEvent_0q4cnm2">
+        <bpmn:outgoing>SequenceFlow_18ubxtt</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_18ubxtt" sourceRef="StartEvent_0q4cnm2" targetRef="Task_0rm2idf" />
+      <bpmn:sequenceFlow id="SequenceFlow_009erwu" sourceRef="Task_0rm2idf" targetRef="Task_1boa9bm" />
+      <bpmn:sequenceFlow id="SequenceFlow_0yhkjrv" sourceRef="Task_1boa9bm" targetRef="Task_12h2ygg" />
+      <bpmn:endEvent id="EndEvent_01w7z2t">
+        <bpmn:incoming>SequenceFlow_028m20m</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:manualTask id="Task_0rm2idf" name="Abwurf verwendeter Materialien">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_18ubxtt</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_009erwu</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:manualTask id="Task_1boa9bm" name="Arbeitsfläche reinigen und desinfizieren">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_009erwu</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0yhkjrv</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:manualTask id="Task_12h2ygg" name="Hände desinfizieren">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0yhkjrv</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_028m20m</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:sequenceFlow id="SequenceFlow_028m20m" sourceRef="Task_12h2ygg" targetRef="EndEvent_01w7z2t" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="SequenceFlow_0j2kko3" sourceRef="Task_1wa174y" targetRef="Task_0sq9wcp" />
+    <bpmn:sequenceFlow id="SequenceFlow_0xo8x4w" sourceRef="Task_0sq9wcp" targetRef="EndEvent_01h0soe" />
+    <bpmn:subProcess id="Task_1k6l613" name="Wundzustand dokumentieren">
+      <bpmn:incoming>SequenceFlow_0v7tus9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_03i5jzr</bpmn:outgoing>
+      <bpmn:startEvent id="StartEvent_1j2ql2y">
+        <bpmn:outgoing>SequenceFlow_0wram9d</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_0wram9d" sourceRef="StartEvent_1j2ql2y" targetRef="Task_0xojj4n" />
+      <bpmn:sequenceFlow id="SequenceFlow_1ef5shk" sourceRef="Task_0tac2p2" targetRef="Task_18bc80j" />
+      <bpmn:userTask id="Task_0tac2p2" name="Wundfoto aufnehmen">
+        <bpmn:extensionElements>
+          <pb:userTaskExtension>
+            <pb:woundPicture>
+              <pb:woundPictureOutput dataRef="DataObjectReference_0wnhnww" />
+            </pb:woundPicture>
+          </pb:userTaskExtension>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_02ada8x</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1ef5shk</bpmn:outgoing>
+        <bpmn:dataOutputAssociation id="DataOutputAssociation_0s8gwkz">
+          <bpmn:targetRef>DataObjectReference_0wnhnww</bpmn:targetRef>
+        </bpmn:dataOutputAssociation>
+      </bpmn:userTask>
+      <bpmn:userTask id="Task_18bc80j" name="Wunderkennung">
+        <bpmn:extensionElements>
+          <pb:userTaskExtension>
+            <pb:woundDetection>
+              <pb:woundPictureInput dataRef="DataObjectReference_0wnhnww" />
+              <pb:woundMeasurementOutput dataRef="DataObjectReference_1ws8373" />
+            </pb:woundDetection>
+          </pb:userTaskExtension>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_1ef5shk</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0yzgef2</bpmn:outgoing>
+        <bpmn:property id="Property_1mm6pky" name="__targetRef_placeholder" />
+        <bpmn:dataInputAssociation id="DataInputAssociation_1jb256n">
+          <bpmn:sourceRef>DataObjectReference_0wnhnww</bpmn:sourceRef>
+          <bpmn:targetRef>Property_1mm6pky</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+        <bpmn:dataOutputAssociation id="DataOutputAssociation_0adu3qt">
+          <bpmn:targetRef>DataObjectReference_1ws8373</bpmn:targetRef>
+        </bpmn:dataOutputAssociation>
+      </bpmn:userTask>
+      <bpmn:manualTask id="Task_0xojj4n" name="Wunde beschreiben">
+        <bpmn:extensionElements>
+          <pb:mediaText />
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0wram9d</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_02ada8x</bpmn:outgoing>
+      </bpmn:manualTask>
+      <bpmn:sequenceFlow id="SequenceFlow_02ada8x" sourceRef="Task_0xojj4n" targetRef="Task_0tac2p2" />
+      <bpmn:sequenceFlow id="SequenceFlow_0yzgef2" sourceRef="Task_18bc80j" targetRef="Task_1myyvb1" />
+      <bpmn:serviceTask id="Task_1myyvb1" name="Wunde protokollieren">
+        <bpmn:extensionElements>
+          <pb:serviceTaskExtension>
+            <pb:createWoundHistoryEntry>
+              <pb:woundHistoryEntryOutput dataRef="DataObjectReference_0duvz7l" />
+              <pb:woundImageInput dataRef="DataObjectReference_0wnhnww" />
+              <pb:woundMeasurementInput dataRef="DataObjectReference_1ws8373" />
+            </pb:createWoundHistoryEntry>
+          </pb:serviceTaskExtension>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0yzgef2</bpmn:incoming>
+        <bpmn:outgoing>Flow_11e4mr8</bpmn:outgoing>
+        <bpmn:property id="Property_1umb7aa" name="__targetRef_placeholder" />
+        <bpmn:dataInputAssociation id="DataInputAssociation_0q2slxc">
+          <bpmn:sourceRef>DataObjectReference_1ws8373</bpmn:sourceRef>
+          <bpmn:targetRef>Property_1umb7aa</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+        <bpmn:dataInputAssociation id="DataInputAssociation_0vtp47c">
+          <bpmn:sourceRef>DataObjectReference_0wnhnww</bpmn:sourceRef>
+          <bpmn:targetRef>Property_1umb7aa</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+        <bpmn:dataOutputAssociation id="DataOutputAssociation_1xec4lt">
+          <bpmn:targetRef>DataObjectReference_0duvz7l</bpmn:targetRef>
+        </bpmn:dataOutputAssociation>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="Activity_1c65fne" name="Wunddetails dokumentieren">
+        <bpmn:extensionElements>
+          <pb:serviceTaskExtension>
+            <pb:postWoundHistoryEntry>
+              <pb:patientInput dataRef="DataObjectReference_0wyuyaz" />
+              <pb:woundInput dataRef="DataObjectReference_110p2oz" />
+              <pb:woundHistoryEntryInput dataRef="DataObjectReference_0duvz7l" />
+            </pb:postWoundHistoryEntry>
+          </pb:serviceTaskExtension>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_11e4mr8</bpmn:incoming>
+        <bpmn:outgoing>Flow_0e4wy0m</bpmn:outgoing>
+        <bpmn:property id="Property_0k4avq9" name="__targetRef_placeholder" />
+        <bpmn:dataInputAssociation id="DataInputAssociation_07zwt5o">
+          <bpmn:sourceRef>DataObjectReference_0duvz7l</bpmn:sourceRef>
+          <bpmn:targetRef>Property_0k4avq9</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+        <bpmn:dataInputAssociation id="DataInputAssociation_0zg3u92">
+          <bpmn:sourceRef>DataObjectReference_110p2oz</bpmn:sourceRef>
+          <bpmn:targetRef>Property_0k4avq9</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+        <bpmn:dataInputAssociation id="DataInputAssociation_1scxg75">
+          <bpmn:sourceRef>DataObjectReference_0wyuyaz</bpmn:sourceRef>
+          <bpmn:targetRef>Property_0k4avq9</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_11e4mr8" sourceRef="Task_1myyvb1" targetRef="Activity_1c65fne" />
+      <bpmn:endEvent id="Event_0rs3n12">
+        <bpmn:incoming>Flow_0e4wy0m</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0e4wy0m" sourceRef="Activity_1c65fne" targetRef="Event_0rs3n12" />
+    </bpmn:subProcess>
+    <bpmn:dataObjectReference id="DataObjectReference_0wnhnww" name="Wundfoto" dataObjectRef="DataObject_0hlgau2" />
+    <bpmn:dataObject id="DataObject_0hlgau2">
+      <bpmn:extensionElements>
+        <pb:dataObjectExtension dataType="Image" />
+      </bpmn:extensionElements>
+    </bpmn:dataObject>
+    <bpmn:dataObjectReference id="DataObjectReference_1ws8373" name="Wundmaße" dataObjectRef="DataObject_1dgn3v7" />
+    <bpmn:dataObject id="DataObject_1dgn3v7">
+      <bpmn:extensionElements>
+        <pb:dataObjectExtension dataType="WoundMeasurement" />
+      </bpmn:extensionElements>
+    </bpmn:dataObject>
+    <bpmn:userTask id="Activity_0e7vm78" name="Patient scannen/wählen">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:patientSelect>
+            <pb:patientOutput dataRef="DataObjectReference_0wyuyaz" />
+          </pb:patientSelect>
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1h795go</bpmn:incoming>
+      <bpmn:outgoing>Flow_123b06p</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0klacew">
+        <bpmn:targetRef>DataObjectReference_0wyuyaz</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1h795go" sourceRef="Task_1vocosm" targetRef="Activity_0e7vm78" />
+    <bpmn:userTask id="Activity_0zf79qf" name="Bestehende Wunde auswählen">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:woundSelect>
+            <pb:patientInput dataRef="DataObjectReference_0wyuyaz" />
+            <pb:woundOutput dataRef="DataObjectReference_110p2oz" />
+          </pb:woundSelect>
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_123b06p</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ebw3k6</bpmn:outgoing>
+      <bpmn:property id="Property_1qawwjb" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0wssj7a">
+        <bpmn:sourceRef>DataObjectReference_0wyuyaz</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1qawwjb</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0lqbuo4">
+        <bpmn:targetRef>DataObjectReference_110p2oz</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_123b06p" sourceRef="Activity_0e7vm78" targetRef="Activity_0zf79qf" />
+    <bpmn:dataObjectReference id="DataObjectReference_0wyuyaz" name="Patient" dataObjectRef="DataObject_0aaf2an" />
+    <bpmn:dataObject id="DataObject_0aaf2an">
+      <bpmn:extensionElements>
+        <pb:dataObjectExtension dataType="Patient" />
+      </bpmn:extensionElements>
+    </bpmn:dataObject>
+    <bpmn:dataObjectReference id="DataObjectReference_110p2oz" name="Wunde" dataObjectRef="DataObject_11yz2dt" />
+    <bpmn:dataObject id="DataObject_11yz2dt">
+      <bpmn:extensionElements>
+        <pb:dataObjectExtension dataType="Wound" />
+      </bpmn:extensionElements>
+    </bpmn:dataObject>
+    <bpmn:sequenceFlow id="Flow_0ebw3k6" sourceRef="Activity_0zf79qf" targetRef="Task_0thvjet" />
+    <bpmn:dataObjectReference id="DataObjectReference_0duvz7l" name="Wundverlaufs-eintrag" dataObjectRef="DataObject_15hta3l" />
+    <bpmn:dataObject id="DataObject_15hta3l">
+      <bpmn:extensionElements>
+        <pb:dataObjectExtension dataType="WoundHistoryEntry" />
+      </bpmn:extensionElements>
+    </bpmn:dataObject>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_0ebw3k6_di" bpmnElement="Flow_0ebw3k6">
+        <di:waypoint x="660" y="254" />
+        <di:waypoint x="700" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_123b06p_di" bpmnElement="Flow_123b06p">
+        <di:waypoint x="520" y="254" />
+        <di:waypoint x="560" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h795go_di" bpmnElement="Flow_1h795go">
+        <di:waypoint x="380" y="254" />
+        <di:waypoint x="420" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0xo8x4w_di" bpmnElement="SequenceFlow_0xo8x4w">
+        <di:waypoint x="3320" y="254" />
+        <di:waypoint x="3362" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0j2kko3_di" bpmnElement="SequenceFlow_0j2kko3">
+        <di:waypoint x="2660" y="254" />
+        <di:waypoint x="2690" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0v7tus9_di" bpmnElement="SequenceFlow_0v7tus9">
+        <di:waypoint x="1464" y="254" />
+        <di:waypoint x="1510" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1fl83xt_di" bpmnElement="SequenceFlow_1fl83xt">
+        <di:waypoint x="1320" y="254" />
+        <di:waypoint x="1364" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_03i5jzr_di" bpmnElement="SequenceFlow_03i5jzr">
+        <di:waypoint x="2521" y="254" />
+        <di:waypoint x="2560" y="254" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1222.5" y="211" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_06wy6zg_di" bpmnElement="SequenceFlow_06wy6zg">
+        <di:waypoint x="243" y="254" />
+        <di:waypoint x="280" y="254" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="149.5" y="211" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="207" y="236" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="300" y="420" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_0jk8mk1_di" bpmnElement="Task_1vocosm" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="280" y="214" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1j2trgy_di" bpmnElement="Task_0629muh" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="1364" y="214" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_0xnvo4a_di" bpmnElement="Task_1wa174y" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="2560" y="214" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_01h0soe_di" bpmnElement="EndEvent_01h0soe">
+        <dc:Bounds x="3362" y="236" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1780" y="424" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_1ws8373_di" bpmnElement="DataObjectReference_1ws8373">
+        <dc:Bounds x="1992" y="405" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1981" y="465" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0duvz7l_di" bpmnElement="DataObjectReference_0duvz7l">
+        <dc:Bounds x="2232" y="55" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2215" y="112" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0wnhnww_di" bpmnElement="DataObjectReference_0wnhnww">
+        <dc:Bounds x="1832" y="55" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1826" y="31" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0afybdh_di" bpmnElement="Task_0thvjet" isExpanded="true">
+        <dc:Bounds x="700" y="179" width="620" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1rp5bpo_di" bpmnElement="SequenceFlow_1rp5bpo">
+        <di:waypoint x="1210" y="259" />
+        <di:waypoint x="1262" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="602" y="211" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0x5lrsw_di" bpmnElement="SequenceFlow_0x5lrsw">
+        <di:waypoint x="1060" y="259" />
+        <di:waypoint x="1110" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="780" y="381" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_07gazpn_di" bpmnElement="SequenceFlow_07gazpn">
+        <di:waypoint x="910" y="259" />
+        <di:waypoint x="960" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="604" y="381" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_13ikwpn_di" bpmnElement="SequenceFlow_13ikwpn">
+        <di:waypoint x="778" y="259" />
+        <di:waypoint x="810" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="448" y="381" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_098wkrs_di" bpmnElement="EndEvent_098wkrs">
+        <dc:Bounds x="1262" y="241" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="744" y="424" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0qfvo3o_di" bpmnElement="StartEvent_0qfvo3o">
+        <dc:Bounds x="742" y="241" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="408" y="424" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1asp9i2_di" bpmnElement="Task_110c91l" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="810" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1xdqy0l_di" bpmnElement="Task_0f08ows" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="960" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1y2w3oi_di" bpmnElement="Task_0793ejc" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="1110" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_1qrln0f_di" bpmnElement="Task_1k6l613" isExpanded="true">
+        <dc:Bounds x="1510" y="179" width="1011" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0e4wy0m_di" bpmnElement="Flow_0e4wy0m">
+        <di:waypoint x="2380" y="259" />
+        <di:waypoint x="2432" y="259" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11e4mr8_di" bpmnElement="Flow_11e4mr8">
+        <di:waypoint x="2220" y="259" />
+        <di:waypoint x="2280" y="259" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0yzgef2_di" bpmnElement="SequenceFlow_0yzgef2">
+        <di:waypoint x="2060" y="259" />
+        <di:waypoint x="2120" y="259" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_02ada8x_di" bpmnElement="SequenceFlow_02ada8x">
+        <di:waypoint x="1740" y="259" />
+        <di:waypoint x="1800" y="259" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ef5shk_di" bpmnElement="SequenceFlow_1ef5shk">
+        <di:waypoint x="1900" y="259" />
+        <di:waypoint x="1960" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1225" y="380" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0wram9d_di" bpmnElement="SequenceFlow_0wram9d">
+        <di:waypoint x="1584" y="259" />
+        <di:waypoint x="1640" y="259" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1082" y="380" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1j2ql2y_di" bpmnElement="StartEvent_1j2ql2y">
+        <dc:Bounds x="1548" y="241" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1045" y="423" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_0e4vm7k_di" bpmnElement="Task_0tac2p2" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="1800" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1mccvi8_di" bpmnElement="Task_18bc80j" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="1960" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_060gmcw_di" bpmnElement="Task_0xojj4n" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="1640" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_0mhm4la_di" bpmnElement="Task_1myyvb1" bioc:stroke="#ae3f3f" bioc:fill="#f6ebeb">
+        <dc:Bounds x="2120" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c65fne_di" bpmnElement="Activity_1c65fne" bioc:stroke="#ae3f3f" bioc:fill="#f6ebeb">
+        <dc:Bounds x="2280" y="219" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0rs3n12_di" bpmnElement="Event_0rs3n12">
+        <dc:Bounds x="2432" y="241" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e7vm78_di" bpmnElement="Activity_0e7vm78" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="420" y="214" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zf79qf_di" bpmnElement="Activity_0zf79qf" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="560" y="214" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0wyuyaz_di" bpmnElement="DataObjectReference_0wyuyaz">
+        <dc:Bounds x="452" y="515" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="453" y="572" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_110p2oz_di" bpmnElement="DataObjectReference_110p2oz">
+        <dc:Bounds x="592" y="-45" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="592" y="-69" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0y5aue8_di" bpmnElement="Task_0sq9wcp" isExpanded="true">
+        <dc:Bounds x="2690" y="178" width="630" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_028m20m_di" bpmnElement="SequenceFlow_028m20m">
+        <di:waypoint x="3220" y="258" />
+        <di:waypoint x="3257" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0yhkjrv_di" bpmnElement="SequenceFlow_0yhkjrv">
+        <di:waypoint x="3074" y="258" />
+        <di:waypoint x="3120" y="258" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1751" y="380" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_009erwu_di" bpmnElement="SequenceFlow_009erwu">
+        <di:waypoint x="2913" y="258" />
+        <di:waypoint x="2974" y="258" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1598" y="380" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_18ubxtt_di" bpmnElement="SequenceFlow_18ubxtt">
+        <di:waypoint x="2758" y="258" />
+        <di:waypoint x="2813" y="258" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1440" y="380" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0q4cnm2_di" bpmnElement="StartEvent_0q4cnm2">
+        <dc:Bounds x="2722" y="240" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1394" y="423" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_01w7z2t_di" bpmnElement="EndEvent_01w7z2t">
+        <dc:Bounds x="3257" y="240" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1929" y="423" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1umspoz_di" bpmnElement="Task_0rm2idf" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="2813" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1050kom_di" bpmnElement="Task_1boa9bm" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="2974" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1n6uulk_di" bpmnElement="Task_12h2ygg" bioc:stroke="#198c19" bioc:fill="#ebf2eb">
+        <dc:Bounds x="3120" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0klacew_di" bpmnElement="DataOutputAssociation_0klacew">
+        <di:waypoint x="470" y="294" />
+        <di:waypoint x="472" y="515" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0wssj7a_di" bpmnElement="DataInputAssociation_0wssj7a">
+        <di:waypoint x="488" y="540" />
+        <di:waypoint x="610" y="540" />
+        <di:waypoint x="610" y="294" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0lqbuo4_di" bpmnElement="DataOutputAssociation_0lqbuo4">
+        <di:waypoint x="610" y="214" />
+        <di:waypoint x="612" y="5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1xec4lt_di" bpmnElement="DataOutputAssociation_1xec4lt">
+        <di:waypoint x="2190" y="219" />
+        <di:waypoint x="2190" y="80" />
+        <di:waypoint x="2232" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_07zwt5o_di" bpmnElement="DataInputAssociation_07zwt5o">
+        <di:waypoint x="2268" y="80" />
+        <di:waypoint x="2310" y="80" />
+        <di:waypoint x="2310" y="219" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0adu3qt_di" bpmnElement="DataOutputAssociation_0adu3qt">
+        <di:waypoint x="2010" y="299" />
+        <di:waypoint x="2012" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0q2slxc_di" bpmnElement="DataInputAssociation_0q2slxc">
+        <di:waypoint x="2028" y="430" />
+        <di:waypoint x="2170" y="430" />
+        <di:waypoint x="2170" y="299" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0s8gwkz_di" bpmnElement="DataOutputAssociation_0s8gwkz">
+        <di:waypoint x="1850" y="219" />
+        <di:waypoint x="1852" y="105" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1jb256n_di" bpmnElement="DataInputAssociation_1jb256n">
+        <di:waypoint x="1868" y="80" />
+        <di:waypoint x="2010" y="80" />
+        <di:waypoint x="2010" y="219" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0vtp47c_di" bpmnElement="DataInputAssociation_0vtp47c">
+        <di:waypoint x="1868" y="80" />
+        <di:waypoint x="2150" y="80" />
+        <di:waypoint x="2150" y="219" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0zg3u92_di" bpmnElement="DataInputAssociation_0zg3u92">
+        <di:waypoint x="628" y="-20" />
+        <di:waypoint x="2350" y="-20" />
+        <di:waypoint x="2350" y="219" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1scxg75_di" bpmnElement="DataInputAssociation_1scxg75">
+        <di:waypoint x="488" y="540" />
+        <di:waypoint x="2330" y="540" />
+        <di:waypoint x="2330" y="299" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

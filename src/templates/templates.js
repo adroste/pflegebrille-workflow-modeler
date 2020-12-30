@@ -1,7 +1,8 @@
 import empty from './bpmn/empty.bpmn';
 import patientData from './bpmn/patientData.bpmn';
 import woundData from './bpmn/woundData.bpmn';
-import wundmanagement from './bpmn/Wundmanagement.bpmn';
+import woundDocumentation from './bpmn/woundDocumentation.bpmn';
+import woundDocumentationDataHandling from './bpmn/woundDocumentationDataHandling.bpmn';
 
 export const templates = [
     {
@@ -25,7 +26,11 @@ export const templates = [
         separator: true,
     },
     {
-        label: 'Beispielworkflow: Wundmanagement',
-        src: wundmanagement,
+        label: 'Wunddokumentation (ohne Anweisungen)',
+        src: woundDocumentationDataHandling,
+    },
+    {
+        label: 'Wunddokumentation (mit Anweisungen)',
+        src: woundDocumentation,
     },
 ];
