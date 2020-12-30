@@ -12,6 +12,9 @@ function BpmnExtensionInserter(
     function check({ element }) {
         const bo = getBusinessObject(element);
 
+        if (!bo)
+            return;
+
         // recursive for references
         const innerElements = getInnerElements(bo);
         innerElements.forEach(element => {

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
+import { ScreenEnum } from '../base/ScreenEnum';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
 import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
@@ -17,7 +18,7 @@ import styles from './Modeler.module.css';
 
 export function Modeler() {
     const { setModeler } = useContext(modelerContext);
-    const { initialXml } = useContext(appContext);
+    const { initialXml, setScreen } = useContext(appContext);
     const containerRef = useRef();
     const initialXmlRef = useRef();
     initialXmlRef.current = initialXml;
@@ -66,9 +67,16 @@ export function Modeler() {
             .then(() => setModeler(modeler))
             .catch(err => {
                 console.error(err);
-                Modal.error({
+                Modal.confirm({
                     title: 'Import Fehler',
-                    content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.'
+                    content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.',
+                    cancelText: 'XML-Editor',
+                    onCancel() {
+                        setScreen(ScreenEnum.XML_EDITOR);
+                    },
+                    onOk() {
+                        setScreen(ScreenEnum.LOAD_WORKFLOW);
+                    }
                 });
             });
 
@@ -77,7 +85,7 @@ export function Modeler() {
                 modeler.destroy();
             setModeler(null);
         }
-    }, [containerRef, initialXmlRef, setModeler]);
+    }, [containerRef, initialXmlRef, setModeler, setScreen]);
 
     return (
         <div
