@@ -1,4 +1,4 @@
-import { findId, is, isAny, traverseModdle } from './util';
+import { findId, is } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
@@ -6,28 +6,25 @@ export const noUnusedDataInputOutput = () => ({
     category: RuleCategoryEnum.WARN,
     factory(binding) {
 
-        function hasDataInputOutputRefWithId(node, refId) {
-            let found = false;
-            traverseModdle(node, node => {
-                if (
-                    is(node, 'pb:DataInputOutputRef')
-                    && node.dataRef 
-                    && node.dataRef.id === refId
-                ) {
-                    found = true;
+        let startNode = null;
+        let refs = [];
+
+        function hasRefWithType(ref, type) {
+            for (let _ref of refs) {
+                if (is(_ref, type) && _ref.dataRef === ref) {
                     return true;
                 }
-            });
-            return found;
+            }
+            return false;
         }
 
-        function check(node, reporter) {
-            if (!isAny(node, binding.appliesTo))
+        function leave(node, reporter) {
+            if (node !== startNode) 
                 return;
 
             node.dataInputAssociations?.forEach(da => {
                 const ref = da.sourceRef[0];
-                if (ref && !hasDataInputOutputRefWithId(node, ref.id)) {
+                if (ref && !hasRefWithType(ref, 'pb:DataInputRef')) {
                     reporter.report(
                         findId(node),
                         `Unbenutzte Eingabedaten: "${ref.name || ref.id}"`
@@ -37,15 +34,32 @@ export const noUnusedDataInputOutput = () => ({
 
             node.dataOutputAssociations?.forEach(da => {
                 const ref = da.targetRef;
-                if (ref && !hasDataInputOutputRefWithId(node, ref.id)) {
+                if (ref && !hasRefWithType(ref, 'pb:DataOutputRef')) {
                     reporter.report(
                         findId(node),
                         `Unbenutzte Ausgabedaten: "${ref.name || ref.id}"`
                     );
                 }
             });
+
+            startNode = null;
+            refs = [];
         }
 
-        return { check };
+        function enter(node, reporter) {
+            if (startNode) { 
+                if (is(node, 'pb:DataInputOutputRef')) {
+                    refs.push(node);
+                }
+            } else if (
+                node.dataInputAssociations?.length > 0
+                || node.dataOutputAssociations?.length > 0
+            ) {
+                startNode = node;
+                refs = [];
+            }
+        }
+
+        return { check: { enter, leave } };
     }
 });

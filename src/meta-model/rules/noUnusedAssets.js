@@ -8,7 +8,10 @@ export const noUnusedAssets = () => ({
         const assets = [];
         const refIds = [];
 
-        function afterCheck(node, reporter) {
+        function leave(node, reporter) {
+            if (!is(node, 'bpmn:Definitions'))
+                return;
+
             const unused = assets.filter(({ id }) =>
                 refIds.every(refId => refId !== id));
             unused.forEach(asset => {
@@ -19,7 +22,7 @@ export const noUnusedAssets = () => ({
             });
         }
 
-        function check(node, reporter) {
+        function enter(node, reporter) {
             if (is(node, 'pb:Assets')) {
                 assets.push(...node.get('assets'));
             } else {
@@ -34,6 +37,6 @@ export const noUnusedAssets = () => ({
             }
         }
 
-        return { check, afterCheck };
+        return { check: { enter, leave } };
     }
 });

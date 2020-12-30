@@ -9,7 +9,10 @@ export const dataInputOuputAssocationsRequired = () => ({
         const dataOutputAssociations = [];
         const dataObjectReferences = [];
 
-        function afterCheck(node, reporter) {
+        function leave(node, reporter) {
+            if (!is(node, 'bpmn:Definitions'))
+                return;
+
             dataObjectReferences.forEach(({ id }) => {
                 const receivesInput = dataInputAssociations.some(
                     ({ sourceRef }) => sourceRef[0]?.id === id);
@@ -31,7 +34,7 @@ export const dataInputOuputAssocationsRequired = () => ({
             });
         }
 
-        function check(node, reporter) {
+        function enter(node, reporter) {
             if (is(node, 'bpmn:DataInputAssociation')) {
                 dataInputAssociations.push(node);
             } else if (is(node, 'bpmn:DataOutputAssociation')) {
@@ -41,6 +44,6 @@ export const dataInputOuputAssocationsRequired = () => ({
             }
         }
 
-        return { check, afterCheck };
+        return { check: { enter, leave } };
     }
 });

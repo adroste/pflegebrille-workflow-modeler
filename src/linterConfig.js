@@ -19,33 +19,7 @@ function resolveRule(pkg, ruleName) {
         throw new Error('cannot resolve rule <' + pkg + '/' + ruleName + '>');
     }
 
-    return () => {
-        const ruleInstance = factory(rule.binding);
-
-        // dirty patch until resolved: https://github.com/bpmn-io/bpmnlint/issues/52
-        if (ruleInstance.afterCheck) {
-            const _check = ruleInstance.check;
-            ruleInstance.check = (node, reporter) => {
-
-                if (!reporter._messages) {
-                    reporter._messages = [];
-                    reporter.report = (id, message) => {
-                        reporter._messages.push({ id, message });
-                    }
-                    Object.defineProperty(reporter, 'messages', {
-                        get: () => {
-                            ruleInstance.afterCheck(node, reporter);
-                            return reporter._messages;
-                        },
-                    });
-                }
-                
-                _check(node, reporter);
-            }
-        }
-
-        return ruleInstance;
-    };
+    return () => factory(rule.binding);
 }
 
 function resolveConfig(pkg, configName) {
