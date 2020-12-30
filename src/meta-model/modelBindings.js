@@ -1,4 +1,5 @@
 import { DataTypeEnum, DataTypeLabels } from './enum/DataTypeEnum';
+import { ElementPositionEnum, ElementPositionLabels } from './enum/ElementPositionEnum';
 
 import { CardinalityEnum } from './enum/CardinalityEnum';
 import { FormTypeEnum } from './enum/FormTypeEnum';
@@ -239,7 +240,9 @@ export const modelBindings = [
                     {
                         group: "Lokale Datenobjekte bearbeiten",
                         options: [
-                            { value: "pb:ConcatData", label: "Daten konkatenieren" }
+                            { value: "pb:ConcatData", label: "Daten konkatenieren" },
+                            { value: "pb:DeleteDataFromCollection", label: "Element aus Menge entfernen" },
+                            { value: "pb:SelectDataFromCollection", label: "Element aus Menge auswählen" },
                         ]
                     },
                     // {
@@ -447,6 +450,72 @@ export const modelBindings = [
         ],
         rules: [
             sameDataTypeProperties(['firstInput', 'secondInput', 'collectionOutput']),
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:DeleteDataFromCollection",
+            "pb:SelectDataFromCollection",
+        ],
+        fields: [
+            {
+                property: "position",
+                type: FormTypeEnum.SELECT,
+                label: "Elementposition",
+                selectPlaceholder: "Elementposition wählen...",
+                selectOptions: enumToSelectOptions(ElementPositionEnum, ElementPositionLabels),
+            },
+        ],
+        rules: [
+            requiredProperties(['position']),
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:DeleteDataFromCollection",
+        ],
+        fields: [
+            {
+                property: "collectionInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Eingabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+            {
+                property: "collectionOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Ausgabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+        ],
+        rules: [
+            sameDataTypeProperties(['collectionInput', 'collectionOutput']),
+        ]
+    },
+    {
+        appliesTo: [
+            "pb:SelectDataFromCollection",
+        ],
+        fields: [
+            {
+                property: "collectionInput",
+                type: FormTypeEnum.DATA_INPUT_SELECT,
+                label: "Eingabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.MULTIPLE,
+            },
+            {
+                property: "dataOutput",
+                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                label: "Ausgabedaten",
+                dataType: DataTypeEnum.ANY,
+                dataCardinality: CardinalityEnum.SINGLE,
+            },
+        ],
+        rules: [
+            sameDataTypeProperties(['collectionInput', 'dataOutput']),
         ]
     },
     // {

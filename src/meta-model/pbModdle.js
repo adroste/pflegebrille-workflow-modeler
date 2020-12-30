@@ -1,4 +1,5 @@
 import { DataTypeEnum } from './enum/DataTypeEnum';
+import { ElementPositionEnum } from './enum/ElementPositionEnum';
 import { enumToModdleEnum } from './util';
 
 /**
@@ -30,6 +31,7 @@ export const pbModdle = {
     },
     enumerations: [
         enumToModdleEnum('DataTypeEnum', DataTypeEnum),
+        enumToModdleEnum('ElementPositionEnum', ElementPositionEnum),
     ],
     types: [
         {
@@ -270,6 +272,54 @@ export const pbModdle = {
                 },
                 {
                     name: "collectionOutput",
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+            ]
+        },
+        {
+            name: "DeleteDataFromCollection",
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "position",
+                    isAttr: true,
+                    type: "ElementPositionEnum",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "collectionInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "collectionOutput",
+                    type: "DataOutputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+            ]
+        },
+        {
+            name: "SelectDataFromCollection",
+            superClass: [
+                "Function"
+            ],
+            properties: [
+                {
+                    name: "position",
+                    isAttr: true,
+                    type: "ElementPositionEnum",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "collectionInput",
+                    type: "DataInputRef",
+                    xml: { serialize: "xsi:type" },
+                },
+                {
+                    name: "dataOutput",
                     type: "DataOutputRef",
                     xml: { serialize: "xsi:type" },
                 },
