@@ -22,6 +22,7 @@ import { noUnusedDataInputOutput } from './rules/noUnusedDataInputOutput';
 import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
+import { sameDataTypeProperties } from './rules/sameDataTypeProperties';
 import { singleBlankStartEventRequired } from './rules/singleBlankStartEventRequired';
 import { startEventRequired } from './rules/startEventRequired';
 import { superfluousGateway } from './rules/superfluousGateway';
@@ -185,7 +186,7 @@ export const modelBindings = [
                 type: FormTypeEnum.SELECT,
                 label: "Datentyp",
                 selectPlaceholder: "Datentyp wählen...",
-                selectOptions: enumToSelectOptions(DataTypeEnum, DataTypeLabels),
+                selectOptions: enumToSelectOptions(DataTypeEnum, DataTypeLabels, [DataTypeEnum.ANY]),
             },
         ],
     },

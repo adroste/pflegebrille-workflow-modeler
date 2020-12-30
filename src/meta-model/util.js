@@ -13,9 +13,12 @@ export function enumToModdleEnum(name, enumType) {
     return moddleEnum;
 }
 
-export function enumToSelectOptions(enumType, enumLabels) {
-    return Object.values(enumType).map(value => ({
-        label: enumLabels[value] || value,
-        value,
-    })).sort((a, b) => a.label.localeCompare(b.label));
+export function enumToSelectOptions(enumType, enumLabels, excludeTypes = []) {
+    return Object.values(enumType)
+        .map(value => ({
+            label: enumLabels[value] || value,
+            value,
+        }))
+        .filter(({ value }) => !excludeTypes.includes(value))
+        .sort((a, b) => a.label.localeCompare(b.label));
 }

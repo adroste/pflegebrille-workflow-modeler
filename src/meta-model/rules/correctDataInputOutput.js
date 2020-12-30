@@ -1,7 +1,7 @@
 import { CardinalityEnum, CardinalityLabels } from '../enum/CardinalityEnum';
+import { DataTypeEnum, DataTypeLabels } from '../enum/DataTypeEnum';
 import { findFieldBinding, findId, findLabel, findParent, is, isAny } from './util';
 
-import { DataTypeLabels } from '../enum/DataTypeEnum';
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const correctDataInputOutput = () => ({
@@ -80,7 +80,7 @@ export const correctDataInputOutput = () => ({
                         ?.values
                         ?.find(element => is(element, 'pb:DataObjectExtension'));
 
-                    if (dataType !== ext?.dataType) {
+                    if (dataType !== DataTypeEnum.ANY && dataType !== ext?.dataType) {
                         reporter.report(
                             findId(node),
                             `${getMsgStart(isInput, node, p.name)} hat ungültigen Datentyp, erforderlich: "${DataTypeLabels[dataType]}"`
