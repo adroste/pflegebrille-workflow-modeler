@@ -7,19 +7,6 @@
     right: unset;
 }
 
-:global .djs-minimap.djs-minimap .toggle:before {
-    content: attr(title);
-}
-
-:global .djs-minimap:not(.open) .toggle {
-    width: unset;
-    padding: 10px;
-    height: unset;
-    line-height: unset;
-    cursor: pointer;
-
-}
-
 :global .djs-minimap .toggle {
     display: none;
 }
