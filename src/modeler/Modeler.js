@@ -82,7 +82,8 @@ export function Modeler() {
 
         return () => {
             if (modeler)
-                modeler.destroy();
+                // timeout to resolve promises before destroy 
+                setTimeout(() => modeler.destroy(), 0);
             setModeler(null);
         }
     }, [containerRef, initialXmlRef, setModeler, setScreen]);
