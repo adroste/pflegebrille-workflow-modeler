@@ -325,32 +325,6 @@ export const pbModdle = {
                 },
             ]
         },
-        // {
-        //     name: "GetDiagnosisHistory",
-        //     superClass: [
-        //         "PatientContextFunction",
-        //     ],
-        //     properties: [
-        //         {
-        //             name: "diagnosisHistoryOutput",
-        //             type: "DataOutputRef",
-        //             xml: { serialize: "xsi:type" },
-        //         },
-        //     ]
-        // },
-        // {
-        //     name: "GetMedicationHistory",
-        //     superClass: [
-        //         "PatientContextFunction",
-        //     ],
-        //     properties: [
-        //         {
-        //             name: "medicationHistoryOutput",
-        //             type: "DataOutputRef",
-        //             xml: { serialize: "xsi:type" },
-        //         },
-        //     ]
-        // },
         {
             name: "PostWoundHistoryEntry",
             superClass: [

@@ -518,34 +518,6 @@ export const modelBindings = [
             sameDataTypeProperties(['collectionInput', 'dataOutput']),
         ]
     },
-    // {
-    //     appliesTo: [
-    //         "pb:GetDiagnosisHistory",
-    //     ],
-    //     fields: [
-    //         {
-    //             property: "diagnosisHistoryOutput",
-    //             type: FormTypeEnum.DATA_OUTPUT_SELECT,
-    //             label: "Diagnosenverlauf",
-    //             dataType: DataTypeEnum.DIAGNOSIS_DATA,
-    //             dataCardinality: CardinalityEnum.MULTIPLE,
-    //         },
-    //     ]
-    // },
-    // {
-    //     appliesTo: [
-    //         "pb:GetMedicationHistory",
-    //     ],
-    //     fields: [
-    //         {
-    //             property: "medicationHistoryOutput",
-    //             type: FormTypeEnum.DATA_OUTPUT_SELECT,
-    //             label: "Medikationsverlauf",
-    //             dataType: DataTypeEnum.MEDICATION_DATA,
-    //             dataCardinality: CardinalityEnum.MULTIPLE,
-    //         },
-    //     ]
-    // },
     {
         appliesTo: [
             "pb:PostWoundHistoryEntry",
