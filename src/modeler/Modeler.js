@@ -3,9 +3,11 @@ import React, { useContext, useEffect, useRef } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
 import { ScreenEnum } from '../base/ScreenEnum';
+import alignToOrigin from '@bpmn-io/align-to-origin';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
 import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
+// import configureOrigin from 'diagram-js-origin';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
@@ -28,15 +30,20 @@ export function Modeler() {
             return;
 
         const modeler = new BpmnModeler({
+            alignToOrigin: {
+                alignOnSave: true,
+                offset: 250,
+                tolerance: 50
+            },
             container: containerRef.current,
             linting: {
-                // bpmnlint: bpmnlintConfig,
                 bpmnlint: linterConfig,
                 active: true,
             },
             additionalModules: [
-                // customPaletteModule,
                 autoColorModule,
+                alignToOrigin,
+                // configureOrigin,
                 contextPadProviderModule,
                 germanTranslateModule,
                 lintModule,

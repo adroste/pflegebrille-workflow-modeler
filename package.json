@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@bpmn-io/align-to-origin": "^0.6.0",
     "@uiw/react-codemirror": "^3.0.1",
     "antd": "^4.7.0",
     "bpmn-js": "^8.0.0",
@@ -11,6 +12,7 @@
     "bpmnlint": "git+ssh://git@github.com:bpmn-io/bpmnlint.git#hooks-subtree-skip",
     "compressorjs": "^1.0.7",
     "diagram-js-minimap": "^2.0.3",
+    "diagram-js-origin": "^1.3.1",
     "ffmpeg.js": "^4.2.9003",
     "jszip": "^3.5.0",
     "react": "^17.0.1",
