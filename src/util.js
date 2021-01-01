@@ -9,13 +9,13 @@ export function getModelBindingsForElement(element) {
 
 export function getInnerElements(businessObject) {
     const descriptor = businessObject.$descriptor;
-    const innerElements = descriptor?.properties.reduce((innerElements, p) => {
+    const innerElements = descriptor?.properties?.reduce((innerElements, p) => {
         const el = businessObject[p.name];
         if (el !== null && (typeof el === 'object'))
             // concat works for arrays and single values
             return innerElements.concat(el);
         return innerElements;
-    }, []);
+    }, []) || [];
 
     // di property indicates that the element has a rendered shape itself
     // we want to exclude elements that have their own shape
