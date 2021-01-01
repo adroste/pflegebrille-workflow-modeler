@@ -10,6 +10,7 @@ export function ModelerContextProvider({
     const [modeler, setModeler] = useState(null);
 
     const modules = useMemo(() => ({
+        backgroundGrid: modeler?.get('backgroundGrid'),
         bpmnjs: modeler?.get('bpmnjs'),
         canvas: modeler?.get('canvas'),
         editorActions: modeler?.get('editorActions'),

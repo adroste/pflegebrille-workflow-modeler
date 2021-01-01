@@ -6,8 +6,8 @@ import { ScreenEnum } from '../base/ScreenEnum';
 import alignToOrigin from '@bpmn-io/align-to-origin';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
+import { backgroundGridModule } from '../modeler-modules/backgroundGridModule';
 import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
-// import configureOrigin from 'diagram-js-origin';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import lintModule from 'bpmn-js-bpmnlint';
@@ -35,6 +35,9 @@ export function Modeler() {
                 offset: 250,
                 tolerance: 50
             },
+            backgroundGrid: {
+                defaultVisible: false,
+            },
             container: containerRef.current,
             linting: {
                 bpmnlint: linterConfig,
@@ -43,9 +46,9 @@ export function Modeler() {
             additionalModules: [
                 autoColorModule,
                 alignToOrigin,
-                // configureOrigin,
                 contextPadProviderModule,
                 germanTranslateModule,
+                backgroundGridModule,
                 lintModule,
                 minimapModule,
                 paletteProviderModule,

@@ -1,11 +1,11 @@
+import { BorderOuterOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext } from 'react';
-import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 
 import { Button } from 'antd';
 import { modelerContext } from './ModelerContextProvider';
 
 export function ZoomControls() {
-    const { editorActions } = useContext(modelerContext);
+    const { editorActions, backgroundGrid } = useContext(modelerContext);
 
     const handleZoomIn = useCallback(() => {
         editorActions.trigger('stepZoom', { value: 1 });
@@ -14,6 +14,10 @@ export function ZoomControls() {
     const handleZoomOut = useCallback(() => {
         editorActions.trigger('stepZoom', { value: -1 });
     }, [editorActions]);
+
+    const handleGrid = useCallback(() => {
+        backgroundGrid.setVisible(!backgroundGrid.isVisible());
+    }, [backgroundGrid]);
     
     return (
         <div>
@@ -21,12 +25,21 @@ export function ZoomControls() {
                 icon={<ZoomOutOutlined />}
                 onClick={handleZoomOut}
                 shape='circle'
+                title='Zoom -'
             />
             &nbsp;
             <Button
                 icon={<ZoomInOutlined />}
                 onClick={handleZoomIn}
                 shape='circle'
+                title='Zoom +'
+            />
+            &nbsp;
+            <Button
+                icon={<BorderOuterOutlined />}
+                onClick={handleGrid}
+                shape='circle'
+                title='Grid aktivieren/deaktivieren'
             />
         </div>
     );
