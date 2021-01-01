@@ -1,6 +1,7 @@
 import { Alert, Button, Form, Input, Modal, Space } from 'antd';
-import { CloudOutlined, CloudUploadOutlined, DesktopOutlined, DownloadOutlined, SendOutlined } from '@ant-design/icons';
+import { CloudOutlined, CloudUploadOutlined, DesktopOutlined, DownloadOutlined, PictureOutlined, SendOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { downloadBlob, svgUrlToPngBlob } from '../util';
 
 import { appContext } from '../base/AppContextProvider';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
@@ -12,7 +13,7 @@ export function SaveDialog({
     onClose,
 }) {
     const { exportWorkflow } = useContext(appContext);
-    const { canvas, eventBus, getXml } = useContext(modelerContext);
+    const { canvas, eventBus, getSvg, getXml } = useContext(modelerContext);
     const [rootElement, setRootElement] = useState();
     const [form] = Form.useForm();
 
@@ -28,22 +29,35 @@ export function SaveDialog({
         });
     }, [canvas, form, onClose])
 
+    const getFileName = useCallback(() => {
+        let name = form.getFieldValue('name') || 'Workflow';
+        name = name.replace(/[/\\?%*:|"<>]/g, '-');
+        return name;
+    }, [form]);
+
     const handleDownload = useCallback(async () => {
         const xml = await getXml();
         const zip = await exportWorkflow(xml);
-        const objectUrl = URL.createObjectURL(zip);
-
-        const link = document.createElement('a');
-        link.href = objectUrl;
-        link.download = 'Workflow.zip';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
+        downloadBlob(zip, `${getFileName()}.zip`);
         onClose();
+    }, [exportWorkflow, getFileName, getXml, onClose]);
 
-        setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
-    }, [exportWorkflow, getXml, onClose]);
+    const handleDownloadPng = useCallback(async () => {
+        const svg = await getSvg();
+        const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+        const svgUrl = URL.createObjectURL(svgBlob);
+        const pngBlob = await svgUrlToPngBlob(svgUrl);
+        URL.revokeObjectURL(svgUrl);
+        downloadBlob(pngBlob, `${getFileName()}.png`);
+        onClose();
+    }, [getFileName, getSvg, onClose]);
+
+    const handleDownloadSvg = useCallback(async () => {
+        const svg = await getSvg();
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        downloadBlob(blob, `${getFileName()}.svg`);
+        onClose();
+    }, [getFileName, getSvg, onClose]);
 
     const handleValuesChange = useCallback(values => {
         if (values.hasOwnProperty('name')) {
@@ -84,6 +98,7 @@ export function SaveDialog({
 
                 {hasIssues &&
                     <Alert
+                        className={styles.alert}
                         type="warning"
                         description={
                             <div>
@@ -102,7 +117,7 @@ export function SaveDialog({
                 >
                     <div className={styles.group}>
                         <CloudOutlined />&nbsp;&nbsp;Online
-                </div>
+                    </div>
 
                     <Space>
                         <Button
@@ -113,7 +128,7 @@ export function SaveDialog({
                             disabled
                         >
                             In Cloud Speichern
-                    </Button>
+                        </Button>
 
                         <Button
                             onClick={() => alert('Cloud Speicher nicht verfügbar.')}
@@ -122,22 +137,42 @@ export function SaveDialog({
                             disabled
                         >
                             Veröffentlichen
-                    </Button>
+                        </Button>
                     </Space>
 
                     <div></div>
 
                     <div className={styles.group}>
                         <DesktopOutlined />&nbsp;&nbsp;Lokal
-                </div>
+                    </div>
 
-                    <Button
-                        onClick={handleDownload}
-                        icon={<DownloadOutlined />}
-                        shape="round"
-                    >
-                        Workflow herunterladen
-                </Button>
+                    <Space>
+                        <Button
+                            onClick={handleDownloadPng}
+                            icon={<PictureOutlined />}
+                            shape="round"
+                        >
+                            Als Bild speichern
+                        </Button>
+
+                        <Button
+                            onClick={handleDownloadSvg}
+                            icon={<PictureOutlined />}
+                            shape="round"
+                        >
+                            Als SVG speichern
+                        </Button>
+                    </Space>
+
+                    <Space>
+                        <Button
+                            onClick={handleDownload}
+                            icon={<DownloadOutlined />}
+                            shape="round"
+                        >
+                            Workflow herunterladen
+                        </Button>
+                    </Space>
                 </Space>
             </Space>
         </Modal>

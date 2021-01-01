@@ -21,7 +21,15 @@ export function ModelerContextProvider({
         moddle: modeler?.get('moddle'),
         modeling: modeler?.get('modeling'),
         selection: modeler?.get('selection'),
-    }), [modeler])
+    }), [modeler]);
+
+    const getSvg = useCallback(() => {
+        if (!modeler)
+            return;
+
+        return modeler.saveSVG()
+            .then(({ svg }) => svg);
+    }, [modeler]);
 
     const getXml = useCallback(() => {
         if (!modeler)
@@ -42,10 +50,12 @@ export function ModelerContextProvider({
 
     const value = useMemo(() => ({
         ...modules,
+        getSvg,
         getXml,
         modeler,
         setModeler,
     }), [
+        getSvg,
         getXml,
         modeler, 
         modules,
