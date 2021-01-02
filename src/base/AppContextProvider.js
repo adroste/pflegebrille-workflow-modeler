@@ -60,8 +60,8 @@ export function AppContextProvider({
                     default:
                         throw new Error('Assets beschädigt.');
                 }
-                // hack to set blob type
-                assetData[id] = blob.slice(0, blob.size, type);
+                // set correct blob type (bug safari: .slice does not work!)
+                assetData[id] = new Blob([blob], { type });
             }
         } else {
             xml = data;
