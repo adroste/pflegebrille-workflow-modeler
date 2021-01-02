@@ -26,10 +26,13 @@ export const noUnusedAssets = () => ({
             if (is(node, 'pb:Assets')) {
                 assets.push(...node.get('assets'));
             } else {
-                const assetRefProps = node.$descriptor.properties.filter(
+                const assetRefProps = node.$descriptor?.properties?.filter(
                     ({ name, isReference }) =>
                         isReference && node[name] && is(node[name], 'pb:Asset')
                 );
+
+                if (!assetRefProps?.length)
+                    return;
 
                 for (let prop of assetRefProps) {
                     refIds.push(node[prop.name].id);

@@ -21,12 +21,12 @@ export const noMissingAssets = () => ({
         }
 
         function check(node, reporter) {
-            const assetRefProps = node.$descriptor.properties.filter(
+            const assetRefProps = node.$descriptor?.properties?.filter(
                 ({ name, isReference }) =>
                     isReference && node[name] && is(node[name], 'pb:Asset')
             );
 
-            if (!assetRefProps.length)
+            if (!assetRefProps?.length)
                 return;
 
             if (!context.assets)

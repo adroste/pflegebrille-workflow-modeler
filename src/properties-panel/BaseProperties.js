@@ -11,7 +11,7 @@ export function BaseProperties({
     const [form] = Form.useForm();
 
     const businessObject = getBusinessObject(element);
-    const hasName = businessObject.$descriptor?.properties.find(p => p.name === 'name');
+    const hasName = businessObject.$descriptor?.properties?.find(p => p.name === 'name');
 
     useEffect(() => {
         form.setFieldsValue({
