@@ -4,9 +4,10 @@ import { enumToModdleEnum } from './util';
 
 /**
  * Important hints for changing/extending the model:
- * - YOU MUST increment version number in uri on change!
+ * - YOU MUST increment version number in uri on change! (see: https://semver.org/)
+ * - Remember to update ALL included templates as well!
  * - If you change something, it certainly breaks existing workflows!
- * - IDs must not begin with a number, spec: https://www.w3.org/TR/REC-xml/#NT-NameChar
+ * - IDs (isId: true) must not begin with a number, spec: https://www.w3.org/TR/REC-xml/#NT-NameChar
  * - use `moddle.ids.nextPrefixed` for id generation
  * - DO NOT use two or more body properties with the same type,
  *   by default matching on import is done by type, 
@@ -16,7 +17,8 @@ import { enumToModdleEnum } from './util';
  * - DO NOT inherit from bpmn:BaseElement or other bpmn types
  * - ExtensionElements must inherit from Element, 
  *   otherwise they magically disappear on re-import
- * - TRY NOT to extend bpmn elements with custom properties, its buggy sometimes
+ * - TRY NOT to extend bpmn elements with custom properties, 
+ *   its buggy sometimes and against the spec
  * - if you use / do anything that has not already been done 
  *   in any of the types below, you can be certain that it will 
  *   not work properly without further digging into bpmn-js, moddle & co
