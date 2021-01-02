@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useRef } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
 import { ScreenEnum } from '../base/ScreenEnum';
-import addExporter from '@bpmn-io/add-exporter';
-import alignToOrigin from '@bpmn-io/align-to-origin';
+import addExporterModule from '@bpmn-io/add-exporter';
+import alignToOriginModule from '@bpmn-io/align-to-origin';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
-import { backgroundGridModule } from '../modeler-modules/backgroundGridModule';
+import { backgroundGridModule } from '../modeler-modules/backgroundGrid';
 import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
@@ -49,9 +49,9 @@ export function Modeler() {
                 active: true,
             },
             additionalModules: [
-                addExporter,
+                addExporterModule,
                 autoColorModule,
-                alignToOrigin,
+                alignToOriginModule,
                 contextPadProviderModule,
                 germanTranslateModule,
                 backgroundGridModule,
