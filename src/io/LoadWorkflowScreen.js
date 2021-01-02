@@ -50,7 +50,7 @@ export function LoadWorkflowScreen() {
 
                     <Typography.Title level={1}>
                         <div className={styles.title}>
-                            <img src="/android-chrome-192x192.png" alt="" />
+                            <img src="android-chrome-192x192.png" alt="" />
                             Pflegebrille Workflow Modeler
                         </div>
                     </Typography.Title>
