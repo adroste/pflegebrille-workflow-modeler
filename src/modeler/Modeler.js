@@ -73,22 +73,55 @@ export function Modeler() {
             };
         }
 
-        modeler.importXML(initialXmlRef.current)
-            .then(() => setModeler(modeler))
-            .catch(err => {
-                console.error(err);
-                Modal.confirm({
-                    title: 'Import Fehler',
-                    content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.',
-                    cancelText: 'XML-Editor',
-                    onCancel() {
-                        setScreen(ScreenEnum.XML_EDITOR);
-                    },
-                    onOk() {
-                        setScreen(ScreenEnum.LOAD_WORKFLOW);
-                    }
+        function importXml(xml) {
+            return modeler.importXML(xml)
+                .then(() => setModeler(modeler))
+                .catch(err => {
+                    console.error(err);
+                    Modal.confirm({
+                        title: 'Import Fehler',
+                        content: 'Der Workflow konnte nicht geladen werden.\nMöglicherweise ist die BPMN-Datei beschädigt.',
+                        cancelText: 'XML-Editor',
+                        onCancel() {
+                            setScreen(ScreenEnum.XML_EDITOR);
+                        },
+                        onOk() {
+                            setScreen(ScreenEnum.LOAD_WORKFLOW);
+                        }
+                    });
                 });
+        }
+
+        let xml = initialXmlRef.current;
+        const uriRegex = /(definitions.*xmlns:pb=)"(.+?)"/;
+        const match = xml?.match(uriRegex);
+        if (match && match[2] !== pbModdle.uri) {
+            const getVersion = uri => uri.split('/').pop();
+            Modal.confirm({
+                title: 'Alte Version',
+                content: (
+                    <div>
+                        <p>Die Workflow Version unterscheidet sich von der aktuellen Version:</p>
+                        <p>
+                            Workflow Version: {getVersion(match[2])}<br/>
+                            Aktuelle Version: {getVersion(pbModdle.uri)}
+                        </p>
+                    </div>
+                ),
+                okText: 'Trotzdem laden',
+                cancelText: 'Abbrechen',
+                onCancel() {
+                    setScreen(ScreenEnum.LOAD_WORKFLOW);
+                },
+                onOk() {
+                    // upgrade version
+                    xml = xml.replace(uriRegex, `$1"${pbModdle.uri}"`);
+                    importXml(xml);
+                }
             });
+        } else {
+            importXml(xml);
+        }
 
         return () => {
             if (modeler)
