@@ -8,4 +8,6 @@ https://www.omg.org/spec/BPMN/2.0/PDF
 
 ## todos
 
-* [ ] contextpadprovider
+* [ ] debounced input element (performance)
+* [ ] add version to definitions
+* [ ] feat: optional data inputs/outputs
