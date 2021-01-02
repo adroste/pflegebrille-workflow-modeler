@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@bpmn-io/add-exporter": "^0.2.0",
     "@bpmn-io/align-to-origin": "^0.6.0",
     "@uiw/react-codemirror": "^3.0.1",
     "antd": "^4.7.0",

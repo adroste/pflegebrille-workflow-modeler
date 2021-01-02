@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
 import { ScreenEnum } from '../base/ScreenEnum';
+import addExporter from '@bpmn-io/add-exporter';
 import alignToOrigin from '@bpmn-io/align-to-origin';
 import { appContext } from '../base/AppContextProvider';
 import { autoColorModule } from '../modeler-modules/autoColor';
@@ -39,11 +40,16 @@ export function Modeler() {
                 defaultVisible: false,
             },
             container: containerRef.current,
+            exporter: {
+                name: 'pflegebrille-workflow-modeler',
+                version: process.env.REACT_APP_VERSION,
+            },
             linting: {
                 bpmnlint: linterConfig,
                 active: true,
             },
             additionalModules: [
+                addExporter,
                 autoColorModule,
                 alignToOrigin,
                 contextPadProviderModule,
