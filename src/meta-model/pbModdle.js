@@ -4,6 +4,7 @@ import { enumToModdleEnum } from './util';
 
 /**
  * Important hints for changing/extending the model:
+ * - YOU MUST increment version number in uri on change!
  * - If you change something, it certainly breaks existing workflows!
  * - IDs must not begin with a number, spec: https://www.w3.org/TR/REC-xml/#NT-NameChar
  * - use `moddle.ids.nextPrefixed` for id generation
