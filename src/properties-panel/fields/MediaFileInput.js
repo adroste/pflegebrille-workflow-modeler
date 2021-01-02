@@ -22,11 +22,13 @@ export function MediaFileInput({
 
     const handleRemove = useCallback(() => {
         onChange(undefined);
-        Modal.info({
-            centered: true,
-            title: 'Datei weiterhin verfügbar.',
-            content: `Die Datei "${asset.element.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
-        });
+        if (asset?.element?.name) {
+            Modal.info({
+                centered: true,
+                title: 'Datei weiterhin verfügbar.',
+                content: `Die Datei "${asset.element.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
+            });
+        }
     }, [asset, onChange]);
 
     const handleSelectExisting = useCallback(() => {
