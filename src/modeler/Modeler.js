@@ -11,6 +11,7 @@ import { backgroundGridModule } from '../modeler-modules/backgroundGrid';
 import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionInserter';
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
+import { getAppVersion } from '../util';
 import lintModule from 'bpmn-js-bpmnlint';
 import { linterConfig } from '../linterConfig';
 import minimapModule from 'diagram-js-minimap';
@@ -42,7 +43,7 @@ export function Modeler() {
             container: containerRef.current,
             exporter: {
                 name: 'pflegebrille-workflow-modeler',
-                version: process.env.REACT_APP_VERSION,
+                version: getAppVersion(),
             },
             linting: {
                 bpmnlint: linterConfig,

@@ -7,6 +7,7 @@ import { ImportDialog } from './ImportDialog';
 import { Screen } from '../base/Screen';
 import { ScreenEnum } from '../base/ScreenEnum';
 import { appContext } from '../base/AppContextProvider';
+import { getAppVersion } from '../util';
 import styles from './LoadWorkflowScreen.module.css';
 
 export function LoadWorkflowScreen() {
@@ -99,7 +100,7 @@ export function LoadWorkflowScreen() {
                     <Divider />
 
                     <Typography.Paragraph type="secondary">
-                        Version: {process.env.REACT_APP_VERSION}
+                        Version: {getAppVersion()}
                     </Typography.Paragraph>
 
                     <Typography.Paragraph type="secondary">

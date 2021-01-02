@@ -2,6 +2,11 @@ import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { isAny } from './meta-model/rules/util';
 import { modelBindings } from './meta-model/modelBindings';
 
+export const getAppVersion = () => {
+    const suffix = process.env.REACT_APP_VERSION_NAME_SUFFIX || "";
+    return process.env.REACT_APP_VERSION + suffix;
+};
+
 export function getModelBindingsForElement(element) {
     const bo = getBusinessObject(element);
     return modelBindings.filter(({ appliesTo }) => isAny(bo, appliesTo));
