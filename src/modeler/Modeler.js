@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
+import { checkVersion, v1 as pbModdle } from 'pflegebrille-workflow-meta-model';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { Modal } from 'antd';
@@ -17,7 +18,6 @@ import { linterConfig } from '../linterConfig';
 import minimapModule from 'diagram-js-minimap';
 import { modelerContext } from './ModelerContextProvider';
 import { paletteProviderModule } from '../modeler-modules/paletteProvider';
-import { pbModdle } from '../meta-model/pbModdle';
 import styles from './Modeler.module.css';
 
 export function Modeler() {
@@ -80,8 +80,21 @@ export function Modeler() {
             };
         }
 
-        function importXml(xml) {
-            return modeler.importXML(xml)
+        let xml = initialXmlRef.current;
+        const { compatible, migrate } = checkVersion(pbModdle, xml);
+        if (!compatible) {
+            Modal.error({
+                title: 'Import Fehler',
+                content: 'Die Workflow-Version ist nicht kompatibel.',
+                onOk() {
+                    setScreen(ScreenEnum.LOAD_WORKFLOW);
+                }
+            });
+        } else {
+            if (migrate)
+                xml = migrate(xml);
+
+            modeler.importXML(xml)
                 .then(() => setModeler(modeler))
                 .catch(err => {
                     console.error(err);
@@ -97,37 +110,6 @@ export function Modeler() {
                         }
                     });
                 });
-        }
-
-        let xml = initialXmlRef.current;
-        const uriRegex = /(definitions.*xmlns:pb=)"(.+?)"/;
-        const match = xml?.match(uriRegex);
-        if (match && match[2] !== pbModdle.uri) {
-            const getVersion = uri => uri.split('/').pop();
-            Modal.confirm({
-                title: 'Alte Version',
-                content: (
-                    <div>
-                        <p>Die Workflow Version unterscheidet sich von der aktuellen Version:</p>
-                        <p>
-                            Workflow Version: {getVersion(match[2])}<br/>
-                            Aktuelle Version: {getVersion(pbModdle.uri)}
-                        </p>
-                    </div>
-                ),
-                okText: 'Trotzdem laden',
-                cancelText: 'Abbrechen',
-                onCancel() {
-                    setScreen(ScreenEnum.LOAD_WORKFLOW);
-                },
-                onOk() {
-                    // upgrade version
-                    xml = xml.replace(uriRegex, `$1"${pbModdle.uri}"`);
-                    importXml(xml);
-                }
-            });
-        } else {
-            importXml(xml);
         }
 
         return () => {

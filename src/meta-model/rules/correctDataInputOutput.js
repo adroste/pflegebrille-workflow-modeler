@@ -1,7 +1,8 @@
 import { CardinalityEnum, CardinalityLabels } from '../enum/CardinalityEnum';
-import { DataTypeEnum, DataTypeLabels } from '../enum/DataTypeEnum';
 import { findFieldBinding, findId, findLabel, findParent, is, isAny } from './util';
 
+import { DataTypeEnum } from 'pflegebrille-workflow-meta-model';
+import { DataTypeLabels } from '../enum/DataTypeLabels';
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const correctDataInputOutput = () => ({

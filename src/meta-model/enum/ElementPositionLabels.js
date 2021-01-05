@@ -1,8 +1,4 @@
-// NEVER change the enum values
-export const ElementPositionEnum = Object.freeze({
-    FIRST: 'first',
-    LAST: 'last',
-});
+import { ElementPositionEnum } from 'pflegebrille-workflow-meta-model';
 
 export const ElementPositionLabels = {
     [ElementPositionEnum.FIRST]: 'Erstes Element',

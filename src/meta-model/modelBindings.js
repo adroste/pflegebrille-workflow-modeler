@@ -1,7 +1,8 @@
-import { DataTypeEnum, DataTypeLabels } from './enum/DataTypeEnum';
-import { ElementPositionEnum, ElementPositionLabels } from './enum/ElementPositionEnum';
+import { DataTypeEnum, ElementPositionEnum } from 'pflegebrille-workflow-meta-model';
 
 import { CardinalityEnum } from './enum/CardinalityEnum';
+import { DataTypeLabels } from './enum/DataTypeLabels';
+import { ElementPositionLabels } from './enum/ElementPositionLabels';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';

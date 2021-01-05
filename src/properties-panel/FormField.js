@@ -3,7 +3,7 @@ import { ExportOutlined, ImportOutlined } from '@ant-design/icons';
 
 import { CardinalityLabels } from '../meta-model/enum/CardinalityEnum';
 import { DataInputOutputSelect } from './fields/DataInputOutputSelect';
-import { DataTypeLabels } from '../meta-model/enum/DataTypeEnum';
+import { DataTypeLabels } from '../meta-model/enum/DataTypeLabels';
 import { ExtensionSelect } from './fields/ExtensionSelect';
 import { FormTypeEnum } from '../meta-model/enum/FormTypeEnum';
 import { MediaFileInput } from './fields/MediaFileInput';
