@@ -81,6 +81,7 @@ export const modelBindings = [
         appliesTo: [
             'bpmn:Event',
             'bpmn:Task',
+            'bpmn:SubProcess',
         ],
         rules: [
             noFakeJoin(),
