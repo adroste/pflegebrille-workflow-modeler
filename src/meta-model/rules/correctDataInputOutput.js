@@ -1,6 +1,7 @@
-import { CardinalityEnum, CardinalityLabels } from '../enum/CardinalityEnum';
 import { findFieldBinding, findId, findLabel, findParent, is, isAny } from './util';
 
+import { CardinalityEnum } from 'pflegebrille-workflow-meta-model';
+import { CardinalityLabels } from '../enum/CardinalityLabels';
 import { DataTypeEnum } from 'pflegebrille-workflow-meta-model';
 import { DataTypeLabels } from '../enum/DataTypeLabels';
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';

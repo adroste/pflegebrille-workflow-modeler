@@ -1,7 +1,7 @@
 import { Checkbox, Form, Input, Typography } from 'antd';
 import { ExportOutlined, ImportOutlined } from '@ant-design/icons';
 
-import { CardinalityLabels } from '../meta-model/enum/CardinalityEnum';
+import { CardinalityLabels } from '../meta-model/enum/CardinalityLabels';
 import { DataInputOutputSelect } from './fields/DataInputOutputSelect';
 import { DataTypeLabels } from '../meta-model/enum/DataTypeLabels';
 import { ExtensionSelect } from './fields/ExtensionSelect';

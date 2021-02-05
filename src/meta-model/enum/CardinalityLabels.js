@@ -1,9 +1,4 @@
-// NEVER change the enum values
-export const CardinalityEnum = Object.freeze({
-    MULTIPLE: 'multiple',
-    ANY: 'single_or_multiple',
-    SINGLE: 'single',
-});
+import { CardinalityEnum } from 'pflegebrille-workflow-meta-model';
 
 export const CardinalityLabels = {
     [CardinalityEnum.MULTIPLE]: 'mehrere Elemente',
