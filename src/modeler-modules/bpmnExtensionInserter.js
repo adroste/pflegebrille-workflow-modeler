@@ -1,14 +1,19 @@
-import { is, isAny } from '../meta-model/rules/util';
-
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { getInnerElements } from '../util';
-import { modelBindings } from '../meta-model/modelBindings';
+import { is } from '../meta-model/rules/util';
 
 function BpmnExtensionInserter(
     bpmnjs,
     eventBus,
     moddle,
 ) {
+    const extensionMap = {};
+    moddle.registry.packages.forEach(({ types, prefix }) =>
+        types?.forEach(({ name, meta }) =>
+            meta?.bpmnExtension?.forEach(v => 
+                extensionMap[v] = (extensionMap[v] || []).concat(`${prefix}:${name}`))));
+
+
     function check({ element }) {
         const bo = getBusinessObject(element);
 
@@ -24,13 +29,9 @@ function BpmnExtensionInserter(
                 check({ element });
         });
 
-        const extensionTypes = modelBindings.reduce((extensionTypes, { appliesTo, extensions }) => {
-            if (extensions && isAny(bo, appliesTo))
-                extensionTypes.push(...extensions);
-            return extensionTypes;
-        }, []);
+        const extensionTypes = extensionMap[bo.$type];
 
-        if (extensionTypes.length === 0)
+        if (!extensionTypes || extensionTypes.length === 0)
             return;
 
         let extElements = bo.get('extensionElements');
