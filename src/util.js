@@ -61,3 +61,14 @@ export function svgUrlToPngBlob(svgUrl) {
         img.src = svgUrl;
     });
 }
+
+export function makeId(length, { upperCase = false }) {
+    let id = '';
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < length; i++) {
+        id += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    if (upperCase)
+        id = id.toUpperCase();
+    return id;
+}
