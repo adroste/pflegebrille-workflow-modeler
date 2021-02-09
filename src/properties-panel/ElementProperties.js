@@ -6,6 +6,7 @@ import { FormField } from './FormField';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { modelerContext } from '../modeler/ModelerContextProvider';
 import styles from './ElementProperties.module.css';
+import { useEffect } from 'react';
 
 export function ElementProperties({
     baseElement,
@@ -16,16 +17,25 @@ export function ElementProperties({
 
     const businessObject = getBusinessObject(element);
     const innerElements = getInnerElements(businessObject);
-    const bindings = getModelBindingsForElement(businessObject);
+    const bindings = useMemo(() => getModelBindingsForElement(businessObject), [businessObject]);
 
-    const initialValues = useMemo(() => (
-        bindings.reduce((initialValues, cur) => {
+    useEffect(() => {
+        const getValues = () => bindings.reduce((initialValues, cur) => {
             cur.fields?.forEach(binding => {
                 initialValues[binding.property] = businessObject.get(binding.property);
             });
             return initialValues;
-        }, {})
-    ), [bindings, businessObject]);
+        }, {});
+        form.setFieldsValue(getValues());
+
+        const handleChange = ({ elements }) => {
+            if (elements.some(elem => elem === element)) {
+                form.setFieldsValue(getValues());
+            }
+        };
+        eventBus.on('elements.changed', handleChange);
+        return () => eventBus.off('elements.changed', handleChange);
+    }, [bindings, businessObject, element, eventBus, form]);
 
     const updateBusinessObjectProperties = useCallback(updatedValues => {
         if (typeof businessObject.set !== 'function') {
@@ -38,8 +48,8 @@ export function ElementProperties({
             businessObject.set(key, updatedValues[key]);
         });
 
-        eventBus.fire('elements.changed', { elements: [baseElement] });
-    }, [baseElement, businessObject, eventBus]);
+        eventBus.fire('elements.changed', { elements: [baseElement, element] });
+    }, [baseElement, businessObject, element, eventBus]);
 
     return (
         <>
@@ -47,7 +57,7 @@ export function ElementProperties({
                 className={styles.form}
                 form={form}
                 layout='vertical'
-                initialValues={initialValues}
+                // initialValues={initialValues}
                 onValuesChange={updateBusinessObjectProperties}
             >
                 {bindings.map((binding, i) => binding.fields?.map((binding, j) => (
