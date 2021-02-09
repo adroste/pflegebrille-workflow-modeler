@@ -4,16 +4,16 @@ import { modelerContext } from './ModelerContextProvider';
 
 export function useSelectedElements() {
     const { modeler, selection } = useContext(modelerContext);
-    const [selectedElements, setSelectedElements] = useState([]);
+    const [selectedElements, setSelectedElements] = useState(() => [...selection.get()]);
 
     useEffect(() => {
         if (!modeler)
             return;
 
         const eventHandlers = {
-            'elements.changed': () => {
-                setSelectedElements([...selection.get()]);
-            },
+            // 'elements.changed': () => {
+            //     setSelectedElements([...selection.get()]);
+            // },
 
             'selection.changed': ({ newSelection }) => {
                 setSelectedElements([...newSelection]);
