@@ -1,6 +1,7 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
 import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined, WarningOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { is, traverseModdle } from '../meta-model/rules/util';
 import { useAssetById, useAssets } from './useAssets';
 
 import { IssueList } from './IssueList';
@@ -8,10 +9,11 @@ import { MediaFileUpload } from './MediaFileUpload';
 import { MediaPreview } from './MediaPreview';
 import { RenameAssetDialog } from './RenameAssetDialog';
 import { appContext } from '../base/AppContextProvider';
-import { is } from '../meta-model/rules/util';
 import { modelerContext } from './ModelerContextProvider';
 import styles from './AssetManagerDialog.module.css';
 import { useIssues } from './useIssues';
+
+const UPLOAD_KEY = 'upload';
 
 export function AssetManagerDialog({
     onClose,
@@ -20,7 +22,7 @@ export function AssetManagerDialog({
     const { setAssetData } = useContext(appContext);
     const { bpmnjs, eventBus } = useContext(modelerContext);
     const [showDialog, setShowDialog] = useState(null);
-    const [selectedKeys, setSelectedKeys] = useState(['upload']);
+    const [selectedKeys, setSelectedKeys] = useState([UPLOAD_KEY]);
     const issues = useIssues();
 
     const assets = useAssets();
@@ -64,7 +66,7 @@ export function AssetManagerDialog({
         rootNode.children.push({
             isLeaf: true,
             icon: <UploadOutlined />,
-            key: 'upload',
+            key: UPLOAD_KEY,
             title: <strong>Datei hochladen</strong>,
         });
 
@@ -95,13 +97,24 @@ export function AssetManagerDialog({
             const assets = extElements.get('values').find(element => is(element, 'pb:Assets'));
             assets.assets = assets.assets?.filter(el => el !== asset.element);
 
-            eventBus.fire('elements.changed', { elements: [definitions, extElements, assets] });
-
             setAssetData(data => {
                 const newData = { ...data };
                 delete data[asset.element.id];
                 return newData;
             });
+
+            traverseModdle(bpmnjs.getDefinitions(), node => {
+                node.$descriptor.properties.forEach(p => {
+                    if (node[p.name] === asset.element) {
+                        node.set(p.name, undefined);
+                        eventBus.fire('elements.changed', { elements: [node] });
+                    }
+                });
+            });
+
+            eventBus.fire('elements.changed', { elements: [definitions, extElements, assets] });
+
+            setSelectedKeys([UPLOAD_KEY]);
         };
 
         Modal.confirm({
