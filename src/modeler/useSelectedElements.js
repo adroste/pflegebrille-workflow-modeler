@@ -3,8 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { modelerContext } from './ModelerContextProvider';
 
 export function useSelectedElements() {
-    const { modeler, selection } = useContext(modelerContext);
-    const [selectedElements, setSelectedElements] = useState(() => [...selection.get()]);
+    const { modeler } = useContext(modelerContext);
+    const [selectedElements, setSelectedElements] = useState([]);
 
     useEffect(() => {
         if (!modeler)
@@ -23,7 +23,7 @@ export function useSelectedElements() {
         const events = Object.keys(eventHandlers);
         events.forEach(event => modeler.on(event, eventHandlers[event]));
         return () => events.forEach(event => modeler.off(event, eventHandlers[event]));
-    }, [modeler, selection]);
+    }, [modeler]);
 
     return selectedElements;
 }
