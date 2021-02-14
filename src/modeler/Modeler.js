@@ -13,6 +13,7 @@ import { bpmnExtensionInserterModule } from '../modeler-modules/bpmnExtensionIns
 import { contextPadProviderModule } from '../modeler-modules/contextPadProvider';
 import { germanTranslateModule } from '../modeler-modules/germanTranslate';
 import { getAppVersion } from '../util';
+import { iconOverlayModule } from '../modeler-modules/iconOverlay';
 import lintModule from 'bpmn-js-bpmnlint';
 import { linterConfig } from '../linterConfig';
 import minimapModule from 'diagram-js-minimap';
@@ -60,6 +61,7 @@ export function Modeler() {
                 minimapModule,
                 paletteProviderModule,
                 bpmnExtensionInserterModule,
+                iconOverlayModule,
             ],
             keyboard: {
                 bindTo: document,
