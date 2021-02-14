@@ -1,5 +1,7 @@
+import { findId, findModdleElementById, isAny } from './meta-model/rules/util';
+
+import { getBBox } from 'diagram-js/lib/util/Elements';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { isAny } from './meta-model/rules/util';
 import { modelBindings } from './meta-model/modelBindings';
 
 export const getAppVersion = () => {
@@ -71,4 +73,33 @@ export function makeId(length, { upperCase = false }) {
     if (upperCase)
         id = id.toUpperCase();
     return id;
+}
+
+export function jumpToElement(modeler, id) {
+    const bpmnjs = modeler.get('bpmnjs');
+    const canvas = modeler.get('canvas');
+    const selection = modeler.get('selection');
+    const elementRegistry = modeler.get('elementRegistry');
+
+    const element = findModdleElementById(bpmnjs.getDefinitions(), id);
+    const visualId = findId(element, true);
+    if (!visualId)
+        return;
+    const visualElement = elementRegistry.get(visualId);
+    if (!visualElement || canvas.getRootElement() === visualElement)
+        return;
+
+    const viewbox = canvas.viewbox();
+    const box = getBBox(visualElement);
+
+    const newViewbox = {
+        x: (box.x + box.width / 2) - viewbox.outer.width / 2,
+        y: (box.y + box.height / 2) - viewbox.outer.height / 2,
+        width: viewbox.outer.width,
+        height: viewbox.outer.height
+    };
+    canvas.viewbox(newViewbox);
+    // canvas.zoom(viewbox.scale); 
+
+    selection.select(visualElement);
 }
