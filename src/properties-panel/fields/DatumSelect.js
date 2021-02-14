@@ -1,8 +1,8 @@
 import { BulbOutlined, CheckOutlined, CloseOutlined, FileAddOutlined, FileOutlined, FolderOpenOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip, Typography } from 'antd';
+import { CardinalityEnum, DataTypeEnum } from 'pflegebrille-workflow-meta-model';
 import React, { useCallback, useContext, useState } from 'react';
 
-import { CardinalityEnum } from 'pflegebrille-workflow-meta-model';
 import { DataModeEnum } from 'pflegebrille-workflow-meta-model';
 import { DatumManagerDialog } from '../../modeler/DatumManagerDialog';
 import { is } from '../../meta-model/rules/util';
@@ -32,7 +32,7 @@ export function DatumSelect({
     const suggestions = [];
 
     if (!value) {
-        if (!isInput) {
+        if (!isInput && dataType !== DataTypeEnum.ANY) {
             suggestions.push({
                 label: "Neue Daten erstellen",
                 value: CREATE_DATA_VALUE,
