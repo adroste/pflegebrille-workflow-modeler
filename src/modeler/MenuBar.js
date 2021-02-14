@@ -1,5 +1,5 @@
 import { Button, Space } from 'antd';
-import { CloudUploadOutlined, CodeOutlined, FileOutlined, FolderOutlined, PictureOutlined, SnippetsOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, CodeOutlined, FolderOutlined, PictureOutlined, SnippetsOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { AssetManagerDialog } from './AssetManagerDialog';
