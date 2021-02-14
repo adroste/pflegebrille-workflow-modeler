@@ -16,7 +16,7 @@ function getAssets(bpmnjs) {
 
 export function useAssets() {
     const { bpmnjs, modeler } = useContext(modelerContext);
-    const [assets, setAssets] = useState(() => getAssets(bpmnjs));
+    const [assets, setAssets] = useState(() => getAssets(bpmnjs).slice());
 
     useEffect(() => {
         if (!modeler)
@@ -24,7 +24,7 @@ export function useAssets() {
 
         const handleChange = ({ elements }) => {
             if (elements.some(elem => isAny(elem, ['bpmn:Definitions', 'pb:Assets', 'pb:Asset']))) {
-                setAssets(getAssets(bpmnjs));
+                setAssets(getAssets(bpmnjs).slice());
             }
         };
         modeler.on('elements.changed', handleChange);

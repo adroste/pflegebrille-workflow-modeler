@@ -16,7 +16,7 @@ function getData(bpmnjs) {
 
 export function useData() {
     const { bpmnjs, modeler } = useContext(modelerContext);
-    const [data, setData] = useState(() => getData(bpmnjs));
+    const [data, setData] = useState(() => getData(bpmnjs).slice());
 
     useEffect(() => {
         if (!modeler)
@@ -24,7 +24,7 @@ export function useData() {
 
         const handleChange = ({ elements }) => {
             if (elements.some(elem => isAny(elem, ['bpmn:Definitions', 'pb:Data', 'pb:Datum']))) {
-                setData(getData(bpmnjs));
+                setData(getData(bpmnjs).slice());
             }
         };
         modeler.on('elements.changed', handleChange);
