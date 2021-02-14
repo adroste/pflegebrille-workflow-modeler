@@ -1,0 +1,24 @@
+.tree {
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.issueList {
+    margin-bottom: 12px;
+}
+
+.dataInputIcon {
+    transform: scale(-1, 1);
+    color: #389e0d;
+}
+
+.dataOutputIcon {
+    color: #fa541c;
+}
+
+.ioItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -4px;
+}

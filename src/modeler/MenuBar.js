@@ -1,8 +1,9 @@
 import { Button, Space } from 'antd';
-import { CloudUploadOutlined, CodeOutlined, FolderOutlined, SnippetsOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, CodeOutlined, FileOutlined, FolderOutlined, PictureOutlined, SnippetsOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { AssetManagerDialog } from './AssetManagerDialog';
+import { DatumManagerDialog } from './DatumManagerDialog';
 import { SaveDialog } from './SaveDialog';
 import { ScreenEnum } from '../base/ScreenEnum';
 import { ZoomControls } from './ZoomControls';
@@ -24,6 +25,10 @@ export function MenuBar({ className }) {
 
     const handleAssetManagerClick = useCallback(async () => {
         setShowDialog('assetManager');
+    }, []);
+    
+    const handleDatumManagerClick = useCallback(async () => {
+        setShowDialog('datumManager');
     }, []);
 
     const handleLoadClick = useCallback(async () => {
@@ -50,7 +55,10 @@ export function MenuBar({ className }) {
                 <CodeOutlined /> XML-Editor
             </Button>
             <Button onClick={handleAssetManagerClick}>
-                <SnippetsOutlined /> Assets verwalten
+                <PictureOutlined /> Assets
+            </Button>
+            <Button onClick={handleDatumManagerClick}>
+                <SnippetsOutlined /> Prozessdaten
             </Button>
 
             <ZoomControls />
@@ -60,6 +68,9 @@ export function MenuBar({ className }) {
             }
             {showDialog === 'assetManager' &&
                 <AssetManagerDialog onClose={handleCloseDialog} />
+            }
+            {showDialog === 'datumManager' &&
+                <DatumManagerDialog onClose={handleCloseDialog} />
             }
         </Space>
     );

@@ -173,10 +173,10 @@ class PaletteProvider {
                 'bpmn:Group', 'artifact', 'bpmn-icon-group',
                 // translate('Create Group')
             ),
-            'create.data-object': createAction(
-                'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
-                // translate('Create DataObjectReference')
-            ),
+            // 'create.data-object': createAction(
+            //     'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
+            //     // translate('Create DataObjectReference')
+            // ),
             // 'create.data-store': createAction(
             //     'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store',
             //     // translate('Create DataStoreReference')

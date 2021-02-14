@@ -41,26 +41,23 @@ export const modelBindings = [
                 /^di:/,
                 /^dc:/,
                 /^pb:/,
-                'bpmn:ManualTask',
-                'bpmn:Definitions',
-                'bpmn:SequenceFlow',
-                'bpmn:UserTask',
-                'bpmn:ServiceTask',
-                'bpmn:SubProcess',
-                'bpmn:StartEvent',
-                'bpmn:EndEvent',
-                'bpmn:ExtensionElements',
-                'bpmn:DataAssociation',
-                'bpmn:DataObjectReference',
-                'bpmn:DataObject',
-                'bpmn:Property',
-                'bpmn:Process',
-                'bpmn:Category',
-                'bpmn:Group',
-                'bpmn:CategoryValue',
-                'bpmn:ExclusiveGateway',
                 'bpmn:Association',
+                'bpmn:Category',
+                'bpmn:CategoryValue',
+                'bpmn:Definitions',
+                'bpmn:EndEvent',
+                'bpmn:ExclusiveGateway',
+                'bpmn:ExtensionElements',
+                'bpmn:Group',
+                'bpmn:ManualTask',
+                'bpmn:Process',
+                'bpmn:Property',
+                'bpmn:SequenceFlow',
+                'bpmn:ServiceTask',
+                'bpmn:StartEvent',
+                'bpmn:SubProcess',
                 'bpmn:TextAnnotation',
+                'bpmn:UserTask',
             ]),
             correctDataInputOutput(),
             dataConsumedBeforeInitialized(),
@@ -142,14 +139,6 @@ export const modelBindings = [
     },
     {
         appliesTo: [
-            "bpmn:Definitions",
-        ],
-        extensions: [
-            "pb:Assets"
-        ]
-    },
-    {
-        appliesTo: [
             "bpmn:TextAnnotation"
         ],
         fields: [
@@ -163,21 +152,6 @@ export const modelBindings = [
         ],
         rules: [
             requiredAnyProperties(['text'], false),
-        ]
-    },
-    {
-        appliesTo: [
-            "bpmn:DataObject",
-        ],
-        fields: [
-            {
-                property: "isCollection",
-                type: FormTypeEnum.CHECKBOX,
-                label: "Kann mehrere Elemente speichern"
-            },
-        ],
-        extensions: [
-            "pb:DataObjectExtension"
         ]
     },
     {
@@ -197,30 +171,6 @@ export const modelBindings = [
     /**
      * Tasks: General
      */
-    {
-        appliesTo: [
-            "bpmn:ManualTask",
-        ],
-        extensions: [
-            "pb:MediaText"
-        ]
-    },
-    {
-        appliesTo: [
-            "bpmn:ServiceTask",
-        ],
-        extensions: [
-            "pb:ServiceTaskExtension"
-        ]
-    },
-    {
-        appliesTo: [
-            "bpmn:UserTask",
-        ],
-        extensions: [
-            "pb:UserTaskExtension"
-        ]
-    },
     {
         appliesTo: [
             "pb:ActivityExtension",
@@ -320,10 +270,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "patientInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Patient",
-                dataType: DataTypeEnum.PATIENT,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -334,10 +282,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wunde",
-                dataType: DataTypeEnum.WOUND,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -351,10 +297,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "painValueOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Schmerzwert",
-                dataType: DataTypeEnum.NUMERIC_VALUE,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -365,10 +309,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "patientOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Patient",
-                dataType: DataTypeEnum.PATIENT,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -379,17 +321,13 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundPictureInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundfoto (zur Erkennung)",
-                dataType: DataTypeEnum.IMAGE,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
             {
                 property: "woundMeasurementOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundmaße",
-                dataType: DataTypeEnum.WOUND_MEASUREMENT,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -400,10 +338,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundPictureOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundfoto",
-                dataType: DataTypeEnum.IMAGE,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -414,10 +350,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Ausgewählte Wunde",
-                dataType: DataTypeEnum.WOUND,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -431,24 +365,18 @@ export const modelBindings = [
         fields: [
             {
                 property: "firstInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "1. Eingabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.ANY,
             },
             {
                 property: "secondInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "2. Eingabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.ANY,
             },
             {
                 property: "collectionOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Konkatenierte Daten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.MULTIPLE,
             },
         ],
         rules: [
@@ -480,17 +408,13 @@ export const modelBindings = [
         fields: [
             {
                 property: "collectionInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Eingabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.MULTIPLE,
             },
             {
                 property: "collectionOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Ausgabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.MULTIPLE,
             },
         ],
         rules: [
@@ -504,17 +428,13 @@ export const modelBindings = [
         fields: [
             {
                 property: "collectionInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Eingabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.MULTIPLE,
             },
             {
                 property: "dataOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Ausgabedaten",
-                dataType: DataTypeEnum.ANY,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ],
         rules: [
@@ -528,10 +448,8 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundHistoryEntryInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundverlaufseintrag",
-                dataType: DataTypeEnum.WOUND_HISTORY_ENTRY,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     },
@@ -542,25 +460,18 @@ export const modelBindings = [
         fields: [
             {
                 property: "woundHistoryEntryOutput",
-                type: FormTypeEnum.DATA_OUTPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundverlaufseintrag",
-                dataType: DataTypeEnum.WOUND_HISTORY_ENTRY,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
             {
-                // todo optional
                 property: "woundImageInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundfoto(s)",
-                dataType: DataTypeEnum.IMAGE,
-                dataCardinality: CardinalityEnum.ANY,
             },
             {
                 property: "woundMeasurementInput",
-                type: FormTypeEnum.DATA_INPUT_SELECT,
+                type: FormTypeEnum.DATUM_SELECT,
                 label: "Wundmaße",
-                dataType: DataTypeEnum.WOUND_MEASUREMENT,
-                dataCardinality: CardinalityEnum.SINGLE,
             },
         ]
     }
