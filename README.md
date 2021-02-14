@@ -9,7 +9,5 @@
 
 * [ ] debounced input element (performance)
 * [ ] feat: business rule tasks for auto gateway decisions (maybe? further research required)
-* [ ] dialog: "datei weiterhin verfügbar" in behalten/endgültig löschen ersetzen
-* [ ] bug dialog "datei weiterhin verfügbar" wird angezeigt, wenn nicht mehr vorhandene datei gelöscht wird
 * [ ] assets/text (indikator) visuell darstellen (+ data input/output)
 * [ ] weitere metadaten

@@ -1,4 +1,4 @@
-import { Button, Modal, Space } from 'antd';
+import { Button, Space, Tooltip } from 'antd';
 import { CloseOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import React, { useCallback, useState } from 'react';
 
@@ -22,14 +22,14 @@ export function MediaFileInput({
 
     const handleRemove = useCallback(() => {
         onChange(undefined);
-        if (asset?.element?.name) {
-            Modal.info({
-                centered: true,
-                title: 'Datei weiterhin verfügbar.',
-                content: `Die Datei "${asset.element.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
-            });
-        }
-    }, [asset, onChange]);
+        // if (asset?.element?.name) {
+        //     Modal.info({
+        //         centered: true,
+        //         title: 'Datei weiterhin verfügbar.',
+        //         content: `Die Datei "${asset.element.name}" ist weiterhin als Asset verfügbar und kann jederzeit erneut über "Vorhandene Datei auswählen" oder "Ersetzen" ausgewählt werden.`
+        //     });
+        // }
+    }, [onChange]);
 
     const handleSelectExisting = useCallback(() => {
         setShowSelect(true);
@@ -53,20 +53,23 @@ export function MediaFileInput({
 
                         <Space className={styles.buttons}>
                             <Button
-                                type="ghost"
+                                type="primary"
+                                size="small"
                                 onClick={handleSelectExisting}
                                 icon={<FolderOpenOutlined />}
                             >
                                 Ersetzen
                             </Button>
+                            <Tooltip title="Entfernt Asset, ohne es zu löschen">
                             <Button
-                                danger
-                                ghost
+                                type="ghost"
+                                size="small"
                                 onClick={handleRemove}
                                 icon={<CloseOutlined />}
                             >
                                 Entfernen
                             </Button>
+                            </Tooltip>
                         </Space>
                     </>
                 ) : (
@@ -79,10 +82,11 @@ export function MediaFileInput({
                             <span>oder</span>
                             <Button
                                 type="primary"
+                                size="small"
                                 onClick={handleSelectExisting}
                                 icon={<FolderOpenOutlined />}
                             >
-                                Vorhandene Datei wählen
+                                Vorhandenes Asset wählen
                             </Button>
                         </Space>
                     </>
