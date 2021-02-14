@@ -142,7 +142,7 @@ export function DatumManagerDialog({
 
     const renderIoItems = (io) => (
         io.map(({ id, name }) => (
-            <li>
+            <li key={id}>
                 <div className={styles.ioItem}>
                     ID: {id}
                     <Button
