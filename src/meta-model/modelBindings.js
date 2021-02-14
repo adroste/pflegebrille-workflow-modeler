@@ -5,22 +5,20 @@ import { ElementPositionLabels } from './enum/ElementPositionLabels';
 import { FormTypeEnum } from './enum/FormTypeEnum';
 import { allowedElementTypes } from './rules/allowedElementTypes';
 import { correctDataInputOutput } from './rules/correctDataInputOutput';
-import { dataConsumedBeforeInitialized } from './rules/dataConsumedBeforeInitialized';
-import { dataInputOuputAssocationsRequired } from './rules/dataInputOuputAssocationsRequired';
 import { endEventRequired } from './rules/endEventRequired';
 import { enumToSelectOptions } from './util';
 import { incomingFlowRequired } from './rules/incomingFlowRequired';
 import { labelRequired } from './rules/labelRequired';
 import { labelRequiredOnForking } from './rules/labelRequiredOnForking';
+import { noDataConsumedBeforeInitialized } from './rules/noDataConsumedBeforeInitialized';
 import { noDisconnected } from './rules/noDisconnected';
 import { noDuplicateSequenceFlows } from './rules/noDuplicateSequenceFlows';
 import { noFakeFork } from './rules/noFakeFork';
 import { noFakeJoin } from './rules/noFakeJoin';
 import { noJoinAndFork } from './rules/noJoinAndFork';
-import { noMissingAssets } from './rules/noMissingAsset';
-import { noMissingDataType } from './rules/noMissingDataType';
+import { noMissingAssets } from './rules/noMissingAssets';
 import { noUnusedAssets } from './rules/noUnusedAssets';
-import { noUnusedDataInputOutput } from './rules/noUnusedDataInputOutput';
+import { noUnusedData } from './rules/noUnusedData';
 import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
@@ -60,15 +58,13 @@ export const modelBindings = [
                 'bpmn:UserTask',
             ]),
             correctDataInputOutput(),
-            dataConsumedBeforeInitialized(),
-            dataInputOuputAssocationsRequired(),
+            noDataConsumedBeforeInitialized(),
             endEventRequired(),
             labelRequiredOnForking(),
             noDuplicateSequenceFlows(),
             noMissingAssets(),
-            noMissingDataType(),
             noUnusedAssets(),
-            noUnusedDataInputOutput(),
+            noUnusedData(),
             singleBlankStartEventRequired(),
             startEventRequired(),
             superfluousGateway(),

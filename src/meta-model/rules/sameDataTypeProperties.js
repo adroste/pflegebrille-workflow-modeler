@@ -1,8 +1,8 @@
-import { findId, findLabel, is, isAny } from './util';
+import { findId, findLabel, isAny } from './util';
 
 import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
-export const sameDataTypeProperties = (dataRefProperties, isError = true) => ({
+export const sameDataTypeProperties = (datumRefProperties, isError = true) => ({
     category: isError ? RuleCategoryEnum.ERROR : RuleCategoryEnum.WARN,
     factory(binding) {
 
@@ -10,22 +10,13 @@ export const sameDataTypeProperties = (dataRefProperties, isError = true) => ({
             if (!isAny(node, binding.appliesTo))
                 return;
 
-            const types = [];
-            for (let name of dataRefProperties) {
-                types.push(
-                    node
-                    ?.[name]
-                    ?.dataRef
-                    ?.dataObjectRef
-                    ?.extensionElements
-                    ?.values
-                    ?.find(element => is(element, 'pb:DataObjectExtension'))
-                    ?.dataType
-                );
+            const types = new Set();
+            for (let name of datumRefProperties) {
+                types.add(node[name]?.type);
             }
 
-            if (!types[0] || types.some(type => type !== types[0])) {
-                const labels = dataRefProperties
+            if (types.size > 1) {
+                const labels = datumRefProperties
                     .map(property => `"${findLabel(node, property)}"`)
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' und $1');

@@ -1,13 +1,17 @@
-import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
-import { is } from './util';
+import { is, traverseModdle } from './util';
 
-export const dataConsumedBeforeInitialized = () => ({
+import { DataModeEnum } from 'pflegebrille-workflow-meta-model';
+import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
+
+export const noDataConsumedBeforeInitialized = () => ({
     category: RuleCategoryEnum.ERROR,
     factory(binding) {
 
         let availableDataMap;
 
         function createMap(moddleRoot) {
+
+            const visited = new Set();
 
             function add(id, values) {
                 let set = availableDataMap[id];
@@ -19,6 +23,10 @@ export const dataConsumedBeforeInitialized = () => ({
             }
 
             function next(el, newAvailableData) { // dfs
+                if (visited.has(el.id)) // prevent circles
+                    return;
+                visited.add(el.id);
+
                 add(el.id, newAvailableData);
                 // get previous available data
                 el.incoming?.forEach(({ sourceRef }) => {
@@ -32,11 +40,22 @@ export const dataConsumedBeforeInitialized = () => ({
                     }
                 });
 
-                const nextElements = []; 
+                const nextElements = [];
 
-                const dataOutputs = el
-                    ?.dataOutputAssociations
-                    ?.map(({ targetRef }) => targetRef) || [];
+                const dataOutputs = [];
+                if (is(el, 'bpmn:Activity')) {
+                    traverseModdle(el, node => {
+                        node.$descriptor?.properties?.forEach(p => {
+                            if (
+                                node[p.name]
+                                && p.type === 'pb:Datum'
+                                && p.meta.dataMode === DataModeEnum.OUTPUT
+                            ) {
+                                dataOutputs.push(node[p.name]);
+                            }
+                        });
+                    });
+                }
 
                 if (el.flowElements) { // subprocess, process, ...
                     const start = el.flowElements?.find(el => el && is(el, 'bpmn:StartEvent'));
@@ -44,7 +63,7 @@ export const dataConsumedBeforeInitialized = () => ({
                         nextElements.push(start);
                         add(start.id, availableDataMap[el.id]);
                     }
-                } 
+                }
                 const outgoing = el.outgoing?.map(({ targetRef }) => targetRef) || [];
                 nextElements.push(...outgoing);
 
@@ -60,20 +79,30 @@ export const dataConsumedBeforeInitialized = () => ({
         }
 
         function check(node, reporter) {
+            if (!is(node, 'bpmn:Activity'))
+                return;
+
             if (!availableDataMap)
                 createMap(reporter.moddleRoot);
 
-            if (!node.dataInputAssociations)
-                return;
+            console.log(availableDataMap)
 
-            node.dataInputAssociations.forEach(({ sourceRef }) => {
-                const ref = sourceRef[0];
-                if (!availableDataMap[node.id].has(ref)) {
-                    reporter.report(
-                        node.id,
-                        `Eingabedaten "${ref.name || ref.id}" werden verwendet, bevor Daten darin gespeichert wurden`
-                    );
-                }
+            traverseModdle(node, innerNode => {
+                innerNode.$descriptor?.properties?.forEach(p => {
+                    const datum = innerNode[p.name];
+                    if (
+                        datum
+                        && p.type === 'pb:Datum'
+                        && p.meta.dataMode === DataModeEnum.INPUT
+                        && availableDataMap[node.id]
+                        && !availableDataMap[node.id].has(datum)
+                    ) {
+                        reporter.report(
+                            node.id,
+                            `Eingabedaten "${datum.name || datum.id}" werden verwendet, bevor Daten darin gespeichert wurden`
+                        );
+                    }
+                });
             });
         }
 
