@@ -26,7 +26,9 @@ export function getInnerElements(businessObject) {
 
     // di property indicates that the element has a rendered shape itself
     // we want to exclude elements that have their own shape
-    return innerElements.filter(el => !el.di);
+    return innerElements
+        .filter(el => !el.di)
+        .filter((el, i, arr) => arr.indexOf(el) === i); // filter for unique
 }
 
 export function downloadBlob(blob, filename) {
