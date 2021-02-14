@@ -85,8 +85,6 @@ export const noDataConsumedBeforeInitialized = () => ({
             if (!availableDataMap)
                 createMap(reporter.moddleRoot);
 
-            console.log(availableDataMap)
-
             traverseModdle(node, innerNode => {
                 innerNode.$descriptor?.properties?.forEach(p => {
                     const datum = innerNode[p.name];
