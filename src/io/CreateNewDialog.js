@@ -12,14 +12,14 @@ export function CreateNewDialog({
     const [template, setTemplate] = useState(0);
 
     const handleOk = useCallback(() => {
-        const src = templates[template].src;
+        const { src, isZip } = templates[template];
 
         fetch(src)
-            .then(res => res.text())
-            .then(xml => {
+            .then(res => isZip ? res.blob() : res.text())
+            .then(data => {
                 onLoad({
-                    isZip: false,
-                    data: xml,
+                    isZip: !!isZip,
+                    data,
                 });
             })
             .catch(err => {
