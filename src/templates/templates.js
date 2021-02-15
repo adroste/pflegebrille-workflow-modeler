@@ -1,4 +1,5 @@
 import empty from './bpmn/empty.bpmn';
+import handschuhe from './bpmn/Handschuhe-sicher-ausziehen.zip';
 import patientData from './bpmn/patientData.bpmn';
 import woundData from './bpmn/woundData.bpmn';
 import woundManagement from './bpmn/woundManagement.bpmn';
@@ -32,5 +33,10 @@ export const templates = [
     {
         label: 'Wundmanagement (mit Anweisungen)',
         src: woundManagement,
+    },
+    {
+        label: 'Handschuhe sicher Ausziehen (mit Medien)',
+        src: handschuhe,
+        isZip: true,
     },
 ];
