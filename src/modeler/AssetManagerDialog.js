@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
-import { CheckOutlined, DeleteOutlined, EditOutlined, UploadOutlined, WarningOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, EditOutlined, PictureOutlined, UploadOutlined, WarningOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { is, traverseModdle } from '../meta-model/rules/util';
 import { useAssetById, useAssets } from './useAssets';
@@ -47,7 +47,9 @@ export function AssetManagerDialog({
                             title: <span>{part}</span>,
                             key: id,
                             isLeaf: true,
-                            icon: issues?.[id] && <WarningOutlined style={{ color: '#faad14' }} />,
+                            icon: issues?.[id] 
+                                ? <WarningOutlined style={{ color: '#faad14' }} />
+                                : <PictureOutlined />,
                         };
                     } else {
                         nextNode = {
