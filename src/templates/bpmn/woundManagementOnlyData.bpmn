@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="0.1.0 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn:extensionElements>
+    <pb:assets />
+    <pb:data>
+      <pb:datum id="Datum_1hionia" name="Patient" type="Patient" isCollection="false" />
+      <pb:datum id="Datum_1in0d9g" name="Wunde" type="Wound" isCollection="false" />
+      <pb:datum id="Datum_06emtq6" name="Wundfoto" type="Image" isCollection="false" />
+      <pb:datum id="Datum_0z19n01" name="Wundmaße" type="WoundMeasurement" isCollection="false" />
+      <pb:datum id="Datum_1s5zjzz" name="Wundverlaufseintrag" type="WoundHistoryEntry" isCollection="false" />
+    </pb:data>
+  </bpmn:extensionElements>
+  <bpmn:process id="Process" isExecutable="true">
+    <bpmn:startEvent id="Event_0kbyusg">
+      <bpmn:outgoing>Flow_01jcmyi</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0rgx31a" name="Patient scannen/wählen">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:patientSelect patientOutput="Datum_1hionia" />
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_01jcmyi</bpmn:incoming>
+      <bpmn:outgoing>Flow_15ojhk7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_01jcmyi" sourceRef="Event_0kbyusg" targetRef="Activity_0rgx31a" />
+    <bpmn:userTask id="Activity_14bedwx" name="Bestehende Wunde auswählen">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:woundSelect patientInput="Datum_1hionia" woundOutput="Datum_1in0d9g" />
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15ojhk7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tb4vyg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_15ojhk7" sourceRef="Activity_0rgx31a" targetRef="Activity_14bedwx" />
+    <bpmn:userTask id="Activity_0ebhsqq" name="Wundfoto aufnehmen">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:woundPicture woundPictureOutput="Datum_06emtq6" />
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0tb4vyg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ocy2rh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0tb4vyg" sourceRef="Activity_14bedwx" targetRef="Activity_0ebhsqq" />
+    <bpmn:userTask id="Activity_0m6o0sw" name="Wunderkennung">
+      <bpmn:extensionElements>
+        <pb:userTaskExtension>
+          <pb:woundDetection woundPictureInput="Datum_06emtq6" woundMeasurementOutput="Datum_0z19n01" />
+        </pb:userTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ocy2rh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t7j9h9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1ocy2rh" sourceRef="Activity_0ebhsqq" targetRef="Activity_0m6o0sw" />
+    <bpmn:serviceTask id="Activity_095d64w" name="Wunde protokollieren">
+      <bpmn:extensionElements>
+        <pb:serviceTaskExtension>
+          <pb:createWoundHistoryEntry woundHistoryEntryOutput="Datum_1s5zjzz" woundImageInput="Datum_06emtq6" woundMeasurementInput="Datum_0z19n01" />
+        </pb:serviceTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0t7j9h9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ddx0cc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0t7j9h9" sourceRef="Activity_0m6o0sw" targetRef="Activity_095d64w" />
+    <bpmn:serviceTask id="Activity_1w0gmmn" name="Protokoll in Wundverlauf eintragen">
+      <bpmn:extensionElements>
+        <pb:serviceTaskExtension>
+          <pb:postWoundHistoryEntry patientInput="Datum_1hionia" woundInput="Datum_1in0d9g" woundHistoryEntryInput="Datum_1s5zjzz" />
+        </pb:serviceTaskExtension>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ddx0cc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h7h21d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1ddx0cc" sourceRef="Activity_095d64w" targetRef="Activity_1w0gmmn" />
+    <bpmn:endEvent id="Event_1fs40cv">
+      <bpmn:incoming>Flow_1h7h21d</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1h7h21d" sourceRef="Activity_1w0gmmn" targetRef="Event_1fs40cv" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">
+      <bpmndi:BPMNEdge id="Flow_1h7h21d_di" bpmnElement="Flow_1h7h21d">
+        <di:waypoint x="1200" y="293" />
+        <di:waypoint x="1262" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ddx0cc_di" bpmnElement="Flow_1ddx0cc">
+        <di:waypoint x="1040" y="293" />
+        <di:waypoint x="1100" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t7j9h9_di" bpmnElement="Flow_0t7j9h9">
+        <di:waypoint x="880" y="293" />
+        <di:waypoint x="940" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ocy2rh_di" bpmnElement="Flow_1ocy2rh">
+        <di:waypoint x="720" y="293" />
+        <di:waypoint x="780" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tb4vyg_di" bpmnElement="Flow_0tb4vyg">
+        <di:waypoint x="560" y="293" />
+        <di:waypoint x="620" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15ojhk7_di" bpmnElement="Flow_15ojhk7">
+        <di:waypoint x="400" y="293" />
+        <di:waypoint x="460" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01jcmyi_di" bpmnElement="Flow_01jcmyi">
+        <di:waypoint x="248" y="293" />
+        <di:waypoint x="300" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0kbyusg_di" bpmnElement="Event_0kbyusg">
+        <dc:Bounds x="212" y="275" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rgx31a_di" bpmnElement="Activity_0rgx31a" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="300" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14bedwx_di" bpmnElement="Activity_14bedwx" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="460" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ebhsqq_di" bpmnElement="Activity_0ebhsqq" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="620" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m6o0sw_di" bpmnElement="Activity_0m6o0sw" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="780" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_095d64w_di" bpmnElement="Activity_095d64w" bioc:stroke="#ae3f3f" bioc:fill="#f6ebeb">
+        <dc:Bounds x="940" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1w0gmmn_di" bpmnElement="Activity_1w0gmmn" bioc:stroke="#ae3f3f" bioc:fill="#f6ebeb">
+        <dc:Bounds x="1100" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fs40cv_di" bpmnElement="Event_1fs40cv">
+        <dc:Bounds x="1262" y="275" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

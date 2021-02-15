@@ -1,104 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="0.1.0 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn:extensionElements>
     <pb:assets />
+    <pb:data>
+      <pb:datum id="Datum_1x8r6cq" name="Patient" type="Patient" isCollection="false" />
+      <pb:datum id="Datum_1ipybm4" name="Wunde" type="Wound" isCollection="false" />
+    </pb:data>
   </bpmn:extensionElements>
   <bpmn:process id="Process" isExecutable="true">
-    <bpmn:startEvent id="Event_0kbyusg">
+    <bpmn:startEvent id="Event_0kbyusg" name="Start">
       <bpmn:outgoing>Flow_01jcmyi</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_0rgx31a" name="Patient scannen/wählen">
       <bpmn:extensionElements>
         <pb:userTaskExtension>
-          <pb:patientSelect>
-            <pb:patientOutput dataRef="DataObjectReference_0jhqhms" />
-          </pb:patientSelect>
+          <pb:patientSelect patientOutput="Datum_1x8r6cq" />
         </pb:userTaskExtension>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_01jcmyi</bpmn:incoming>
-      <bpmn:outgoing>Flow_1dlikol</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_1q5hn0d">
-        <bpmn:targetRef>DataObjectReference_0jhqhms</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
+      <bpmn:outgoing>Flow_0vcutre</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_01jcmyi" sourceRef="Event_0kbyusg" targetRef="Activity_0rgx31a" />
-    <bpmn:dataObjectReference id="DataObjectReference_0jhqhms" name="Patient" dataObjectRef="DataObject_0t92saq" />
-    <bpmn:dataObject id="DataObject_0t92saq">
-      <bpmn:extensionElements>
-        <pb:dataObjectExtension dataType="Patient" />
-      </bpmn:extensionElements>
-    </bpmn:dataObject>
-    <bpmn:userTask id="Activity_0t10w3l" name="Bestehende Wunde auswählen">
+    <bpmn:userTask id="Activity_18pw5b0" name="Bestehende Wunde auswählen">
       <bpmn:extensionElements>
         <pb:userTaskExtension>
-          <pb:woundSelect>
-            <pb:patientInput dataRef="DataObjectReference_0jhqhms" />
-            <pb:woundOutput dataRef="DataObjectReference_07maa3x" />
-          </pb:woundSelect>
+          <pb:woundSelect patientInput="Datum_1x8r6cq" woundOutput="Datum_1ipybm4" />
         </pb:userTaskExtension>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1dlikol</bpmn:incoming>
-      <bpmn:property id="Property_1ekqybw" name="__targetRef_placeholder" />
-      <bpmn:dataInputAssociation id="DataInputAssociation_13asqze">
-        <bpmn:sourceRef>DataObjectReference_0jhqhms</bpmn:sourceRef>
-        <bpmn:targetRef>Property_1ekqybw</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0som3bh">
-        <bpmn:targetRef>DataObjectReference_07maa3x</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
+      <bpmn:incoming>Flow_0vcutre</bpmn:incoming>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1dlikol" sourceRef="Activity_0rgx31a" targetRef="Activity_0t10w3l" />
-    <bpmn:dataObjectReference id="DataObjectReference_07maa3x" name="Wunde" dataObjectRef="DataObject_1y8zt2l" />
-    <bpmn:dataObject id="DataObject_1y8zt2l">
-      <bpmn:extensionElements>
-        <pb:dataObjectExtension dataType="Wound" />
-      </bpmn:extensionElements>
-    </bpmn:dataObject>
+    <bpmn:sequenceFlow id="Flow_0vcutre" sourceRef="Activity_0rgx31a" targetRef="Activity_18pw5b0" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">
-      <bpmndi:BPMNEdge id="Flow_1dlikol_di" bpmnElement="Flow_1dlikol">
-        <di:waypoint x="400" y="563" />
-        <di:waypoint x="460" y="563" />
+      <bpmndi:BPMNEdge id="Flow_0vcutre_di" bpmnElement="Flow_0vcutre">
+        <di:waypoint x="400" y="293" />
+        <di:waypoint x="460" y="293" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_01jcmyi_di" bpmnElement="Flow_01jcmyi">
-        <di:waypoint x="248" y="563" />
-        <di:waypoint x="300" y="563" />
+        <di:waypoint x="248" y="293" />
+        <di:waypoint x="300" y="293" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0kbyusg_di" bpmnElement="Event_0kbyusg">
-        <dc:Bounds x="212" y="545" width="36" height="36" />
+        <dc:Bounds x="212" y="275" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="219" y="318" width="24" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0rgx31a_di" bpmnElement="Activity_0rgx31a" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
-        <dc:Bounds x="300" y="523" width="100" height="80" />
+        <dc:Bounds x="300" y="253" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataObjectReference_0jhqhms_di" bpmnElement="DataObjectReference_0jhqhms">
-        <dc:Bounds x="332" y="785" width="36" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="333" y="845" width="35" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_18pw5b0_di" bpmnElement="Activity_18pw5b0" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
+        <dc:Bounds x="460" y="253" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0t10w3l_di" bpmnElement="Activity_0t10w3l" bioc:stroke="#1978ff" bioc:fill="#ebebf9">
-        <dc:Bounds x="460" y="523" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataObjectReference_07maa3x_di" bpmnElement="DataObjectReference_07maa3x">
-        <dc:Bounds x="492" y="285" width="36" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="492" y="261" width="35" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_1q5hn0d_di" bpmnElement="DataOutputAssociation_1q5hn0d">
-        <di:waypoint x="350" y="603" />
-        <di:waypoint x="350" y="785" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_13asqze_di" bpmnElement="DataInputAssociation_13asqze">
-        <di:waypoint x="368" y="810" />
-        <di:waypoint x="510" y="810" />
-        <di:waypoint x="510" y="603" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_0som3bh_di" bpmnElement="DataOutputAssociation_0som3bh">
-        <di:waypoint x="510" y="523" />
-        <di:waypoint x="508" y="335" />
-      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
