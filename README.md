@@ -9,5 +9,4 @@
 
 * [ ] debounced input element (performance)
 * [ ] feat: business rule tasks for auto gateway decisions (maybe? further research required)
-* [ ] templates erstellen
 * [ ] weitere metadaten
