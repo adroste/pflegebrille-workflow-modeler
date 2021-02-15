@@ -59,7 +59,7 @@ export function DatumManagerDialog({
             traverseModdle(bpmnjs.getDefinitions(), node => {
                 node.$descriptor.properties.forEach(p => {
                     if (node[p.name] === datum.element) {
-                        const activity = findParent(node, 'bpmn:Activity');
+                        const activity = findParent(node, 'bpmn:Task');
                         if (p.meta.dataMode === DataModeEnum.INPUT)
                             inputs.push(activity);
                         else

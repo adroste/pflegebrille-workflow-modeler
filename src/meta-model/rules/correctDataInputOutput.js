@@ -23,7 +23,7 @@ export const correctDataInputOutput = () => ({
             if (!dataIoProps?.length)
                 return;
 
-            const activity = findParent(node, 'bpmn:Activity');
+            const activity = findParent(node, 'bpmn:Task');
 
             if (!activity)
                 return;

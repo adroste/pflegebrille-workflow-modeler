@@ -43,7 +43,7 @@ export const noDataConsumedBeforeInitialized = () => ({
                 const nextElements = [];
 
                 const dataOutputs = [];
-                if (is(el, 'bpmn:Activity')) {
+                if (is(el, 'bpmn:Task')) {
                     traverseModdle(el, node => {
                         node.$descriptor?.properties?.forEach(p => {
                             if (
@@ -79,7 +79,7 @@ export const noDataConsumedBeforeInitialized = () => ({
         }
 
         function check(node, reporter) {
-            if (!is(node, 'bpmn:Activity'))
+            if (!is(node, 'bpmn:Task'))
                 return;
 
             if (!availableDataMap)

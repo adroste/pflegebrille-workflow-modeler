@@ -26,7 +26,7 @@ function IconOverlay(
     function check(el) {
         const bo = getBusinessObject(el);
         if (
-            !is(bo, 'bpmn:Activity')
+            !is(bo, 'bpmn:Task')
             || !elementRegistry.get(el.id) // element already deleted
         ) {
             return;
