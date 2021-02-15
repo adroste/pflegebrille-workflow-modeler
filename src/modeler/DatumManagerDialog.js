@@ -91,7 +91,12 @@ export function DatumManagerDialog({
                 node.$descriptor.properties.forEach(p => {
                     if (node[p.name] === datum.element) {
                         node.set(p.name, undefined);
-                        eventBus.fire('elements.changed', { elements: [node] });
+
+                        const changed = [node];
+                        const parent = findParent(node, 'bpmn:Task');
+                        if (parent)
+                            changed.push(parent);
+                        eventBus.fire('elements.changed', { elements: changed });
                     }
                 });
             });

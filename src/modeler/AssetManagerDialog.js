@@ -1,7 +1,7 @@
 import { Button, Col, Modal, Row, Space, Tree, Typography } from 'antd';
 import { CheckOutlined, DeleteOutlined, EditOutlined, PictureOutlined, UploadOutlined, WarningOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { is, traverseModdle } from '../meta-model/rules/util';
+import { findParent, is, traverseModdle } from '../meta-model/rules/util';
 import { useAssetById, useAssets } from './useAssets';
 
 import { IssueList } from './IssueList';
@@ -109,7 +109,12 @@ export function AssetManagerDialog({
                 node.$descriptor.properties.forEach(p => {
                     if (node[p.name] === asset.element) {
                         node.set(p.name, undefined);
-                        eventBus.fire('elements.changed', { elements: [node] });
+
+                        const changed = [node];
+                        const parent = findParent(node, 'bpmn:Task');
+                        if (parent)
+                            changed.push(parent);
+                        eventBus.fire('elements.changed', { elements: changed });
                     }
                 });
             });

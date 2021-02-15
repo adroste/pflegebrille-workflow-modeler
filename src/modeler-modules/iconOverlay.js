@@ -32,7 +32,7 @@ function IconOverlay(
             return;
         }
 
-        overlays.remove({ element: el, type: OVERLAY_TYPE });
+        overlays.remove({ element: el.id, type: OVERLAY_TYPE });
 
         let hasData = false;
         let hasAsset = false;
