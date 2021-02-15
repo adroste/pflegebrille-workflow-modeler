@@ -1,11 +1,12 @@
-import { Button, Checkbox, Form, Input, Select, Space } from 'antd';
-import { CheckOutlined, FileAddOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, Select, Space, Tooltip, Typography } from 'antd';
+import { CheckOutlined, FileAddOutlined, UndoOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
 
 import { DataTypeEnum } from 'pflegebrille-workflow-meta-model';
 import { DataTypeLabels } from '../meta-model/enum/DataTypeLabels';
-import React from 'react';
 import { enumToSelectOptions } from '../meta-model/util';
 import { makeId } from '../util';
+import styles from './EditDatumForm.module.css';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
@@ -15,15 +16,22 @@ export function EditDatumForm({
     onFinish,
     extraButtons,
     submitText = 'Speichern',
+    successText = 'Gespeichert',
 }) {
     const [form] = Form.useForm();
+    const [success, setSuccess] = useState(false);
 
     const options = useMemo(() =>
         enumToSelectOptions(DataTypeEnum, DataTypeLabels, [DataTypeEnum.ANY]), []);
 
-    useEffect(() => {
+    const reset = useCallback(() => {
         form.resetFields();
-    }, [initialValues, form]);
+        setSuccess(false);
+    }, [form]);
+
+    useEffect(() => {
+        reset();
+    }, [initialValues, reset]);
 
     const handleValuesChange = useCallback(({ type }) => {
         if (type) {
@@ -33,13 +41,18 @@ export function EditDatumForm({
         }
     }, [form]);
 
+    const handleFinish = useCallback(values => {
+        setSuccess(true);
+        onFinish?.(values);
+    }, [onFinish]);
+
     return (
         <Form
             form={form}
             layout="vertical"
             initialValues={initialValues}
             onValuesChange={handleValuesChange}
-            onFinish={onFinish}
+            onFinish={handleFinish}
         >
             <Form.Item
                 name="type"
@@ -76,7 +89,19 @@ export function EditDatumForm({
                         htmlType="submit"
                     >
                         {submitText}
+                        {success &&
+                            <Typography.Text type="success" className={styles.successText}>
+                                {successText}
+                            </Typography.Text>
+                        }
                     </Button>
+                    <Tooltip title="Zurücksetzen">
+                        <Button
+                            type="default"
+                            icon={<UndoOutlined />}
+                            onClick={reset}
+                        />
+                    </Tooltip>
                     {extraButtons}
                 </Space>
             </Form.Item>
