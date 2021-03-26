@@ -33,7 +33,7 @@ export function XmlEditorScreen() {
     }, []);
 
     return (
-        <Screen>
+        <Screen className={styles.wrapper}>
 
             <Space className={styles.menuBar} size="large">
                 <Button
