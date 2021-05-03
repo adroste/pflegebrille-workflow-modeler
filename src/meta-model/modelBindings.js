@@ -169,7 +169,8 @@ export const modelBindings = [
      */
     {
         appliesTo: [
-            "pb:ActivityExtension",
+            "pb:ServiceTaskExtension",
+            "pb:UserTaskExtension",
         ],
         rules: [
             requiredProperties(['function']),
