@@ -19,6 +19,7 @@ import { noJoinAndFork } from './rules/noJoinAndFork';
 import { noMissingAssets } from './rules/noMissingAssets';
 import { noUnusedAssets } from './rules/noUnusedAssets';
 import { noUnusedData } from './rules/noUnusedData';
+import { onlyOnce } from './rules/onlyOnce';
 import { outgoingFlowRequired } from './rules/outgoingFlowRequired';
 import { requiredAnyProperties } from './rules/requiredAnyProperties';
 import { requiredProperties } from './rules/requiredProperties';
@@ -309,6 +310,9 @@ export const modelBindings = [
                 type: FormTypeEnum.DATUM_SELECT,
                 label: "Patient",
             },
+        ],
+        rules: [
+            onlyOnce(),
         ]
     },
     {
@@ -350,6 +354,9 @@ export const modelBindings = [
                 type: FormTypeEnum.DATUM_SELECT,
                 label: "Ausgewählte Wunde",
             },
+        ],
+        rules: [
+            onlyOnce(),
         ]
     },
     /**
