@@ -7,83 +7,77 @@ export const noDataConsumedBeforeInitialized = () => ({
     category: RuleCategoryEnum.ERROR,
     factory(binding) {
 
-        let availableDataMap;
+        const cache = {};
 
-        function createMap(moddleRoot) {
+        // returns Set of Datum ids or null
+        // traverses graph backwards and avoids cycles
+        function getAvailableData(node, visited = new Set()) {
+            if (!node?.id || visited.has(node.id))
+                return null; // invalid path
 
-            const visited = new Set();
+            if (!cache[node.id]) {
+                const nextNodes = [];
 
-            function add(id, values) {
-                let set = availableDataMap[id];
-                if (!set) {
-                    set = new Set();
-                    availableDataMap[id] = set;
+                if (node.incoming?.length) {
+                    node.incoming?.forEach(({ sourceRef }) => {
+                        nextNodes.push(
+                            sourceRef.flowElements // SubProcess, ...
+                                ? sourceRef.flowElements.find(el => is(el, 'bpmn:EndEvent'))
+                                : sourceRef
+                        );
+                    });
+                } else if (is(node, 'bpmn:StartEvent') && node.$parent) {
+                    nextNodes.push(node.$parent);
                 }
-                values?.forEach(set.add, set);
-            }
 
-            function next(el, newAvailableData) { // dfs
-                if (visited.has(el.id)) // prevent circles
-                    return;
-                visited.add(el.id);
+                const set = new Set();
 
-                add(el.id, newAvailableData);
-                // get previous available data
-                el.incoming?.forEach(({ sourceRef }) => {
-                    if (sourceRef.flowElements) { // subprocess, process, ...
-                        sourceRef.flowElements.forEach(flowElement => {
-                            if (is(flowElement, 'bpmn:EndEvent'))
-                                add(el.id, availableDataMap[flowElement.id]);
-                        })
-                    } else {
-                        add(el.id, availableDataMap[sourceRef.id]);
+                // if no nextNodes, the graph ends here
+                // because this path is valid and not invalid
+                // we continue with initialising the cache with an empty set
+                if (nextNodes.length) {
+                    let data = null;
+                    for (let nextNode of nextNodes) {
+                        const nodeData = getAvailableData(nextNode, new Set([node.id, ...visited]));
+
+                        if (!nodeData) // test if path is invalid
+                            continue; // ignore invalid path (cycle)
+                        else if (!data) // first (valid) incmoing path: take full data
+                            data = new Set(nodeData);
+                        else // for every other incoming path: use intersection of data
+                            data = new Set([...data].filter(id => nodeData.has(id)));
                     }
-                });
+                    // if data is null every incoming path is invalid
+                    // therefore the current node cannot provide data to the caller
+                    if (!data)
+                        return null;
+                    data.forEach(set.add, set);
+                }
 
-                const nextElements = [];
+                cache[node.id] = set;
 
-                const dataOutputs = [];
-                if (is(el, 'bpmn:Task')) {
-                    traverseModdle(el, node => {
-                        node.$descriptor?.properties?.forEach(p => {
+                // add own data output
+                if (is(node, 'bpmn:Task')) {
+                    traverseModdle(node, inner => {
+                        inner.$descriptor?.properties?.forEach(p => {
                             if (
-                                node[p.name]
+                                inner[p.name]
                                 && p.type === 'pb:Datum'
                                 && p.meta.dataMode === DataModeEnum.OUTPUT
                             ) {
-                                dataOutputs.push(node[p.name]);
+                                set.add(inner[p.name].id);
                             }
                         });
                     });
                 }
-
-                if (el.flowElements) { // subprocess, process, ...
-                    const start = el.flowElements?.find(el => el && is(el, 'bpmn:StartEvent'));
-                    if (start) {
-                        nextElements.push(start);
-                        add(start.id, availableDataMap[el.id]);
-                    }
-                }
-                const outgoing = el.outgoing?.map(({ targetRef }) => targetRef) || [];
-                nextElements.push(...outgoing);
-
-                nextElements?.forEach(nextEl => next(nextEl, dataOutputs));
             }
 
-            availableDataMap = {};
-            const root = moddleRoot.rootElements?.[0];
-            if (root) {
-                availableDataMap[root.id] = new Set();
-                next(root);
-            }
+            return cache[node.id];
         }
 
         function check(node, reporter) {
             if (!is(node, 'bpmn:Task'))
                 return;
-
-            if (!availableDataMap)
-                createMap(reporter.moddleRoot);
 
             traverseModdle(node, innerNode => {
                 innerNode.$descriptor?.properties?.forEach(p => {
@@ -92,8 +86,7 @@ export const noDataConsumedBeforeInitialized = () => ({
                         datum
                         && p.type === 'pb:Datum'
                         && p.meta.dataMode === DataModeEnum.INPUT
-                        && availableDataMap[node.id]
-                        && !availableDataMap[node.id].has(datum)
+                        && !getAvailableData(node)?.has(datum.id)
                     ) {
                         reporter.report(
                             node.id,

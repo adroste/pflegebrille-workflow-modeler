@@ -43,6 +43,15 @@
   },
   "homepage": ".",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@welldone-software/why-did-you-render": "^6.0.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!pflegebrille-workflow-meta-model)/"
+    ]
   }
 }
