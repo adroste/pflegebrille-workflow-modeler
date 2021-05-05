@@ -146,8 +146,8 @@ export function DatumManagerDialog({
     }, [modeler, onClose]);
 
     const renderIoItems = (io) => (
-        io.map(({ id, name }) => (
-            <li key={id}>
+        io.map(({ id, name }, i) => (
+            <li key={`${id}_${i}`}>
                 <div className={styles.ioItem}>
                     ID: {id}
                     <Button
