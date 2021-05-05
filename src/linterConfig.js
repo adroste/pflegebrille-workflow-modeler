@@ -19,7 +19,7 @@ function resolveRule(pkg, ruleName) {
         throw new Error('cannot resolve rule <' + pkg + '/' + ruleName + '>');
     }
 
-    return () => factory(rule.binding);
+    return () => factory(rule.binding, modelBindings);
 }
 
 function resolveConfig(pkg, configName) {

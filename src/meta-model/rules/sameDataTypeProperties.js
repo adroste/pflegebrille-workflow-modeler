@@ -4,7 +4,7 @@ import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const sameDataTypeProperties = (datumRefProperties, isError = true) => ({
     category: isError ? RuleCategoryEnum.ERROR : RuleCategoryEnum.WARN,
-    factory(binding) {
+    factory(binding, modelBindings) {
 
         function check(node, reporter) {
             if (!isAny(node, binding.appliesTo))
@@ -17,7 +17,7 @@ export const sameDataTypeProperties = (datumRefProperties, isError = true) => ({
 
             if (types.size > 1) {
                 const labels = datumRefProperties
-                    .map(property => `"${findLabel(node, property)}"`)
+                    .map(property => `"${findLabel(modelBindings, node, property)}"`)
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' und $1');
                 reporter.report(

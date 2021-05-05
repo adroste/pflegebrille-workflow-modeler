@@ -4,7 +4,7 @@ import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const requiredAnyProperties = (properties, isError = true, requiredIf = null) => ({
     category: isError ? RuleCategoryEnum.ERROR : RuleCategoryEnum.WARN,
-    factory(binding) {
+    factory(binding, modelBindings) {
 
         function check(node, reporter) {
             if (!isAny(node, binding.appliesTo))
@@ -21,7 +21,7 @@ export const requiredAnyProperties = (properties, isError = true, requiredIf = n
                 ))
             ) {
                 const labels = properties
-                    .map(property => `"${findLabel(node, property)}"`)
+                    .map(property => `"${findLabel(modelBindings, node, property)}"`)
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' oder $1');
                 reporter.report(

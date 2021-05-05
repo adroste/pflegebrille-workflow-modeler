@@ -1,5 +1,3 @@
-import { modelBindings } from '../modelBindings';
-
 /**
  * Checks whether node is of specific bpmn type.
  *
@@ -68,7 +66,7 @@ export function findId(node, withDi = false) {
     return id;
 }
 
-export function findFieldBinding(node, predicate) {
+export function findFieldBinding(modelBindings, node, predicate) {
     const bindings = modelBindings.filter(({ appliesTo }) => isAny(node, appliesTo));
     for (let binding of bindings) {
         let field = binding.fields?.find(predicate);
@@ -77,8 +75,8 @@ export function findFieldBinding(node, predicate) {
     }
 }
 
-export function findLabel(node, property) {
-    return findFieldBinding(node, field => field.property === property)?.label || property;
+export function findLabel(modelBindings, node, property) {
+    return findFieldBinding(modelBindings, node, field => field.property === property)?.label || property;
 }
 
 export function traverseModdle(node, cb) {

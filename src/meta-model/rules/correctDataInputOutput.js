@@ -8,10 +8,10 @@ import { RuleCategoryEnum } from '../enum/RuleCategoryEnum';
 
 export const correctDataInputOutput = () => ({
     category: RuleCategoryEnum.ERROR,
-    factory(binding) {
+    factory(binding, modelBindings) {
 
         function getMsgStart(isInput, node, property) {
-            return `${isInput ? 'Dateneingabe' : 'Datenausgabe'} "${findLabel(node, property)}"`;
+            return `${isInput ? 'Dateneingabe' : 'Datenausgabe'} "${findLabel(modelBindings, node, property)}"`;
         }
 
         function check(node, reporter) {
