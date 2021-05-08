@@ -9,6 +9,18 @@ export const getAppVersion = () => {
     return process.env.REACT_APP_VERSION + suffix;
 };
 
+export const getWorkflowRegistryUrl = () => {
+    return window.runtimeEnv.REACT_APP_WORKFLOW_REGISTRY_URL;
+};
+
+// also works with URLs
+export const pathJoin = (base, ...parts) => {
+    const trimSepRight = /\/+$/g;
+    const trimSepLeftRight = /^\/+|\/+$/g;
+    const partsTrimmed = parts.map(p => p.replace(trimSepLeftRight, ''));
+    return [base.replace(trimSepRight, '')].concat(partsTrimmed).join('/');
+};
+
 export function getModelBindingsForElement(element) {
     const bo = getBusinessObject(element);
     return modelBindings.filter(({ appliesTo }) => isAny(bo, appliesTo));
