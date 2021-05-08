@@ -1,13 +1,14 @@
 import { ArrowLeftOutlined, CloudDownloadOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Divider, Modal, Space, Spin, Typography } from 'antd';
 import React, { useCallback, useContext, useState } from 'react';
+import { getAppVersion, getWorkflowRegistryUrl } from '../util';
 
 import { CreateNewDialog } from './CreateNewDialog';
 import { ImportDialog } from './ImportDialog';
+import { LoadRegistryDialog } from './LoadRegistryDialog';
 import { Screen } from '../base/Screen';
 import { ScreenEnum } from '../base/ScreenEnum';
 import { appContext } from '../base/AppContextProvider';
-import { getAppVersion } from '../util';
 import styles from './LoadWorkflowScreen.module.css';
 
 export function LoadWorkflowScreen() {
@@ -18,6 +19,7 @@ export function LoadWorkflowScreen() {
 
     const handleCreateNew = useCallback(() => setDialog('createNew'), []);
     const handleImport = useCallback(() => setDialog('import'), []);
+    const handleLoadRegistry = useCallback(() => setDialog('registry'), []);
     const handleCloseDialog = useCallback(() => setDialog(null), []);
 
     const handleLoad = useCallback(async ({ isZip, data }) => {
@@ -83,9 +85,10 @@ export function LoadWorkflowScreen() {
                         <Button
                             shape="round"
                             icon={<CloudDownloadOutlined />}
-                            disabled
+                            onClick={handleLoadRegistry}
+                            disabled={!getWorkflowRegistryUrl()}
                         >
-                            Workflow aus Cloud laden
+                            Workflow aus Registry laden
                         </Button>
 
                         <Button
@@ -122,6 +125,12 @@ export function LoadWorkflowScreen() {
             }
             {dialog === 'import' &&
                 <ImportDialog
+                    onClose={handleCloseDialog}
+                    onLoad={handleLoad}
+                />
+            }
+            {dialog === 'registry' &&
+                <LoadRegistryDialog
                     onClose={handleCloseDialog}
                     onLoad={handleLoad}
                 />
