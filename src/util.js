@@ -10,7 +10,7 @@ export const getAppVersion = () => {
 };
 
 export const getWorkflowRegistryUrl = () => {
-    return window.runtimeEnv.REACT_APP_WORKFLOW_REGISTRY_URL;
+    return window.runtimeEnv.REACT_APP_WORKFLOW_REGISTRY_URL || "";
 };
 
 // also works with URLs
