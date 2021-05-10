@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const defaultSetFunc = ({ res }) => res;
+const defaultRequestDataTransform = d => d;
 
 export function useApi(
     {
@@ -10,6 +11,8 @@ export function useApi(
         // signature: ({ cur, params, req, res }) => updatedData
         setFunc = defaultSetFunc,
         responseDataMethod = 'json', // can also be blob, text, ...
+        headers = undefined,
+        requestDataTransform = defaultRequestDataTransform,
     },
     // setData is called in any case after fetch was successful
     // even if call was cancelled 
@@ -24,7 +27,7 @@ export function useApi(
     const [error, setError] = useState(null);
     const lastCallRef = useRef(null);
 
-    // reqParams like { query: { example: 1 }, path: { id: 4 }}
+    // reqParams like { query: { example: 1 }, path: { id: 4 }, basicAuth: { username: 'xyz', password: 'abc' }}
     const call = useCallback((reqParams, reqData, successCallback) => {
         if (lastCallRef.current)
             lastCallRef.current.cancel();
@@ -43,18 +46,22 @@ export function useApi(
                     .join('&');
                 if (queryString)
                     parameterizedUrl += `?${queryString}`;
-                
-                const headers = {};
-                if (reqData)
-                    headers['Content-Type'] = 'application/json';
+
+                const additionalHeaders = {};
+                if (reqParams?.basicAuth)
+                    additionalHeaders['Authorization'] = 
+                        'Basic ' + btoa(reqParams.basicAuth.username + ":" + reqParams.basicAuth.password);
                 
                 if (cancelled) 
                     return;
 
                 const response = await fetch(parameterizedUrl, {
                     method,
-                    headers,
-                    body: reqData ? JSON.stringify(reqData) : undefined,
+                    headers: {
+                        ...headers,
+                        ...additionalHeaders,
+                    },
+                    body: reqData ? requestDataTransform(reqData) : undefined,
                 });
 
                 if (!cancelled)
@@ -92,13 +99,7 @@ export function useApi(
         task.cancel = () => cancelled = true;
         lastCallRef.current = task;
         return task.cancel;
-    }, [
-        method,
-        responseDataMethod,
-        setData,
-        setFunc,
-        url,
-    ]);
+    }, [headers, method, requestDataTransform, responseDataMethod, setData, setFunc, url]);
 
     useEffect(() => {
         if (autoFetch)

@@ -1,8 +1,9 @@
 import { Alert, Button, Form, Input, Modal, Space } from 'antd';
 import { CloudOutlined, CloudUploadOutlined, DesktopOutlined, DownloadOutlined, PictureOutlined, SendOutlined } from '@ant-design/icons';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { downloadBlob, svgUrlToPngBlob } from '../util';
+import { downloadBlob, getWorkflowRegistryUrl, svgUrlToPngBlob } from '../util';
 
+import { UploadRegistryDialog } from './UploadRegistryDialog';
 import { appContext } from '../base/AppContextProvider';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { modelerContext } from './ModelerContextProvider';
@@ -15,13 +16,14 @@ export function SaveDialog({
     const { exportWorkflow } = useContext(appContext);
     const { canvas, eventBus, getSvg, getXml } = useContext(modelerContext);
     const [rootElement, setRootElement] = useState();
+    const [showUploadDialog, setShowUploadDialog] = useState(false);
     const [form] = Form.useForm();
 
     const issues = useIssues();
     const hasIssues = Object.keys(issues).length !== 0;
 
     useEffect(() => {
-        const rootElement = canvas.getRootElement(); 
+        const rootElement = canvas.getRootElement();
         setRootElement(rootElement);
         const bo = getBusinessObject(rootElement);
         form.setFieldsValue({
@@ -59,6 +61,23 @@ export function SaveDialog({
         onClose();
     }, [getFileName, getSvg, onClose]);
 
+    const handleUploadRegistry = useCallback(() => {
+        if (hasIssues) {
+            Modal.warning({
+                title: 'Veröffentlichung nicht möglich',
+                content: (
+                    <div>
+                        Der Workflow enthält unbeseitigte Fehler/Warnungen. 
+                        Die Pflegebrille kann diesen Workflow <strong>nicht ausführen!</strong>
+                    </div>
+                ),
+            });
+            return;
+        }
+
+        setShowUploadDialog(true);
+    }, [hasIssues]);
+
     const handleValuesChange = useCallback(values => {
         if (values.hasOwnProperty('name')) {
             const bo = getBusinessObject(rootElement);
@@ -69,6 +88,9 @@ export function SaveDialog({
 
     if (!rootElement)
         return null;
+
+    if (showUploadDialog)
+        return <UploadRegistryDialog onClose={onClose} />
 
     return (
         <Modal
@@ -121,22 +143,13 @@ export function SaveDialog({
 
                     <Space>
                         <Button
-                            onClick={() => alert('Cloud Speicher nicht verfügbar.')}
+                            onClick={handleUploadRegistry}
                             icon={<CloudUploadOutlined />}
                             shape="round"
                             type="primary"
-                            disabled
+                            disabled={!getWorkflowRegistryUrl()}
                         >
-                            In Cloud Speichern
-                        </Button>
-
-                        <Button
-                            onClick={() => alert('Cloud Speicher nicht verfügbar.')}
-                            icon={<SendOutlined />}
-                            shape="round"
-                            disabled
-                        >
-                            Veröffentlichen
+                            Workflow in Registry hochladen
                         </Button>
                     </Space>
 

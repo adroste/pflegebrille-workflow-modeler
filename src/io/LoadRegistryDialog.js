@@ -2,6 +2,7 @@ import { Modal, Spin, Tree } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { downloadWorkflowApi, getPackageListForWorkflowApi, getWorkflowListApi } from '../api';
 
+import { CloudDownloadOutlined } from '@ant-design/icons';
 import { useApi } from '../useApi';
 
 export function LoadRegistryDialog({
@@ -30,6 +31,7 @@ export function LoadRegistryDialog({
     const error = fetchListState.error || fetchPackagesState.error || downloadState.error;
 
     const okButtonProps = useMemo(() => ({
+        icon: <CloudDownloadOutlined />,
         disabled: !selectedKeys || !selectedKeys.length || !selectedKeys[0].includes('/'),
         loading,
     }), [loading, selectedKeys]);
