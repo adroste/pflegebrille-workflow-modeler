@@ -9,27 +9,33 @@ export const noDataConsumedBeforeInitialized = () => ({
 
         const cache = {};
 
+        function getIncomingNodes(node) {
+            const nextNodes = [];
+
+            if (node.incoming?.length) {
+                node.incoming?.forEach(({ sourceRef }) => {
+                    nextNodes.push(
+                        sourceRef.flowElements // SubProcess, ...
+                            ? sourceRef.flowElements.find(el => is(el, 'bpmn:EndEvent'))
+                            : sourceRef
+                    );
+                });
+            } else if (is(node, 'bpmn:StartEvent') && node.$parent) {
+                nextNodes.push(node.$parent);
+            }
+
+            return nextNodes;
+        }
+
         // returns Set of Datum ids or null
         // traverses graph backwards and avoids cycles
+        // returns available data AFTER node (after output)
         function getAvailableData(node, visited = new Set()) {
             if (!node?.id || visited.has(node.id))
                 return null; // invalid path
 
             if (!cache[node.id]) {
-                const nextNodes = [];
-
-                if (node.incoming?.length) {
-                    node.incoming?.forEach(({ sourceRef }) => {
-                        nextNodes.push(
-                            sourceRef.flowElements // SubProcess, ...
-                                ? sourceRef.flowElements.find(el => is(el, 'bpmn:EndEvent'))
-                                : sourceRef
-                        );
-                    });
-                } else if (is(node, 'bpmn:StartEvent') && node.$parent) {
-                    nextNodes.push(node.$parent);
-                }
-
+                const nextNodes = getIncomingNodes(node);
                 const set = new Set();
 
                 // if no nextNodes, the graph ends here
@@ -75,6 +81,18 @@ export const noDataConsumedBeforeInitialized = () => ({
             return cache[node.id];
         }
 
+        // returns Set of Datum ids
+        // returns available data BEFORE node (on input)
+        function getAvailableInputData(node) {
+            const incoming = getIncomingNodes(node);
+            const set = new Set();
+            for (let n of incoming) {
+                const data = getAvailableData(n);
+                data?.forEach(set.add, set);
+            }
+            return set;
+        }
+
         function check(node, reporter) {
             if (!is(node, 'bpmn:Task'))
                 return;
@@ -86,7 +104,7 @@ export const noDataConsumedBeforeInitialized = () => ({
                         datum
                         && p.type === 'pb:Datum'
                         && p.meta.dataMode === DataModeEnum.INPUT
-                        && !getAvailableData(node)?.has(datum.id)
+                        && !getAvailableInputData(node).has(datum.id)
                     ) {
                         reporter.report(
                             node.id,

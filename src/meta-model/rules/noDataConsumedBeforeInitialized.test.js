@@ -5,15 +5,15 @@ import { v1 as pbModdle } from 'pflegebrille-workflow-meta-model';
 const testRule = require('bpmnlint/lib/test-rule');
 
 async function lintModel(xml) {
-    const bpmnModdle = new BpmnModdle({ pb: pbModdle });
-    const model = await bpmnModdle.fromXML(xml);
-    const rule = noDataConsumedBeforeInitialized().factory();
-    return testRule({ moddleRoot: model.rootElement, rule });
+  const bpmnModdle = new BpmnModdle({ pb: pbModdle });
+  const model = await bpmnModdle.fromXML(xml);
+  const rule = noDataConsumedBeforeInitialized().factory();
+  return testRule({ moddleRoot: model.rootElement, rule });
 }
 
 describe('check test graphs', () => {
-    it('used in cycle correctly', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used in cycle correctly', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -118,12 +118,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(0);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(0);
+  });
 
-    it('used wrongly in cycle with bypass', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used wrongly in cycle with bypass', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -237,12 +237,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(1);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(1);
+  });
 
-    it('used wrongly after cycle double bypass', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used wrongly after cycle double bypass', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -382,12 +382,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(2);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(2);
+  });
 
-    it('used wrongly after cycle with single bypass', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used wrongly after cycle with single bypass', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -518,12 +518,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(1);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(1);
+  });
 
-    it('used after cycle correctly', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used after cycle correctly', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -645,12 +645,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(0);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(0);
+  });
 
-    it('used correctly linear', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used correctly linear', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -709,12 +709,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(0);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(0);
+  });
 
-    it('used before init linear', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used before init linear', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -773,13 +773,13 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(1);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(1);
+  });
 
 
-    it('used correctly in combination with subprocess', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used correctly in combination with subprocess', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -884,12 +884,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(0);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(0);
+  });
 
-    it('used correctly with subprocess and cycle', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used correctly with subprocess and cycle', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -1029,12 +1029,12 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(0);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(0);
+  });
 
-    it('used wrong datum', async () => {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  it('used wrong datum', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
           <bpmn:extensionElements>
             <pb:assets />
@@ -1123,7 +1123,54 @@ describe('check test graphs', () => {
           </bpmndi:BPMNDiagram>
         </bpmn:definitions>
         `;
-        const msg = await lintModel(xml);
-        expect(msg).toHaveLength(1);
-    });
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(1);
+  });
+
+  it('output and input to same datum, that was unused before', async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+      <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:pb="http://pflegebrille.de/schema/bpmn/pb-extension/v1.0.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions" targetNamespace="http://bpmn.io/schema/bpmn" exporter="pflegebrille-workflow-modeler" exporterVersion="1.0.1 (debug)" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+        <bpmn:extensionElements>
+          <pb:assets />
+          <pb:data>
+            <pb:datum id="Datum_1x8r6cq" name="Patienten" type="Patient" isCollection="false" />
+          </pb:data>
+        </bpmn:extensionElements>
+        <bpmn:process id="Process" isExecutable="true">
+          <bpmn:startEvent id="Event_0kbyusg" name="Start">
+            <bpmn:outgoing>Flow_01jcmyi</bpmn:outgoing>
+          </bpmn:startEvent>
+          <bpmn:sequenceFlow id="Flow_01jcmyi" sourceRef="Event_0kbyusg" targetRef="Activity_04dugs1" />
+          <bpmn:serviceTask id="Activity_04dugs1">
+            <bpmn:extensionElements>
+              <pb:serviceTaskExtension>
+                <pb:concatData firstInput="Datum_1x8r6cq" secondInput="Datum_1x8r6cq" collectionOutput="Datum_1x8r6cq" />
+              </pb:serviceTaskExtension>
+            </bpmn:extensionElements>
+            <bpmn:incoming>Flow_01jcmyi</bpmn:incoming>
+          </bpmn:serviceTask>
+        </bpmn:process>
+        <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+          <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">
+            <bpmndi:BPMNEdge id="Flow_01jcmyi_di" bpmnElement="Flow_01jcmyi">
+              <di:waypoint x="248" y="293" />
+              <di:waypoint x="350" y="293" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="Event_0kbyusg_di" bpmnElement="Event_0kbyusg">
+              <dc:Bounds x="212" y="275" width="36" height="36" />
+              <bpmndi:BPMNLabel>
+                <dc:Bounds x="219" y="318" width="24" height="14" />
+              </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_04dugs1_di" bpmnElement="Activity_04dugs1" bioc:stroke="#ae3f3f" bioc:fill="#f6ebeb">
+              <dc:Bounds x="350" y="253" width="100" height="80" />
+            </bpmndi:BPMNShape>
+          </bpmndi:BPMNPlane>
+        </bpmndi:BPMNDiagram>
+      </bpmn:definitions>
+      `;
+
+    const msg = await lintModel(xml);
+    expect(msg).toHaveLength(2);
+  });
 });
